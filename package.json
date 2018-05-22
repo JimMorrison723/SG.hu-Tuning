@@ -1,0 +1,13 @@
+{
+  "name": "SG.hu-Tuning",
+  "version": "4.0.0",
+  "description": "A Chrome extension for the popular sg.hu site",
+  "scripts": {
+    "dev": "webextension-toolbox dev",
+    "build": "webextension-toolbox build"
+  },
+  "devDependencies": {
+    "jquery": "^3.3.1",
+    "webextension-toolbox": "latest"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "appName": {
+    "message": "SG.hu Tuning",
+    "description": "The name of the application"
+  },
+  "appShortName": {
+    "message": "SG.hu Tuning",
+    "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
+  },
+  "appDescription": {
+    "message": "A Chrome extension for the popular sg.hu site",
+    "description": "The description of the application"
+  }
+}

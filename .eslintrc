@@ -1,0 +1,39 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "rules": {
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "indent": [
+            "error",
+            2
+        ],
+        "no-var": [
+            "warn"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxEOF": 1
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "app/scripts/settings.js"
+            ],
+            "rules": {
+                "indent": [
+                    "off",
+                    2
+                ]
+            }
+        }
+    ]
+}
