@@ -40,8 +40,8 @@ export const cp = {
 
       html += '<div class="settings_page">';
         html += '<h3>SG Fórum tuning</h3>';
-        html += '<p>Verzió: 3.9.2</p>';
-        html += '<p>Kiadás dátuma: 2018. 02. 21.</p>';
+        html += '<p>Verzió: 3.9.9</p>';
+        html += '<p>Kiadás dátuma: 2018. 05. 23.</p>';
         html += '<p>Fejlesztő: JimMorrison723 <a href="https://jimmorrison723.hu" target="_blank">https://jimmorrison723.hu</a>, Gera János "dzsani" <a href="https://github.com/dzsani" target="_blank">https://github.com/dzsani</a></p>';
         html += '<p>Közreműködők: Viszt Péter "passatgt" <a href="http://visztpeter.me" target="_blank">http://visztpeter.me</a>, Krupa György "pyro"</p>';
       html += '</div>';

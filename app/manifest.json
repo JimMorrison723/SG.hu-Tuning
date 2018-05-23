@@ -1,8 +1,9 @@
 {
   "name": "__MSG_appName__",
+  "author": "JimMorrison723",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
-  "version": "4.0.0",
+  "version": "3.9.9",
   "manifest_version": 2,
   "default_locale": "hu",
   "icons": {
@@ -10,6 +11,7 @@
     "128": "images/icons/icon-128.png"
   },
   "background": {
+    "persistent": true,
     "scripts": [
       "scripts/background.js"
     ]

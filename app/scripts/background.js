@@ -4,7 +4,7 @@ browser.runtime.onInstalled.addListener((details) => {
   console.log('previousVersion', details.previousVersion)
 })
 
-browser.extension.onConnect.addListener(function (port) {
+browser.runtime.onConnect.addListener(function (port) {
   port.onMessage.addListener(function (event) {
 
     let list, index

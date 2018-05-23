@@ -11,6 +11,19 @@ A kiegészítő a webextension-toolbox-ot használja.
 
 	$ yarn install
 
+## jQuery
+
+Add hozzá a következő kód részletet az alábbi helyen: `node_modules\webextension-toolbox\src\webpack-config.js`
+
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery'
+      })
+    )
+
+Amíg a webextension-toolbox miatt hibás a config fájl kiegészítése, vagy amíg még tartalmaz a forráskód jQueryt.
+
 ## Development
 
     yarn run dev chrome
