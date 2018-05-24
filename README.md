@@ -42,7 +42,10 @@ Az SG tuning célja, hogy funkcióival kényelmesebbé varázsolja az sg.hu-n t�
 Fejlesztő:
 
 - JimMorrison723, http://www.jimmorrison723.hu
-- Gera János "dzsani"
+
+Eredeti verizó
+
+- Gera János "dzsani" - [SG.hu-Extension](https://github.com/dzsani/SG.hu-Extension)
 
 ### Hozzájárulás
 

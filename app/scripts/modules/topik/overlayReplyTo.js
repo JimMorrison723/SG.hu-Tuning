@@ -181,7 +181,7 @@ overlayReplyTo.show = (comment, msgno) => {
       $('<div id="ext_clone_textarea_shadow"></div>').insertAfter(textarea_clone.find('textarea'))
 
       // Put textarea the container
-      textarea_clone.find('textarea').appendTo('#ext_clone_textarea_shadow')
+      textarea_clone.find('textarea').appendTo('#ext_clone_textarea_shadow').css({ 'margin-bottom': 0 })
     }
 
     // Copy textarea original comment to the tmp element
@@ -195,8 +195,6 @@ overlayReplyTo.show = (comment, msgno) => {
     textarea_clone.find('button:eq(5)').css({ position: 'absolute', left: 380 }) // -486
     textarea_clone.find('button:eq(6)').css({ position: 'absolute', left: 491 }) // -608
     textarea_clone.find('button:eq(7)').css({ position: 'absolute', left: 613 }) // -711,52
-
-    /*textarea_clone.find('a:eq(6)').css({ position : 'absolute', right : 0 });*/
   }
 
   // Textarea position
@@ -242,7 +240,7 @@ overlayReplyTo.show = (comment, msgno) => {
       event.preventDefault()
       textarea_clone.find('a:last').focus()
     }
-  });
+  })
 
   // Block default tab action in a WYSIWYG editor
   if (dataStore['wysiwygEditor'] === 'true') {
@@ -268,11 +266,11 @@ overlayReplyTo.show = (comment, msgno) => {
   })
 
   // Add close button
-  let close_btm = $('<img src="' + chrome.extension.getURL('images/content/overlay_close.png') + '" id="ext_close_overlay">').prependTo(textarea_clone).addClass('ext_overlay_close')
+  let close_btm = $('<img src="' + chrome.extension.getURL('images/content/overlay_close.png') + '" id="ext_close_overlay" title="Overlay bezárása">').prependTo(textarea_clone).addClass('ext_overlay_close')
 
   // Change close button position if WYSIWYG editor is disabled
   if (dataStore['wysiwygEditor'] !== true) {
-    close_btm.css({ 'right': 4, 'top': 9 })
+    close_btm.css({ 'right': 13, 'top': -20 })
   }
 
   // Add Close event

@@ -21,6 +21,10 @@
                 "max": 1,
                 "maxEOF": 1
             }
+        ],
+        "semi": [
+            "error",
+            "never"
         ]
     },
     "overrides": [

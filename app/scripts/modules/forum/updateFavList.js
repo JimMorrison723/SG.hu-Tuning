@@ -1,6 +1,10 @@
 import { Module } from '../module'
 import { dataStore } from '../../contentscript'
 import { safeResponse } from '../../util/safeResponse'
+import { favShowOnlyUnread } from './favShowOnlyUnread'
+import { shortCommentMarker } from './shortCommentMarker'
+import { highlightForumCategories } from './highlightForumCategories'
+import { jumpUnreadMessages } from '../topik'
 
 export const updateFavList = new Module('updateFavList')
 
@@ -16,7 +20,7 @@ updateFavList.activate = () => {
   // ha lesz blokkok átrendezése, akkor #ext_left_sidebar után már nem kell inline style
   $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<div id="ext_refresh_faves" style="display: inline-block;"></div>]</span>')
 
-  var refresh_faves = $('#ext_refresh_faves')
+  let refresh_faves = $('#ext_refresh_faves')
 
   // Move the button away if unreaded faves is on
   if (dataStore['fav_show_only_unreaded'] === 'true' && isLoggedIn()) {
@@ -40,7 +44,7 @@ updateFavList.activate = () => {
 
 updateFavList.refresh = () => {
 
-  var refresh_img = $('#ext_refresh_faves').find('img')
+  let refresh_img = $('#ext_refresh_faves').find('img')
 
   // Set 'in progress' icon
   refresh_img.attr('src', browser.extension.getURL('/images/content/refresh_waiting.png'))
@@ -50,15 +54,15 @@ updateFavList.refresh = () => {
     mimeType: 'text/html;charset=utf-8',
     dataType: 'html',
 
-    success: function (data) {
+    success: function (temp) {
 
-      var data = $('nav#favorites-list', data)
+      let data = $('nav#favorites-list', temp)
 
       // Filter the response - for security reasons
       data = safeResponse.cleanDomHtml(data[0])
 
       // Update fav list
-      $("nav#favorites-list").html(data)
+      $('nav#favorites-list').html(data)
 
       // Set 'completed' icon
       refresh_img.attr('src', browser.extension.getURL('/images/content/refresh_done.png'))
@@ -70,7 +74,7 @@ updateFavList.refresh = () => {
 
       // Faves: show only with unreaded messages
       if (dataStore['favShowOnlyUnread'] === true && dataStore['user']['isLoggedIn']) {
-        favShowOnlyUnread.toggle()
+        favShowOnlyUnread.activate()
       }
 
       // Faves: short comment marker
@@ -84,9 +88,9 @@ updateFavList.refresh = () => {
       }
 
       // Jump the last unreaded message
-      if (dataStore['jumpUnreadMessages'] == true && dataStore['user']['isLoggedIn']) {
+      if (dataStore['jumpUnreadMessages'] === true && dataStore['user']['isLoggedIn']) {
         jumpUnreadMessages.activate()
       }
     }
-  });
+  })
 }

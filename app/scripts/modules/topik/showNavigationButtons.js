@@ -1,5 +1,9 @@
 import { Module } from '../module'
 import { dataStore } from '../../contentscript'
+import { jumpUnreadMessages } from './jumpUnreadMessages'
+import { favShowOnlyUnread } from '../forum'
+import { shortCommentMarker } from '../forum'
+import { safeResponse } from '../../util/safeResponse'
 
 export const showNavigationButtons = new Module('showNavigationButtons')
 
@@ -223,17 +227,17 @@ showNavigationButtons.showFaves = () => {
       // Write data into wrapper
       $('#ext_nav_faves_wrapper').find('.ext_nav_fave_list').html(data)
 
-      // if (dataStore['jumpUnreadedMessages'] === 'true') {
-      //   jump_unreaded_messages.activated();
-      // }
+      if (dataStore['jumpUnreadMessages'] === 'true') {
+        jumpUnreadMessages.activate()
+      }
 
       // Hide topics that doesnt have unreaded messages
-      // favShowOnlyUnreaded.activated();
+      favShowOnlyUnread.activate()
 
       // Faves: short comment marker
-      // if (dataStore['short_comment_marker'] === 'true') {
-      //   short_comment_marker.activated();
-      // }
+      if (dataStore['shortCommentMarker'] === 'true') {
+        shortCommentMarker.activate()
+      }
 
       // Set position
       showNavigationButtons.findArrowPosition(ext_nav_faves_arrow, ext_nav_faves)
@@ -307,42 +311,42 @@ showNavigationButtons.findArrowPosition = (ele, target) => {
 showNavigationButtons.findPosition = (ele, target) => {
 
   let top, bottom
-  if (dataStore['navigation_buttons_position'] === 'lefttop') {
+  if (dataStore['navigationButtonsPosition'] === 'lefttop') {
 
     top = parseInt($(target).css('top').replace('px', '')) - 15
 
     $(ele).css({ left: 50, right: 'auto', top: top, bottom: 'auto' })
   }
 
-  if (dataStore['navigation_buttons_position'] === 'leftcenter') {
+  if (dataStore['navigationButtonsPosition'] === 'leftcenter') {
 
     top = parseInt($(target).css('top').replace('px', '')) + $(target).height() / 2 - $(ele).outerHeight() / 2
 
     $(ele).css({ left: 50, right: 'auto', top: top, bottom: 'auto' })
   }
 
-  if (dataStore['navigation_buttons_position'] === 'leftbottom') {
+  if (dataStore['navigationButtonsPosition'] === 'leftbottom') {
 
     bottom = parseInt($(target).css('bottom').replace('px', '')) - 15
 
     $(ele).css({ left: 50, right: 'auto', top: 'auto', bottom: bottom })
   }
 
-  if (dataStore['navigation_buttons_position'] === 'righttop') {
+  if (dataStore['navigationButtonsPosition'] === 'righttop') {
 
     top = parseInt($(target).css('top').replace('px', '')) - 15
 
     $(ele).css({ left: 'auto', right: 50, top: top, bottom: 'auto' })
   }
 
-  if (dataStore['navigation_buttons_position'] === 'rightcenter') {
+  if (dataStore['navigationButtonsPosition'] === 'rightcenter') {
 
     top = parseInt($(target).css('top').replace('px', '')) + $(target).height() / 2 - $(ele).outerHeight() / 2
 
     $(ele).css({ left: 'auto', right: 50, top: top, bottom: 'auto' })
   }
 
-  if (dataStore['navigation_buttons_position'] === 'rightbottom') {
+  if (dataStore['navigationButtonsPosition'] === 'rightbottom') {
 
     bottom = parseInt($(target).css('bottom').replace('px', '')) - 15
 

@@ -39,12 +39,12 @@ favShowOnlyUnread.activate = () => {
   let ext_filtered_faves = $('#ext_show_filtered_faves')
   let ext_filtered_faves_arrow = $('#ext_show_filtered_faves_arrow')
   let ext_filtered_error = $('#ext_filtered_faves_error')
-  let Alllength = fav_list.find('a[class*="category-"]').length
-  let unreaded_length = fav_list.find('a[class^="category-"][class*="fav-not-new-msg"]').length
+  let AllLength = fav_list.find('a[class*="category-"]').length
+  let unread_length = fav_list.find('a[class^="category-"][class*="fav-not-new-msg"]').length
 
   //Fix
-  if (typeof unreaded_length === 'undefined') {
-    unreaded_length = 0
+  if (typeof unread_length === undefined) {
+    unread_length = 0
   }
 
   // Remove old toggle button if any
@@ -95,7 +95,6 @@ favShowOnlyUnread.activate = () => {
       port.postMessage({ name: 'setSetting', key: 'updateFavesFilterLastState', val: false })
       port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: false })
 
-
       // Reposition the popup if any
       if ($(this).closest('#ext_nav_faves_wrapper').length) {
         show_navigation_buttons.findPosition(ext_wrapper, $('#ext_nav_faves'))
@@ -103,8 +102,8 @@ favShowOnlyUnread.activate = () => {
     }
   })
 
-  // Create an error message if theres no topik with unreaded messages
-  if (Alllength === unreaded_length && ext_filtered_error.length === 0) {
+  // Create an error message if there is no topic with unread messages
+  if (AllLength === unread_length && ext_filtered_error.length === 0) {
     ext_faves.after('<p id="ext_filtered_faves_error">Nincs olvasatlan téma</p>')
   }
 
