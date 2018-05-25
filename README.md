@@ -41,7 +41,7 @@ Az SG tuning célja, hogy funkcióival kényelmesebbé varázsolja az sg.hu-n t�
 
 Fejlesztő:
 
-- JimMorrison723, http://www.jimmorrison723.hu
+- JimMorrison723, https://www.jimmorrison723.hu
 
 Eredeti verizó
 

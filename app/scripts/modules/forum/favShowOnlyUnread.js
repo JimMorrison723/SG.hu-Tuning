@@ -19,7 +19,7 @@ favShowOnlyUnread.activate = () => {
 
   favShowOnlyUnread.init()
 
-  let ext_faves = $('.ext_faves')
+  let ext_faves = $('#sidebar-user-favorites')
 
   // Remove original toggle button
   $('div[class*="csakujuzi"]').remove()

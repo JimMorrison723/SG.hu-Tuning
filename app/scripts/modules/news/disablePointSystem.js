@@ -6,3 +6,8 @@ disablePointSystem.activate = () => {
 
   $('span.forum-post-rate-place').hide()
 }
+
+disablePointSystem.disable = () => {
+
+  $('span.forum-post-rate-place').show()
+}

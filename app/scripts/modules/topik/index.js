@@ -1,5 +1,6 @@
 import { blocklist } from './blocklist'
 import { addToList } from './addToList'
+import { disablePointSystem } from '../news'
 import { showNavigationButtons } from './showNavigationButtons'
 import { highlightCommentsForMe } from './highlightCommentsForMe'
 import { threadedComments } from './threadedComments'
@@ -17,6 +18,7 @@ export {
   removeAds,
   addToList,
   blocklist,
+  disablePointSystem,
   showNavigationButtons,
   highlightCommentsForMe,
   threadedComments,

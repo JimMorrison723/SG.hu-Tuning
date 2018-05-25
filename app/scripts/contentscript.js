@@ -20,21 +20,21 @@ function getUserStatus() {
   let ident_id = getCookie('identid')
 
   if (!dataStore['user']['userName'] && ident_id) {
-    let request = new XMLHttpRequest();
-    request.open('GET', 'https://sg.hu/api/forum/user?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z&ident_id=' + ident_id, true);
+    let request = new XMLHttpRequest()
+    request.open('GET', 'https://sg.hu/api/forum/user?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z&ident_id=' + ident_id, true)
 
     request.onload = function() {
       if (request.status >= 200 && request.status < 400) {
 
-        var data = JSON.parse(request.responseText);
+        let data = JSON.parse(request.responseText)
         dataStore['user'] = { isLoggedIn: true, userName: data.msg.nick }
         // sync settings
         port.postMessage({ name: 'setUserSetting', msg: dataStore['user'] })
         return true
       }
-    };
+    }
 
-    request.send();
+    request.send()
 
     // User is not logged in
   } else if (!ident_id) {

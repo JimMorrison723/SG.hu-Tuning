@@ -11,7 +11,7 @@ makeReadAllFavs.activate = () => {
   // Create the 'read them all' button
   $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<div id="ext_read_faves" style="display: inline-block;"></div>]</span>')
 
-  var read_faves = $('#ext_read_faves');
+  let read_faves = $('#ext_read_faves')
   // Move the button away if unreaded faves is on
   if (dataStore['favShowOnlyUnread'] === 'true' && isLoggedIn()) {
     read_faves.css('right', 36)
@@ -35,10 +35,10 @@ makeReadAllFavs.makeread = () => {
     //$('#ext_read_faves').find('img').attr('src', chrome.extension.getURL('/img/content/makereaded_waiting.png') );
     $('#ext_read_faves').find('#icon').html('&#9684;')
 
-    var count = 0
-    var counter = 0
+    let count = 0
+    let counter = 0
 
-    var links = $('.ext_faves').find('a')
+    let links = $('.ext_faves').find('a')
 
     // Get unreaded topics count
     links.each(function () {
@@ -54,7 +54,7 @@ makeReadAllFavs.makeread = () => {
       }
 
       count++
-    });
+    })
 
     // Iterate over all faves
     links.each(function () {
@@ -69,7 +69,7 @@ makeReadAllFavs.makeread = () => {
         return true
       }
 
-      var ele = $(this)
+      let ele = $(this)
 
       // Make an ajax query to refresh last readed time
       $.get($(this).attr('href'), function () {
@@ -81,9 +81,9 @@ makeReadAllFavs.makeread = () => {
           $(ele).parent().addClass('ext_hidden_fave')
         }
 
-        counter++;
-      }, 'html');
-    });
+        counter++
+      }, 'html')
+    })
 
     var interval = setInterval(function () {
 
@@ -95,7 +95,7 @@ makeReadAllFavs.makeread = () => {
         // Set normal icon
         setTimeout(function () {
           $('#ext_read_faves').html('&#9675;')
-        }, 2000);
+        }, 2000)
 
         // Faves: show only with unreaded messages
         if (dataStore['favShowOnlyUnread'] === 'true' && isLoggedIn()) {

@@ -5,7 +5,7 @@ export const jumpUnreadMessages = new Module('jumpUnreadMessages')
 
 jumpUnreadMessages.activate = () => {
 
-  if (PAGE == 2)
+  if (PAGE === 2)
     jumpUnreadMessages.topic()
 
   let msgPerPage = dataStore['msgPerPage']
