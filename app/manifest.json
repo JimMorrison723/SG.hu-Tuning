@@ -3,7 +3,7 @@
   "author": "JimMorrison723",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
-  "version": "3.9.9",
+  "version": "3.9.10",
   "manifest_version": 2,
   "default_locale": "hu",
   "icons": {
