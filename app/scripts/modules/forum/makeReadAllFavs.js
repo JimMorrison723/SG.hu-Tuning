@@ -6,7 +6,7 @@ import { jumpUnreadMessages } from '../topik'
 export const makeReadAllFavs = new Module('makeReadAllFavs')
 
 makeReadAllFavs.activate = () => {
-console.log('activate favs')
+
   if (!dataStore['user']['isLoggedIn'])
     return
 

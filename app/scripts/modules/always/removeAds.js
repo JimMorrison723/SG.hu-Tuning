@@ -9,7 +9,7 @@ removeAds.activate = () => {
   // Top ad bar
   $('nav#menu-family').prev('div').remove()
   // Sidebar ad
-  $('aside#sidebar-forum').find('div').remove()
+  $('aside#sidebar-forum').find('div[id*="bmone2n"]').parent('div').remove()
   // Bottom ad
   $('div.forum-topics-block').next('div').remove()
 }

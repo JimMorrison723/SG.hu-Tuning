@@ -9,7 +9,7 @@ import { jumpUnreadMessages } from '../topik'
 export const updateFavList = new Module('updateFavList')
 
 updateFavList.activate = () => {
-  console.log('activated')
+
   if (!dataStore['user']['isLoggedIn'])
     return
 

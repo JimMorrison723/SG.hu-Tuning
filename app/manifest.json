@@ -4,6 +4,12 @@
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
   "version": "3.9.10",
+  "__firefox__applications": {
+    "gecko": {
+      "id": "jid0-lXuvrBz88C18gU77Igt8aau7ZyY@jetpack",
+      "strict_min_version": "48.0"
+    }
+  },
   "manifest_version": 2,
   "default_locale": "hu",
   "icons": {
@@ -11,7 +17,7 @@
     "128": "images/icons/icon-128.png"
   },
   "background": {
-    "persistent": true,
+    "__edge__persistent": true,
     "scripts": [
       "scripts/background.js"
     ]
