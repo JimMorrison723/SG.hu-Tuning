@@ -1,5 +1,6 @@
 import { Module } from '../module'
 import { port, dataStore } from '../../contentscript'
+import { showNavigationButtons } from '../topik'
 
 export const favShowOnlyUnread = new Module('favShowOnlyUnread')
 
@@ -7,10 +8,10 @@ favShowOnlyUnread.opened = false
 
 favShowOnlyUnread.init = () => {
 
-  if (dataStore['favShowOnlyUnreadRemember'] === true) {
+  if (dataStore['favShowOnlyUnreadRemember']) {
     favShowOnlyUnread.opened = false
   }
-  if (dataStore['favShowOnlyUnreadOpened'] === true) {
+  if (dataStore['favShowOnlyUnreadOpened']) {
     $('#favorites-open-close-button').find('#icon').html('-')
   }
 }
@@ -74,12 +75,12 @@ favShowOnlyUnread.activate = () => {
       favShowOnlyUnread.opened = true
 
       // Update last state in LocalStorage
-      port.postMessage({ name: 'setSetting', key: 'updateFavesFilterLastState', val: true })
+      // port.postMessage({ name: 'setSetting', key: 'updateFavesFilterLastState', val: true })
       port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: true })
 
       // Reposition the popup if any
       if ($(this).closest('#ext_nav_faves_wrapper').length) {
-        show_navigation_buttons.findPosition(ext_wrapper, $('#ext_nav_faves'))
+		showNavigationButtons.findPosition(ext_wrapper, $('#ext_nav_faves'))
       }
 
     } else {
@@ -92,12 +93,12 @@ favShowOnlyUnread.activate = () => {
       favShowOnlyUnread.opened = false
 
       // Update last state in LocalStorage
-      port.postMessage({ name: 'setSetting', key: 'updateFavesFilterLastState', val: false })
+      // port.postMessage({ name: 'setSetting', key: 'updateFavesFilterLastState', val: false })
       port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: false })
 
       // Reposition the popup if any
       if ($(this).closest('#ext_nav_faves_wrapper').length) {
-        show_navigation_buttons.findPosition(ext_wrapper, $('#ext_nav_faves'))
+		showNavigationButtons.findPosition(ext_wrapper, $('#ext_nav_faves'))
       }
     }
   })
@@ -105,6 +106,9 @@ favShowOnlyUnread.activate = () => {
   // Create an error message if there is no topic with unread messages
   if (AllLength === unread_length && ext_filtered_error.length === 0) {
     ext_faves.after('<p id="ext_filtered_faves_error">Nincs olvasatlan téma</p>')
+  }
+  else {
+    $('#ext_filtered_faves_error').remove()
   }
 
   // Check opened status

@@ -9,27 +9,24 @@ import { jumpUnreadMessages } from '../topik'
 export const updateFavList = new Module('updateFavList')
 
 updateFavList.activate = () => {
-
+  console.log('activated')
   if (!dataStore['user']['isLoggedIn'])
     return
 
-  // Disable site's built-in auto-update by remove "fkedvenc" ID
-  $('#fkedvenc').removeAttr('id')
-
   // Create refhref button
   // ha lesz blokkok átrendezése, akkor #ext_left_sidebar után már nem kell inline style
-  $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<div id="ext_refresh_faves" style="display: inline-block;"></div>]</span>')
+  $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<span id="ext_refresh_faves" style="display: inline-block;"></span>]</span>')
 
   let refresh_faves = $('#ext_refresh_faves')
 
   // Move the button away if unreaded faves is on
-  if (dataStore['fav_show_only_unreaded'] === 'true' && isLoggedIn()) {
+  if (dataStore['favShowOnlyUnread'] && dataStore['user']['isLoggedIn']) {
     refresh_faves.css('right', 18)
   }
 
   // Set refresh image
   // TODO: Erre valamit ki kell találni
-  $('<img src="' + browser.extension.getURL('/images/content/refresh.png') + '">').appendTo('#ext_refresh_faves')
+  $('<img src="' + browser.extension.getURL('images/content/refresh.png') + '">').appendTo('#ext_refresh_faves')
 
   // Add click event
   refresh_faves.on('click', 'img', function () {

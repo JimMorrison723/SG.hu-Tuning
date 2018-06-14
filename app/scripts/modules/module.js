@@ -18,6 +18,6 @@ export class Module {
   }
 
   activated () {
-    this.toggle()
+
   }
 }

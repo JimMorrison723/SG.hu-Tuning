@@ -19,7 +19,7 @@ function getUserStatus() {
   // if there is an identid cookie, the user is logged in, get username
   let ident_id = getCookie('identid')
 
-  if (!dataStore['user']['userName'] && ident_id) {
+  if (ident_id && !dataStore['user']['userName']) {
     let request = new XMLHttpRequest()
     request.open('GET', 'https://sg.hu/api/forum/user?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z&ident_id=' + ident_id, true)
 

@@ -18,7 +18,7 @@ shortCommentMarker.activate = () => {
       $(this).html($(this).html() + ' <span class="ext_short_comment_marker" style="color: red;">' + newMsg + '</span>')
     }
   })
-},
+}
 
 shortCommentMarker.disable = () => {
 

@@ -1,25 +1,24 @@
 import { Module } from '../module'
 import { dataStore } from '../../contentscript'
+import { favShowOnlyUnread } from './favShowOnlyUnread'
+import { jumpUnreadMessages } from '../topik'
 
 export const makeReadAllFavs = new Module('makeReadAllFavs')
 
 makeReadAllFavs.activate = () => {
-
+console.log('activate favs')
   if (!dataStore['user']['isLoggedIn'])
     return
 
   // Create the 'read them all' button
-  $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<div id="ext_read_faves" style="display: inline-block;"></div>]</span>')
+  $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<span id="ext_read_faves" style="display: inline-block;">&#9675;</span>]</span>')
 
   let read_faves = $('#ext_read_faves')
+
   // Move the button away if unreaded faves is on
-  if (dataStore['favShowOnlyUnread'] === 'true' && isLoggedIn()) {
+  if (dataStore['favShowOnlyUnread'] && dataStore['user']['isLoggedIn']) {
     read_faves.css('right', 36)
   }
-
-  // Append the image
-  /*$('<img src="'+chrome.extension.getURL('/img/content/makereaded.png">')+'').appendTo(read_faves);*/
-  $('<div id="icon">&#9675;</div>').appendTo('#ext_read_faves')
 
   // Add click event
   read_faves.click(function () {
@@ -29,45 +28,22 @@ makeReadAllFavs.activate = () => {
 
 makeReadAllFavs.makeread = () => {
 
+  let ext_read_faves = $('#ext_read_faves')
+
   if (confirm('Biztos olvasottnak jelölöd az összes kedvenced?')) {
 
     // Set 'in progress' icon
-    //$('#ext_read_faves').find('img').attr('src', chrome.extension.getURL('/img/content/makereaded_waiting.png') );
-    $('#ext_read_faves').find('#icon').html('&#9684;')
+	ext_read_faves.html('&#9684;')
 
-    let count = 0
+	// Get unread topics links
+	let links = $('#favorites-list').find('a:not(.category):not(.fav-not-new-msg)')
+
+	// Get unread topics count
+	let count = links.length
     let counter = 0
-
-    let links = $('.ext_faves').find('a')
-
-    // Get unreaded topics count
-    links.each(function () {
-
-      // Dont bother the forum categories
-      if ($(this).is('.category')) {
-        return true
-      }
-
-      // Also dont bother readed topics
-      if ($(this).hasClass('fav-not-new-msg')) {
-        return true
-      }
-
-      count++
-    })
 
     // Iterate over all faves
     links.each(function () {
-
-      // Dont bother the forum categories
-      if ($(this).is('.category')) {
-        return true
-      }
-
-      // Also dont bother readed topics
-      if ($(this).hasClass('fav-not-new-msg')) {
-        return true
-      }
 
       let ele = $(this)
 
@@ -77,7 +53,7 @@ makeReadAllFavs.makeread = () => {
         $(ele).find('span.new').remove()
         $(ele).find('.ext_short_comment_marker').remove()
 
-        if (dataStore['favShowOnlyUnread'] === 'true' && favShowOnlyUnreadRememberOpened.opened === false) {
+        if (dataStore['favShowOnlyUnread'] && dataStore['favShowOnlyUnreadRememberOpened']) {
           $(ele).parent().addClass('ext_hidden_fave')
         }
 
@@ -85,25 +61,25 @@ makeReadAllFavs.makeread = () => {
       }, 'html')
     })
 
-    var interval = setInterval(function () {
+    let interval = setInterval(function () {
 
       if (count === counter) {
 
         // Set 'completed' icon / black circle
-        $('#ext_read_faves').html('&#9679;')
+		ext_read_faves.html('&#9679;')
 
         // Set normal icon
         setTimeout(function () {
-          $('#ext_read_faves').html('&#9675;')
+		  ext_read_faves.html('&#9675;')
         }, 2000)
 
         // Faves: show only with unreaded messages
-        if (dataStore['favShowOnlyUnread'] === 'true' && isLoggedIn()) {
+        if (dataStore['favShowOnlyUnread'] && dataStore['user']['isLoggedIn']) {
           favShowOnlyUnread.activated()
         }
 
         // Reset faves newmsg vars
-        if (dataStore['jumpUnreadMessages'] === 'true' && isLoggedIn()) {
+        if (dataStore['jumpUnreadMessages'] && dataStore['user']['isLoggedIn']) {
           jumpUnreadMessages.activated()
         }
 

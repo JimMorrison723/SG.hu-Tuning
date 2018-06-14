@@ -9,7 +9,7 @@ export const cp = {
   init: function (page) {
 
     // Create the settings button
-    $('<div id="ext_settings_button"><img src="' + chrome.extension.getURL('/images/settings/icon.png') + '" alt=""></div>').appendTo('body')
+    $('<div id="ext_settings_button"><img src="' + browser.extension.getURL('/images/settings/icon.png') + '" alt="SG tuning beállítások" title="SG tuning beállítások"></div>').appendTo('body')
 
     // Create the hiding overlay
     $('<div id="ext_settings_hide_overlay"></div>').appendTo('body')
@@ -206,7 +206,7 @@ export const cp = {
     let settings_button = $('.settings_page .button')
 
     // Set header list backgrounds
-    ext_header.find('li').css({ 'background-image': 'url(' + chrome.extension.getURL('/images/settings/icons.png') + ')' })
+    ext_header.find('li').css({ 'background-image': 'url(' + browser.extension.getURL('/images/settings/icons.png') + ')' })
 
     // Create tabs event
     ext_header.find('li').click(function () {
@@ -215,7 +215,7 @@ export const cp = {
     })
 
     // Add buttons background image
-    settings_button.css({ 'background-image': 'url(' + chrome.extension.getURL('/images/settings/button.png') + ')' })
+    settings_button.css({ 'background-image': 'url(' + browser.extension.getURL('/images/settings/button.png') + ')' })
 
     // Get the requested page number
     let sPage = typeof page === 'undefined' ? 0 : page
@@ -527,7 +527,7 @@ const profiles_cp = {
 
   rebuildProfiles: function () {
 
-    if (dataStore['profilesList'] === '') {
+    if (!dataStore['profilesList']) {
       return false
     }
 
