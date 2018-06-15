@@ -1,6 +1,15 @@
 let defaultSettings = require('./util/defaultSettings')
 
 browser.runtime.onInstalled.addListener((details) => {
+
+  if (details.reason === 'install') {
+    // Set up default values in storage
+	createDefaults(details.previousVersion)
+  }
+  else if (details.reason === 'update') {
+    // Migrate database when updating
+	migrate(details.previousVersion)
+  }
   console.log('previousVersion', details.previousVersion)
 })
 
@@ -84,7 +93,6 @@ function connected(p) {
   // when connected, send the settings to the contentscript
   let allSettings = browser.storage.sync.get(null)
   allSettings.then(function (item) {
-
     // only send the settings to the new page
     p.postMessage({ name: 'setSettings', message: item })
   })
@@ -103,16 +111,31 @@ function storageChange(changes, area) {
 
 function sendMessage(param) {
   ports.map(port => {
-    port.postMessage(param)
+	port.postMessage(param)
   })
 }
 
-let installed = browser.storage.sync.get('installed')
-installed.then(function (item) {
-  if (Object.keys(item).length === 0 && item.constructor === Object) {
-    browser.storage.sync.set(defaultSettings.default)
-    browser.storage.sync.set({installed: true})
-  }
-})
-browser.storage.onChanged.addListener(storageChange)
+function createDefaults() {
+  // Set up storage with default values
+  browser.storage.sync.set(defaultSettings.default)
+  // Save version number to the database
+  let manifest = browser.runtime.getManifest()
+  browser.storage.sync.set({installed: manifest.version})
+}
+
+function migrate() {
+
+  let manifest = browser.runtime.getManifest()
+  let all_settings = browser.storage.sync.get(null)
+
+  all_settings.then(function (settings) {
+	// In case we added new features to the extension
+	let unique_keys = Object.assign(settings, defaultSettings.default)
+	unique_keys['installed'] = manifest.version
+	//TODO: remove keys that are no longer present
+	browser.storage.sync.set(Array.from(unique_keys))
+  })
+}
+
 browser.runtime.onConnect.addListener(connected)
+browser.storage.onChanged.addListener(storageChange)

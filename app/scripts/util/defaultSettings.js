@@ -34,5 +34,6 @@ export default {
   user: {
     isLoggedIn: false,
     userName: ''
-  }
+  },
+  installed: true
 }

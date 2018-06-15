@@ -17,10 +17,10 @@
     "128": "images/icons/icon-128.png"
   },
   "background": {
-    "__edge__persistent": true,
     "scripts": [
       "scripts/background.js"
-    ]
+    ],
+    "__edge|chrome|opera__persistent": false
   },
   "content_scripts": [
     {
