@@ -1,6 +1,8 @@
 # SG Tuning
 
-Az SG tuning célja, hogy funkcióival kényelmesebbé varázsolja az sg.hu-n történő böngészést.
+> Az SG tuning célja, hogy funkcióival kényelmesebbé varázsolja az sg.hu-n történő böngészést.
+
+[![Build Status](https://travis-ci.org/JimMorrison723/SG.hu-Tuning.svg?branch=master)](https://travis-ci.org/JimMorrison723/SG.hu-Tuning.svg?branch=master)
 
 ## Letöltés
 
