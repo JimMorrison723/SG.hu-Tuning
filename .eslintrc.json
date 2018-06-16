@@ -1,7 +1,16 @@
 {
+    "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module"
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "jquery": true
+    },
+    "globals": {
+        "browser": true
     },
     "rules": {
         "quotes": [
@@ -26,18 +35,5 @@
             "error",
             "never"
         ]
-    },
-    "overrides": [
-        {
-            "files": [
-                "app/scripts/settings.js"
-            ],
-            "rules": {
-                "indent": [
-                    "off",
-                    2
-                ]
-            }
-        }
-    ]
+    }
 }

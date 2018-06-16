@@ -3,10 +3,12 @@
   "version": "3.9.10",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
+    "lint": "eslint --ignore-pattern app/scripts/settings.js app/scripts/*",
     "dev": "webextension-toolbox dev",
     "build": "webextension-toolbox build"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
     "jquery": "^3.3.1",
     "webextension-toolbox": ">=1.1.1"
   }

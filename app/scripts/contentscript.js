@@ -41,7 +41,7 @@ function getUserStatus() {
     dataStore['user'] = { isLoggedIn: false, userName: '' }
   }
   else if (dataStore['user']['userName'] && dataStore['user']['isLoggedIn'] === undefined) {
-    $.getJSON('https://sg.hu/api/forum/user/islogged?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z', function (data) {
+    $.getJSON('https://sg.hu/api/forum/user/islogged?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z', function () {
 
       dataStore['user'] = { isLoggedIn: true, userName: dataStore['user']['userName'] }
     })

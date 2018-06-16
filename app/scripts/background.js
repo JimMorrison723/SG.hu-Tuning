@@ -4,13 +4,13 @@ browser.runtime.onInstalled.addListener((details) => {
 
   if (details.reason === 'install') {
     // Set up default values in storage
-	createDefaults(details.previousVersion)
+    createDefaults(details.previousVersion)
   }
   else if (details.reason === 'update') {
     // Migrate database when updating
-	migrate(details.previousVersion)
+    migrate(details.previousVersion)
   }
-  console.log('previousVersion', details.previousVersion)
+  // console.log('previousVersion', details.previousVersion)
 })
 
 browser.runtime.onConnect.addListener(function (port) {
@@ -19,21 +19,21 @@ browser.runtime.onConnect.addListener(function (port) {
     let list, index
 
     // Send back the settings object
-	if (event.name === 'getSettings') {
+    if (event.name === 'getSettings') {
 
-	  let gettingItem = browser.storage.sync.get(null)
-	  gettingItem.then(function (item) {
-		port.postMessage({name: 'setSettings', message: item})
-	  })
+      let gettingItem = browser.storage.sync.get(null)
+      gettingItem.then(function (item) {
+        port.postMessage({name: 'setSettings', message: item})
+      })
       // Sets the blocks config
-	} else if (event.name === 'setBlocksConfig') {
+    } else if (event.name === 'setBlocksConfig') {
 
-	  let temp = {}
-	  temp['blocksConfig'] = event.message
-	  browser.storage.sync.set(temp)
+      let temp = {}
+      temp['blocksConfig'] = event.message
+      browser.storage.sync.set(temp)
 
-	  // Add user to blocklist
-	} else if (event.name === 'addToBlocklist') {
+      // Add user to blocklist
+    } else if (event.name === 'addToBlocklist') {
 
       // If the blocklist is empty
       if (localStorage['blocklisted'] === '' || localStorage['blocklisted'] === undefined) {
@@ -76,25 +76,24 @@ browser.runtime.onConnect.addListener(function (port) {
       temp['blocklisted'] = localStorage['blocklisted']
       browser.storage.sync.set(temp)
 
-	  // Save posted settings
-	} else if (event.name === 'setSetting') {
+      // Save posted settings
+    } else if (event.name === 'setSetting') {
 
-	  let temp = {}
-	  temp[event.key] = event.val
-	  browser.storage.sync.set(temp)
+      let temp = {}
+      temp[event.key] = event.val
+      browser.storage.sync.set(temp)
 
-	  // Reset blocks config
-	} else if (event.name === 'resetBlocksConfig') {
+      // Reset blocks config
+    } else if (event.name === 'resetBlocksConfig') {
 
-      console.log('reset block config')
-	  browser.storage.sync.set({ 'blocksConfig': '' })
+      browser.storage.sync.set({'blocksConfig': ''})
 
-	} else if (event.name === 'setUserSetting') {
+    } else if (event.name === 'setUserSetting') {
 
-	  let temp = { user: {} }
-	  temp['user'] = event.msg
-	  browser.storage.sync.set(temp)
-	}
+      let temp = {user: {}}
+      temp['user'] = event.msg
+      browser.storage.sync.set(temp)
+    }
   })
 })
 
@@ -107,24 +106,24 @@ function connected(p) {
   let allSettings = browser.storage.sync.get(null)
   allSettings.then(function (item) {
     // only send the settings to the new page
-    p.postMessage({ name: 'setSettings', message: item })
+    p.postMessage({name: 'setSettings', message: item})
   })
 }
 
 // send message about a setting has been changed
-function storageChange(changes, area) {
+function storageChange(changes, area) { // eslint-disable-line no-unused-vars
   let changedItems = Object.keys(changes)
 
   for (let item of changedItems) {
     let tmp = {}
     tmp[item] = changes[item].newValue
-    sendMessage({ name: 'updateSettings', message: tmp })
+    sendMessage({name: 'updateSettings', message: tmp})
   }
 }
 
 function sendMessage(param) {
   ports.map(port => {
-	port.postMessage(param)
+    port.postMessage(param)
   })
 }
 
@@ -142,11 +141,11 @@ function migrate() {
   let all_settings = browser.storage.sync.get(null)
 
   all_settings.then(function (settings) {
-	// In case we added new features to the extension
-	let unique_keys = Object.assign(settings, defaultSettings.default)
-	unique_keys['installed'] = manifest.version
-	//TODO: remove keys that are no longer present
-	browser.storage.sync.set(unique_keys)
+    // In case we added new features to the extension
+    let unique_keys = Object.assign(settings, defaultSettings.default)
+    unique_keys['installed'] = manifest.version
+    //TODO: remove keys that are no longer present
+    browser.storage.sync.set(unique_keys)
   })
 }
 
