@@ -266,7 +266,7 @@ overlayReplyTo.show = (comment, msgno) => {
   })
 
   // Add close button
-  let close_btm = $('<img src="' + chrome.extension.getURL('images/content/overlay_close.png') + '" id="ext_close_overlay" title="Overlay bezárása">').prependTo(textarea_clone).addClass('ext_overlay_close')
+  let close_btm = $('<img src="' + browser.extension.getURL('images/content/overlay_close.png') + '" id="ext_close_overlay" title="Overlay bezárása">').prependTo(textarea_clone).addClass('ext_overlay_close')
 
   // Change close button position if WYSIWYG editor is disabled
   if (dataStore['wysiwygEditor'] !== true) {

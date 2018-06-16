@@ -46,7 +46,7 @@ showNavigationButtons.activate = () => {
     ext_search = $('#ext_search')
 
     // Place search icon background
-    ext_search.css('background-image', 'url(' + chrome.extension.getURL('/images/content/search.png') + ')')
+    ext_search.css('background-image', 'url(' + browser.extension.getURL('/images/content/search.png') + ')')
 
     // Create the search event
     ext_search.on('click', function () {
@@ -67,7 +67,7 @@ showNavigationButtons.activate = () => {
     ext_nav_faves = $('#ext_nav_faves')
 
     // Place the faves icon
-    ext_nav_faves.css('background-image', 'url(' + chrome.extension.getURL('/images/content/star.png') + ')')
+    ext_nav_faves.css('background-image', 'url(' + browser.extension.getURL('/images/content/star.png') + ')')
 
     // Place faves opened cotainer
     $('<p id="ext_nav_faves_arrow"></p>').prependTo('body')
@@ -88,7 +88,7 @@ showNavigationButtons.activate = () => {
   //Night mode
   if (dataStore['showNavigationButtonsNight'] === true) {
 
-    lights.init()
+    // lights.init()
 
     ext_nightmode = $('#ext_nightmode')
   }

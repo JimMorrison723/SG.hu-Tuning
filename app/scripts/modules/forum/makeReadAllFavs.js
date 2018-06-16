@@ -33,13 +33,13 @@ makeReadAllFavs.makeread = () => {
   if (confirm('Biztos olvasottnak jelölöd az összes kedvenced?')) {
 
     // Set 'in progress' icon
-	ext_read_faves.html('&#9684;')
+    ext_read_faves.html('&#9684;')
 
-	// Get unread topics links
-	let links = $('#favorites-list').find('a:not(.category):not(.fav-not-new-msg)')
+    // Get unread topics links
+    let links = $('#favorites-list').find('a:not(.category):not(.fav-not-new-msg)')
 
-	// Get unread topics count
-	let count = links.length
+    // Get unread topics count
+    let count = links.length
     let counter = 0
 
     // Iterate over all faves
@@ -66,11 +66,11 @@ makeReadAllFavs.makeread = () => {
       if (count === counter) {
 
         // Set 'completed' icon / black circle
-		ext_read_faves.html('&#9679;')
+        ext_read_faves.html('&#9679;')
 
         // Set normal icon
         setTimeout(function () {
-		  ext_read_faves.html('&#9675;')
+          ext_read_faves.html('&#9675;')
         }, 2000)
 
         // Faves: show only with unreaded messages

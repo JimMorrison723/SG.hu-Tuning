@@ -32,7 +32,7 @@ highlightCommentsForMe.activate = () => {
 
       if ($(this).find('.ext_comments_for_me_indicator').length === 0) {
 
-        $(this).css('position', 'relative').append('<img src="' + chrome.extension.getURL('/images/content/comments_for_me_indicator.png') + '" class="ext_comments_for_me_indicator">')
+        $(this).css('position', 'relative').append('<img src="' + browser.extension.getURL('/images/content/comments_for_me_indicator.png') + '" class="ext_comments_for_me_indicator">')
 
         if (document.location.href.match(/cikkek/)) {
           $(this).find('.ext_comments_for_me_indicator').addClass('article')

@@ -76,11 +76,11 @@ favShowOnlyUnread.activate = () => {
 
       // Update last state in LocalStorage
       // port.postMessage({ name: 'setSetting', key: 'updateFavesFilterLastState', val: true })
-      port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: true })
+      port.postMessage({name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: true})
 
       // Reposition the popup if any
       if ($(this).closest('#ext_nav_faves_wrapper').length) {
-		showNavigationButtons.findPosition(ext_wrapper, $('#ext_nav_faves'))
+        showNavigationButtons.findPosition(ext_wrapper, $('#ext_nav_faves'))
       }
 
     } else {
@@ -94,11 +94,11 @@ favShowOnlyUnread.activate = () => {
 
       // Update last state in LocalStorage
       // port.postMessage({ name: 'setSetting', key: 'updateFavesFilterLastState', val: false })
-      port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: false })
+      port.postMessage({name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: false})
 
       // Reposition the popup if any
       if ($(this).closest('#ext_nav_faves_wrapper').length) {
-		showNavigationButtons.findPosition(ext_wrapper, $('#ext_nav_faves'))
+        showNavigationButtons.findPosition(ext_wrapper, $('#ext_nav_faves'))
       }
     }
   })

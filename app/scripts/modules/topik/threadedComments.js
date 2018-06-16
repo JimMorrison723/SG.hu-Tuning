@@ -59,7 +59,7 @@ threadedComments.next = (next) => {
   let ext_new_comment = $('.ext_new_comment')
 
   // Get the index value of the current element
-  let index = $(ele).index('.thread_next')
+  let index = $(next).index('.thread_next')
 
   // Check if is it the last element
   if (index + 1 >= ext_new_comment.length) {

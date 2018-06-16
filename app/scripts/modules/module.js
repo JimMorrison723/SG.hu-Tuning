@@ -2,7 +2,7 @@ export class Module {
 
   constructor(name, active = false) {
     this.moduleName = name
-    this.active = false
+    this.active = active
   }
 
   get getStatus() {
