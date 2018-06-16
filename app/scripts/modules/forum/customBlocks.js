@@ -118,7 +118,6 @@ customBlocks.reindexOrderConfig = () => {
   let _config = []
 
   $('.ext_block').each(function (index) {
-    console.log()
 
     let _id = $(this).attr('id')
 
