@@ -108,15 +108,23 @@ jumpUnreadMessages.topic = () => {
 
 jumpUnreadMessages.jump = () => {
 
-  let hr = $('#ext_unreaded_hr')
-  if (!hr) {
+  let target
+
+  // Get the target element
+  if ($('.ext_new_comment').length > 0) {
+    target = $('.ext_new_comment:first').closest('header')
+
+  } else if ($('#ext_unreaded_hr').length > 0) {
+    target = $('#ext_unreaded_hr')
+
+  } else {
     return false
   }
 
   // Target offsets
   let windowHalf = $(window).height() / 2
-  let targetHalf = $(hr).outerHeight() / 2
-  let targetTop = $(hr).offset().top
+  let targetHalf = $(target).outerHeight() / 2
+  let targetTop = $(target).offset().top
   let targetOffset = targetTop - (windowHalf - targetHalf)
 
   // Scroll to target element

@@ -268,8 +268,16 @@ overlayReplyTo.show = (comment, msgno) => {
   // Add close button
   let close_btm = $('<img src="' + browser.extension.getURL('images/content/overlay_close.png') + '" id="ext_close_overlay" title="Overlay bezárása">').prependTo(textarea_clone).addClass('ext_overlay_close')
 
+  // When we cancel reply, cancel it in the clone form too
+  if ($('.ext_clone_textarea').find('#form-reply-message').length) {
+    $('a[href="#cancel-reply"]').on('click', (e) => {
+      e.preventDefault()
+      overlayReplyTo.cancelReply()
+    })
+  }
+
   // Change close button position if WYSIWYG editor is disabled
-  if (dataStore['wysiwygEditor'] !== true) {
+  if (!dataStore['wysiwygEditor']) {
     close_btm.css({ 'right': 13, 'top': -20 })
   }
 
@@ -292,4 +300,12 @@ overlayReplyTo.show = (comment, msgno) => {
       })
     })
   })
+}
+
+overlayReplyTo.cancelReply = () => {
+
+  let form = $('.ext_clone_textarea')
+  form.find('input[name="no_ref"]').val('')
+  form.find('textarea[name="message"]').focus()
+  form.find('#form-reply-message').addClass('hidden').find('var').text('')
 }
