@@ -70,6 +70,15 @@ export const cp = {
           html += '<p>A fórum főoldalon átalakított, átdizájnolt listákat láthatsz, mely jobban kiemeli többek között a kedvenceknél a fórumkategóriákat is.</p>'
           html += '<div class="button" id="highlightForumCategories"></div>'
         html += '</div>'
+        html += '<div>'
+          html += '<h3>Blokkok átrendezése, rejtése</h3>'
+          html += '<p class="sub">'
+            html += '<label><input type="checkbox" id="hideBlocksButtons"> Átrendező gombok elrejtése</label><br>'
+            html += '<button type="button" id="reset_blocks_config">Alapbeállítások visszaállítása</button>'
+          html += '</p>'
+          html += '<p>A fórum főoldal oldalsávjain található blokkok tetszőleges átrendezése, rejtése.</p>'
+          html += '<div class="button" id="customBlocks"></div>'
+        html += '</div>'
       html += '</div>'
 
       html += '<div class="settings_page">'
@@ -248,6 +257,11 @@ export const cp = {
     $('.settings_page select').change(function () {
       settings.select(this)
     })
+
+	// Reset blocks config
+	$('#reset_blocks_config').click(function () {
+	  port.postMessage({ name: 'resetBlocksConfig' });
+	});
 
     // Init profiles settings
     profiles_cp.init()

@@ -6,6 +6,8 @@ removeAds.activate = () => {
 
   // Home facebook widget
   $('#forum-fb-likebox').remove()
+  // Forum page blue separator
+  $('#forum-wrap').find('.blue-border-top').hide()
   // Top ad bar
   $('nav#menu-family').prev('div').remove()
   // Sidebar ad

@@ -480,8 +480,11 @@
 	position: absolute;
 	top: -20px;
 	left: 0px;
-
 	z-index: 99;
+}
+
+.ext_blocks_buttons img {
+	cursor: -webkit-grab;
 }
 
 .ext_block:hover p {

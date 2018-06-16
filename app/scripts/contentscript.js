@@ -95,7 +95,7 @@ port.onMessage.addListener(function (event) {
     // handle setting change message
   } else if (event.name === 'updateSettings') {
 
-    // update setttings with the new data
+    // update settings with the new data
     settings.update(event.message)
     for (const [key, value] of Object.entries(event.message)) {
       dataStore[key] = value

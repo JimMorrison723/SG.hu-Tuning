@@ -19,15 +19,21 @@ browser.runtime.onConnect.addListener(function (port) {
     let list, index
 
     // Send back the settings object
-    if (event.name === 'getSettings') {
+	if (event.name === 'getSettings') {
 
-      let gettingItem = browser.storage.sync.get(null)
-      gettingItem.then(function (item) {
-        port.postMessage({ name: 'setSettings', message: item })
-      })
+	  let gettingItem = browser.storage.sync.get(null)
+	  gettingItem.then(function (item) {
+		port.postMessage({name: 'setSettings', message: item})
+	  })
+      // Sets the blocks config
+	} else if (event.name === 'setBlocksConfig') {
 
-      // Add user to blocklist
-    } else if (event.name === 'addToBlocklist') {
+	  let temp = {}
+	  temp['blocksConfig'] = event.message
+	  browser.storage.sync.set(temp)
+
+	  // Add user to blocklist
+	} else if (event.name === 'addToBlocklist') {
 
       // If the blocklist is empty
       if (localStorage['blocklisted'] === '' || localStorage['blocklisted'] === undefined) {
@@ -70,18 +76,25 @@ browser.runtime.onConnect.addListener(function (port) {
       temp['blocklisted'] = localStorage['blocklisted']
       browser.storage.sync.set(temp)
 
-      // Save posted settings
-    } else if (event.name === 'setSetting') {
+	  // Save posted settings
+	} else if (event.name === 'setSetting') {
 
-      let temp = {}
-      temp[event.key] = event.val
-      browser.storage.sync.set(temp)
-    } else if (event.name === 'setUserSetting') {
+	  let temp = {}
+	  temp[event.key] = event.val
+	  browser.storage.sync.set(temp)
 
-      let temp = { user: {} }
-      temp['user'] = event.msg
-      browser.storage.sync.set(temp)
-    }
+	  // Reset blocks config
+	} else if (event.name === 'resetBlocksConfig') {
+
+      console.log('reset block config')
+	  browser.storage.sync.set({ 'blocksConfig': '' })
+
+	} else if (event.name === 'setUserSetting') {
+
+	  let temp = { user: {} }
+	  temp['user'] = event.msg
+	  browser.storage.sync.set(temp)
+	}
   })
 })
 
@@ -133,7 +146,7 @@ function migrate() {
 	let unique_keys = Object.assign(settings, defaultSettings.default)
 	unique_keys['installed'] = manifest.version
 	//TODO: remove keys that are no longer present
-	browser.storage.sync.set(Array.from(unique_keys))
+	browser.storage.sync.set(unique_keys)
   })
 }
 
