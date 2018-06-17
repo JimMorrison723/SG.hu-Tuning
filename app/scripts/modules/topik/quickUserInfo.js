@@ -2,53 +2,90 @@ import { Module } from '../module'
 
 export const quickUserInfo = new Module('quickUserInfo')
 
+// Convert milliseconds to date
+const getColonTimeFromDate = date => date.toLocaleString()
+
+//Place info image
 quickUserInfo.activate = () => {
 
-  $('#forum-posts-list').find('.post').each(function () {
+  $('#forum-posts-list').find('.post[class!="quick-user-info"]').each(function () {
 
-    //Do not add the mouseenter function again if the element already has it
-    if (!$(this).data('events')) {
-
-      $($(this)).mouseenter(function () {
-        if ($(this).not('.quick_user_info')) {
-          //Place info image
-          $(this).addClass('quick_user_info').find('span.icons').after('<span class=""><img src="' + browser.extension.getURL('/images/content/info.png') + '" class="ext_quick_user_info_btn"></span>')
-        }
-        $(this).append('<div class="infobox"></div>')
-
-        //Add EventListener
-        $('img.ext_quick_user_info_btn').click(function () {
-          let infobox = $('.infobox')
-
-          //Get user profile URL
-          let url = $(this).closest('header').find('a[href^="/felhasznalo"]').attr('href')
-
-          //Fix for vip, non vip topichead height
-          let th_height = $(this).closest('header').css('height').replace('px', '')
-
-          //Get topichead pos from the top of the page
-          let fromTop = $(this).closest('header').offset().top - 122
-
-          //If "highlight_comments_for_me" is on we need to change the fromTop to the comment position
-          if ($(this).closest('li').has('img.ext_comments_for_me_indicator').length ? true : false) {
-            //Correct according a default padding on the messages
-            fromTop = $(this).closest('header').css('padding-top').replace('px', '')
-          }
-          let fullHeight = parseInt(fromTop, 10) + parseInt(th_height, 10)
-
-          //Show infobox -121
-          infobox.css({ 'font-size': '10px', 'display': 'block', 'top': fullHeight })
-
-          //Show user information in infobox
-          infobox.load(url + ' table.data-table')
-        })
-
-      }).mouseleave(function () {
-
-        //Remove info image and infobox on mouseleave
-        $(this).find('.ext_quick_user_info_btn').parent().remove()
-        $(this).find('.infobox').remove()
-      })
-    }
+    $(this).addClass('quick-user-info')
+    $(this).find('span.icons').after('<span class="ext_quick_user_info_btn"><img src="' + browser.extension.getURL('/images/content/info.png') + '"></span>')
   })
+
+  // Create modal, this will hold the data
+  $('body').append('<div id="ext-modal" class="ext-modal"><div class="ext-modal-content"><div class="ext-modal-header"><span class="ext-modal-close">&times;</span><h2></h2></div><div class="ext-modal-body"><p></p></div></div></div>')
+
+  quickUserInfo.addEventListener()
+}
+
+quickUserInfo.addEventListener = () => {
+
+  let modal = $('#ext-modal')
+
+  $(document).on('click', '.ext_quick_user_info_btn', (event) => {
+
+    // Get user id
+    let userId = $(event.currentTarget).siblings('a[href*="felhasznalo"]').attr('href').replace('/felhasznalo/', '')
+
+    quickUserInfo.fillData(modal, userId)
+
+    modal[0].style.display = 'block'
+  })
+
+  // Event handler for close button
+  $(document).on('click', '.ext-modal-close', () => {
+    modal[0].style.display = 'none'
+  })
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target === modal[0]) {
+      modal[0].style.display = 'none'
+    }
+  }
+}
+
+quickUserInfo.fillData = (modal, userID) => {
+
+  let request = new XMLHttpRequest()
+  request.open('GET', 'https://sg.hu/api/forum/user?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z&user_id=' + userID, true)
+
+  request.onload = function () {
+
+    if (request.status >= 200 && request.status < 400) {
+
+      // We only need the msg object
+      let data = JSON.parse(request.responseText).msg
+
+      // Format modal body
+      let html = `<dl>
+            <dt>Admin</dt><dd>${data.isMod ? 'Igen' : 'Nem'}</dd>
+            <dt>Büntetőpontok</dt><dd>${data.buntetopontok}</dd>
+            <dt>Üzenetek száma</dt><dd>${data.uzenetek || '0'}</dd>
+            <dt>Csillagjegy</dt><dd>${data._zodiac}</dd>
+            <dt>Életkor</dt><dd>${data._age}</dd>
+            <dt>Neme</dt><dd>${data.nem === 'f' ? 'Férfi' : 'Nő'}</dd>
+            <dt>Honlap</dt><dd>${data.honlap || '-'}</dd>
+            <dt>Hobby</dt><dd>${data.hobby || '-'}</dd>
+            <dt>Iskola</dt><dd>${data.iskola || '-'}</dd>
+            <dt>Foglalkozás</dt><dd>${data.foglalkozas || '-'}</dd>
+            <dt>Regisztráció időpontja</dt><dd>${data.created_at}</dd>
+            <dt>Utolsó üzenet időpontja</dt><dd>${getColonTimeFromDate(new Date(parseInt(data.forum_last_post) * 1000))}</dd>
+            <dt>Utolsó látogatás időpontja</dt><dd>${data.updated_at}</dd>
+            <dt>Megnyitott témák</dt>
+                ${data.openedTopics.map((item) => `
+                  <dd><a href="${item._listingUrl}" target="_blank">${getColonTimeFromDate(new Date(parseInt(item.created) * 1000))} - ${item.title}</a></dd>
+                `.trim()).join('') || '<dd>-</dd>'}
+            </dl>`
+
+      // Set modal texts
+      modal.find('h2').text(data.nick)
+      modal.find('p').html(html)
+    }
+  }
+
+  // Send our request
+  request.send()
 }
