@@ -11,6 +11,7 @@ import { overlayReplyTo } from './overlayReplyTo'
 import { quickUserInfo } from './quickUserInfo'
 import { textareaAutoResize } from './textareaAutoResize'
 import { quickInsertion } from './quickInsertion'
+import { fetchNewComments } from './fetchNewComments'
 
 // TODO: find a better way
 import { removeAds } from './../always/removeAds'
@@ -29,5 +30,6 @@ export {
   overlayReplyTo,
   quickUserInfo,
   textareaAutoResize,
-  quickInsertion
+  quickInsertion,
+  fetchNewComments
 }
