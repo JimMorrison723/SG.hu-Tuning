@@ -73,13 +73,13 @@ jumpUnreadMessages.topic = () => {
     target = last_read.prev()
 
     // Insert the horizontal rule
-    $('<hr>').insertAfter(target).attr('id', 'ext_unreaded_hr')
+    $('<hr>').insertAfter(target).attr('id', 'ext_unread_hr')
 
   } else {
     target = $('.topichead').closest('center').eq(lastMsg - 1)
 
     // Insert the horizontal rule
-    $('<hr>').insertAfter(target).attr('id', 'ext_unreaded_hr')
+    $('<hr>').insertAfter(target).attr('id', 'ext_unread_hr')
   }
 
   // Append hr tag content if any
@@ -114,8 +114,8 @@ jumpUnreadMessages.jump = () => {
   if ($('.ext_new_comment').length > 0) {
     target = $('.ext_new_comment:first').closest('header')
 
-  } else if ($('#ext_unreaded_hr').length > 0) {
-    target = $('#ext_unreaded_hr')
+  } else if ($('#ext_unread_hr').length > 0) {
+    target = $('#ext_unread_hr')
 
   } else {
     return false

@@ -97,9 +97,9 @@ export function block(el) {
     port.postMessage({ name: 'addToBlocklist', message: nick })
 
     // Add name to blocklist
-    $('<li><span>' + nick + '</span> <a href="#">töröl</a></li>').appendTo('#ext_blocklist')
+    $('<li><span>' + nick + '</span> <a href="#">töröl</a></li>').appendTo('#ext_block-list')
 
     // Remove empty blocklist message
-    $('#ext_empty_blocklist').remove()
+    $('#ext_empty_block-list').remove()
   }
 }

@@ -200,8 +200,8 @@ export const cp = {
       html += '</div>'
 
       html += '<div class="settings_page">'
-        html += '<ul id="ext_blocklist">'
-          html += '<li id="ext_empty_blocklist">Jelenleg üres a tiltólistád</li>'
+        html += '<ul id="ext_block-list">'
+          html += '<li id="ext_empty_block-list">Jelenleg üres a tiltólistád</li>'
         html += '</ul>'
       html += '</div>'
 
@@ -370,23 +370,23 @@ export const blocklist_cp = {
     blocklist_cp.list()
 
     // Create remove events
-    $('#ext_blocklist').on('click', 'a', function (e) {
+    $('#ext_block-list').on('click', 'a', function (e) {
       e.preventDefault()
       blocklist_cp.remove(this)
     })
   },
 
   list: function () {
-    // If theres is no entry in dataStore or If the list is empty
+    // If there is no entry in dataStore or If the list is empty
     if (!dataStore['blocklisted']) {
       return false
     }
 
-    let blocklist = $('#ext_blocklist')
+    let blocklist = $('#ext_block-list')
     // Everything is OK, remove the default message
     blocklist.html('')
 
-    // Fetch the userlist into an array
+    // Fetch the user list into an array
     let users = dataStore['blocklisted'].split(',').sort()
 
     // Iterate over, add users to the list
@@ -407,8 +407,8 @@ export const blocklist_cp = {
     port.postMessage({ name: 'removeUserFromBlocklist', message: user })
 
     // Add default message to the list if it is now empty
-    if ($('#ext_blocklist').find('li').length === 0) {
-      $('<li id="ext_empty_blocklist">Jelenleg üres a tiltólistád</li>').appendTo('#ext_blocklist')
+    if ($('#ext_block-list').find('li').length === 0) {
+      $('<li id="ext_empty_block-list">Jelenleg üres a tiltólistád</li>').appendTo('#ext_block-list')
     }
 
     // Restore user comments

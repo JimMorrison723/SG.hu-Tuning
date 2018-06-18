@@ -1,4 +1,4 @@
-/* Display none to hidden faves (without unreaded messages) */
+/* Display none to hidden faves (without unread messages) */
 .ext_hidden_fave {
 	display: none !important;
 }
@@ -6,8 +6,8 @@
 #ext_left_sidebar #ext_show_filtered_faves {
 	width: 18px;
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	right: 0;
+	top: 0;
 	background-image: -webkit-linear-gradient(top, #fbd859, #f5b85e);
 	border-top-right-radius: 2px;
 	cursor: pointer;
@@ -16,47 +16,43 @@
 #ext_right_sidebar #ext_show_filtered_faves {
 	width: 18px;
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	right: 0;
+	top: 0;
 	background-image: -webkit-linear-gradient(top, #4b90f4, #8ab8f8);
 	border-top-right-radius: 2px;
 	cursor: pointer;
 }
 
 #ext_show_filtered_faves_arrow {
-	width: 0px;
+	width: 0;
 	/*   height: 0px;*/
 	display: block;
 }
 /*#ext_left_sidebar*/
 #ext_show_filtered_faves_arrow.show {
 	margin: 5px 6px 5px 7px;
-	border-color: transparent transparent transparent #fff;
-	border-style: solid;
-	border-width: 4px;
+	border: 4px solid transparent;
+	border-left-color: #fff;
 }
 /*#ext_left_sidebar*/
 #ext_show_filtered_faves_arrow.hide {
 	margin:6px 8px 3px 5px;
-	border-color: #fff transparent transparent transparent;
-	border-style: solid;
-	border-width: 4px;
+	border: 4px solid transparent;
+	border-top-color: #fff;
 }
 
 /*#ext_right_sidebar*/
 #ext_show_filtered_faves_arrow.show {
 	margin: 5px 6px 5px 7px;
-	border-color: transparent transparent transparent #fff;
-	border-style: solid;
-	border-width: 4px;
+	border: 4px solid transparent;
+	border-left-color: #fff;
 }
 
 /*#ext_right_sidebar*/
 #ext_show_filtered_faves_arrow.hide {
    margin:6px 8px 3px 5px;
-   border-color: #fff transparent transparent transparent;
-   border-style: solid;
-   border-width: 4px;
+	border: 4px solid transparent;
+	border-top-color: #fff;
 }
 
 #ext_filtered_faves_error {
@@ -71,8 +67,8 @@
 	width: 18px;
 	height: 18px;
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	right: 0;
+	top: 0;
 	background-image: -webkit-linear-gradient(top, #fbd859, #f5b85e);
 	cursor: pointer;
 }
@@ -81,22 +77,21 @@
 	width: 18px;
 	height: 18px;
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	right: 0;
+	top: 0;
 	/*background-image: -webkit-linear-gradient(top, #4b90f4, #8ab8f8);*/
 	cursor: pointer;
 }
 
 
-/* Make readed all faves */
+/* Make read all faves */
 
 #ext_left_sidebar #ext_read_faves {
 	width: 18px;
 	height: 18px;
 	position: absolute;
 	right: 18px;
-	top: 0px;
-	/*background-image: -webkit-linear-gradient(top, #fbd859, #f5b85e);*/
+	top: 0;
 	border-top-left-radius: 2px;
 	cursor: pointer;
 }
@@ -106,8 +101,7 @@
 	height: 18px;
 	position: absolute;
 	right: 18px;
-	top: 0px;
-	/*background-image: -webkit-linear-gradient(top, #4b90f4, #8ab8f8);*/
+	top: 0;
 	border-top-left-radius: 2px;
 	cursor: pointer;
 }
@@ -117,13 +111,13 @@
 #ext_unread_hr {
 	margin-top: 20px;
 	border: 1px solid red;
-	height: 0px;
+	height: 0;
 }
 
 /* autopager */
 .ext_autopager_idicator {
 
-	margin: 15px 15px 0px 15px;
+	margin: 15px 15px 0 15px;
 	background-color: #666;
 	color: white;
 	text-align: center;
@@ -172,12 +166,10 @@
 	position: fixed;
 	bottom: 136px;
 	left: 10px;
-	background-color: #bbb;
 	border-radius: 5px;
 	font: normal normal normal 14px/26px Arial;
 	cursor: pointer;
-	background-repeat: no-repeat;
-	background-position: center center;
+	background: #bbb no-repeat center center;
 	opacity: 0.6;
 	z-index: 90;
 }
@@ -194,13 +186,13 @@
 	background-color: #c0c0c0;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	-webkit-box-shadow: #666 0px 0px 3px;
-	box-shadow: #666 0px 0px 3px;
+	-webkit-box-shadow: #666 0 0 3px;
+	box-shadow: #666 0 0 3px;
 	z-index: 90;
 }
 
 #ext_overlay_search button {
-	background: transparent url(https://sg.hu/assets/img/images.png) -99px 0px no-repeat;
+	background: transparent url(https://sg.hu/assets/img/images.png) -99px 0 no-repeat;
 	position: absolute;
 	top: 12px;
 	right: 12px;
@@ -214,9 +206,8 @@
 	position: fixed;
 	bottom: 19px;
 	left: -20px;
-	border-color: transparent #c0c0c0 transparent transparent;
-	border-style: solid;
-	border-width: 10px;
+	border: 10px solid transparent;
+	border-right-color: #c0c0c0;
 	z-index: 90;
 }
 
@@ -226,12 +217,9 @@
 	position: fixed;
 	bottom: 100px;
 	left: 10px;
-	background-color: #bbb;
 	border-radius: 5px;
-	font: normal normal normal 14px/26px Arial;
 	cursor: pointer;
-	background-repeat: no-repeat;
-	background-position: center center;
+	background: #bbb no-repeat center center;
 	font: normal normal bold 16px/26px Arial, serif;
 	opacity: 0.6;
 	z-index: 90;
@@ -246,11 +234,9 @@
 	position: fixed;
 	bottom: 64px;
 	left: 10px;
-	background-color: #bbb;
 	border-radius: 5px;
 	cursor: pointer;
-	background-repeat: no-repeat;
-	background-position: center center;
+	background: #bbb no-repeat center center;
 	opacity: 0.6;
 	z-index: 90;
 }
@@ -269,8 +255,8 @@
 }
 
 #ext_nav_faves_wrapper .ext_faves h5 {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	font: normal normal bold 12px/12px Arial, serif;
 	text-align: center;
 	color: #333;
@@ -288,9 +274,8 @@
 	position: fixed;
 	bottom: 65px;
 	left: 30px;
-	border-color: transparent #c0c0c0 transparent transparent;
-	border-style: solid;
-	border-width: 10px;
+	border: 10px solid transparent;
+	border-right-color: #c0c0c0;
 	z-index: 90;
 }
 
@@ -301,24 +286,22 @@
 #ext_nav_faves_wrapper #ext_show_filtered_faves {
 	width: 18px;
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	right: 0;
+	top: 0;
 	border-top-right-radius: 2px;
 	cursor: pointer;
 }
 
 #ext_nav_faves_wrapper #ext_show_filtered_faves_arrow.show {
 	margin: 5px 6px 5px 7px;
-	border-color: transparent transparent transparent #fff;
-	border-style: solid;
-	border-width: 4px;
+	border: 4px solid transparent;
+	border-left-color: #fff;
 }
 
 #ext_nav_faves_wrapper #ext_show_filtered_faves_arrow.hide {
 	margin:6px 8px 3px 5px;
-	border-color: #fff transparent transparent transparent;
-	border-style: solid;
-	border-width: 4px;
+	border: 4px solid transparent;
+	border-top-color: #fff;
 }
 
 #ext_nightmode {
@@ -327,17 +310,15 @@
 	position: fixed;
 	bottom: 28px;
 	left: 10px;
-	background-color: #bbb;
 	border-radius: 5px;
 	font: normal normal normal 14px/26px Arial;
 	cursor: pointer;
 	opacity: 0.6;
 	z-index: 90;
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
+	background: #bbb no-repeat 50% 50%;
 }
 
-/* Overlay commentbox */
+/* Overlay comment box */
 .ext_hidden_layer {
 	width: 100%;
 	height: 100%;
@@ -356,23 +337,23 @@
 .ext_clone_textarea.topic {
 	width: 930px;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	z-index: 52;
 	text-align: center;
-	border: 0px !important;
+	border: 0 !important;
 	background: none !important;
 }
 
 .ext_clone_textarea.article {
 	width: 930px;
-	padding: 0px !important;
+	padding: 0 !important;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	z-index: 52;
 	text-align: center;
-	border: 0px !important;
+	border: 0 !important;
 	background: none !important;
 }
 
@@ -389,22 +370,21 @@
 
 .ext_clone_textarea.topic #ext_clone_textarea_shadow {
 	width: 930px !important;
-	box-shadow: #333 0px 0px 10px;
+	box-shadow: #333 0 0 10px;
 }
 
 .ext_clone_textarea.article #ext_clone_textarea_shadow {
 	width: 700px !important;
-	box-shadow: #333 0px 0px 10px;
+	box-shadow: #333 0 0 10px;
 }
 
 .ext_clone_textarea .cleditorMain {
-	-webkit-box-shadow: #333 0px 0px 10px;
+	-webkit-box-shadow: #333 0 0 10px;
 }
 
 .cleditorMain {
-	margin: 0px auto !important;
+	margin: 0 auto !important;
 }
-
 
 .ext_overlay_close {
 	width: 16px;
@@ -461,11 +441,11 @@
 }
 
 .hasab-head-b {
-	padding-top: 0px !important;
+	padding-top: 0 !important;
 }
 
 .hasab-head-o {
-	padding-top: 0px !important;
+	padding-top: 0 !important;
 }
 
 
@@ -480,7 +460,7 @@
 	display: none;
 	position: absolute;
 	top: -20px;
-	left: 0px;
+	left: 0;
 	z-index: 99;
 }
 
@@ -528,15 +508,15 @@
 .ext_smiles_block h3 {
 	font: normal normal normal 14px/16px Arial, serif;
 	color: #999;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 }
 
 /* MESSAGE CENTER */
 ul#ext_mc_tabs {
 	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 
 }
 ul#ext_mc_tabs > li {
@@ -673,15 +653,15 @@ textarea[name="message"] {
 .ext_dropdown ul {
 	display: none;
 	width: 200px;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	list-style-type: none;
 	position: absolute;
 	top: 20px;
-	right: 0px;
+	right: 0;
 	z-index: 100;
 	border: 2px solid #666;
-	border-top: 0px;
+	border-top: 0;
 	background-color: #f0f0f0;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
@@ -706,7 +686,7 @@ textarea[name="message"] {
 }
 
 .ext_dropdown ul h3 {
-	margin: 0px;
+	margin: 0;
 	padding: 5px;
 	font: normal normal bold 13px/16px Arial, serif;
 	text-shadow: 1px 1px 1px #333;
