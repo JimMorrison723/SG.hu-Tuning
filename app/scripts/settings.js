@@ -351,16 +351,12 @@ export const cp = {
   button: function (ele) {
 
     if ($(ele).hasClass('on')) {
-      $(ele).animate({ 'background-position-x': 0 }, 300)
-      $(ele).attr('class', 'button off')
 
+      $(ele).attr('class', 'button off')
       settings.save(ele)
     } else {
 
-      // TODO: css animate
-      $(ele).animate({ 'background-position-x': -40 }, 300)
       $(ele).attr('class', 'button on')
-
       settings.save(ele)
     }
   }

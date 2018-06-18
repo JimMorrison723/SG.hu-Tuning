@@ -197,13 +197,16 @@
 	border-radius: 10px;
 }
 
-/* TODO: css animate */
 .settings_page .button.on {
-	background-position-x: -40px !important;
+	background-position-x: -40px;
+	animation-name: animateSettingOn;
+	animation-duration: 0.3s
 }
 
 .settings_page .button.off {
-	background-position-x: 0px !important; 
+	background-position-x: 0px;
+	animation-name: animateSettingOff;
+	animation-duration: 0.3s
 }
 
 .settings_page p.sub {
@@ -448,4 +451,15 @@
 	background-image: -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
 	font: normal normal normal 12px/20px Arial, serif;
 	cursor: pointer;
+}
+
+/* Animations */
+@-webkit-keyframes animateSettingOn {
+	from {background-position-x: 0;}
+	to {background-position-x: -40px;}
+}
+
+@keyframes animateSettingOff {
+	from {background-position-x: -40px;}
+	to {background-position-x: 0;}
 }
