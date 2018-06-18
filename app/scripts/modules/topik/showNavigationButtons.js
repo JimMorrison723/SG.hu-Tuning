@@ -4,6 +4,7 @@ import { jumpUnreadMessages } from './jumpUnreadMessages'
 import { favShowOnlyUnread } from '../forum'
 import { shortCommentMarker } from '../forum'
 import { safeResponse } from '../../util/safeResponse'
+import { topicWhitelist } from './topicWhitelist'
 
 export const showNavigationButtons = new Module('showNavigationButtons')
 
@@ -56,6 +57,32 @@ showNavigationButtons.activate = () => {
         showNavigationButtons.showSearch()
       }
     })
+
+    // Get topic ID
+    let id = $('input[name="fid"]').val()
+
+    // Determining current status
+    let status, title = ''
+    let whitelist = dataStore['topicWhitelist'].split(',')
+
+    if (whitelist.indexOf(id) === -1) {
+      status = '+'
+      title = 'Téma hozzáadása a fehérlistához'
+    } else {
+      status = '-'
+      title = 'Téma eltávolítása a fehérlistából'
+    }
+
+    // Create the whitelist button
+    $('<div id="ext_whitelist" title="' + title + '">' + status + '</div>').prependTo('body')
+
+    ext_whitelist = $('#ext_whitelist')
+
+    // Create whitelist event
+    ext_whitelist.click(function () {
+
+      topicWhitelist.execute(this, id)
+    })
   }
 
   // Execute when the user is logged in
@@ -89,7 +116,6 @@ showNavigationButtons.activate = () => {
   if (dataStore['showNavigationButtonsNight'] === true) {
 
     // lights.init()
-
     ext_nightmode = $('#ext_nightmode')
   }
 

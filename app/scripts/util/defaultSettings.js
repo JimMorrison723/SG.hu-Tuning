@@ -38,5 +38,9 @@ export default {
     isLoggedIn: false,
     userName: ''
   },
+  topicWhitelist: '',
+  messageCenter: false,
+  mcMessages: '',
+  mcSelectedTab: 0,
   installed: true
 }

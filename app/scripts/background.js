@@ -28,31 +28,33 @@ browser.runtime.onConnect.addListener(function (port) {
       // Sets the blocks config
     } else if (event.name === 'setBlocksConfig') {
 
-      let temp = {}
-      temp['blocksConfig'] = event.message
-      browser.storage.sync.set(temp)
+      saveSetting('blocksConfig', event.message)
 
       // Add user to blocklist
     } else if (event.name === 'addToBlocklist') {
 
-      // If the blocklist is empty
-      if (localStorage['blocklisted'] === '' || localStorage['blocklisted'] === undefined) {
-        localStorage['blocklisted'] = event.message
-        let temp = {}
-        temp['blocklisted'] = event.message
-        browser.storage.sync.set(temp)
+      let blocklisted = browser.storage.sync.get('blocklisted')
+      blocklisted.then((setting) => {
+        if (!setting['blocklisted']) {
 
-        // If the blocklist is not empty
-      } else {
-        let blockList = localStorage['blocklisted'].split(',')
-        if (blockList.indexOf(event.message) === -1) {
-          blockList.push(event.message)
-          localStorage['blocklisted'] = blockList.join(',')
-          let temp = {}
-          temp['blocklisted'] = localStorage['blocklisted']
-          browser.storage.sync.set(temp)
+          saveSetting('blocklisted', event.message)
+
+          // If the blocklist is not empty
+        } else {
+
+          let blockList = browser.storage.sync.get('blocklisted')
+          blockList.then((setting) => {
+            console.log(setting)
+            if (setting['blocklisted'].split(',').indexOf(event.message) === -1) {
+
+              setting['blocklisted'].push(event.message)
+              saveSetting('blocklisted', setting['blocklisted'].join(','))
+            }
+          })
         }
-      }
+      })
+      // If the blocklist is empty
+
       // Reset blocks config
     } else if (event.name === 'removeUserFromBlocklist') {
 
@@ -60,39 +62,83 @@ browser.runtime.onConnect.addListener(function (port) {
       let user = event.message
 
       // Get the blocklist array
-      list = localStorage['blocklisted'].split(',')
+      list = browser.storage.sync.get('blocklisted')
+      list.then((setting) => {
 
-      // Get the removed user index
-      index = list.indexOf(user)
+        // Get the removed user index
+        index = setting['blocklisted'].split(',').indexOf(user)
 
-      // Remove user from array
-      list.splice(index, 1)
+        // Remove user from array
+        setting['blocklisted'].splice(index, 1)
 
-      // Save changes in localStorage
-      localStorage['blocklisted'] = list.join(',')
-
-      // Update dataStore
-      let temp = {}
-      temp['blocklisted'] = localStorage['blocklisted']
-      browser.storage.sync.set(temp)
+        // Update storage
+        saveSetting('blocklisted', setting['blocklisted'].join(','))
+      })
 
       // Save posted settings
     } else if (event.name === 'setSetting') {
 
-      let temp = {}
-      temp[event.key] = event.val
-      browser.storage.sync.set(temp)
+      saveSetting(event.key, event.val)
 
       // Reset blocks config
     } else if (event.name === 'resetBlocksConfig') {
 
-      browser.storage.sync.set({'blocksConfig': ''})
+      saveSetting('blocksConfig', '')
 
     } else if (event.name === 'setUserSetting') {
 
-      let temp = {user: {}}
-      temp['user'] = event.msg
-      browser.storage.sync.set(temp)
+      saveSetting('user', event.msg)
+
+      // Store selected tab in message center
+    } else if (event.name === 'setMCSelectedTab') {
+
+      saveSetting('mcSelectedTab', event.msg)
+
+      // Store own messages for message center
+    } else if (event.name === 'setMCMessages') {
+
+      saveSetting('mcMessages', event.msg)
+
+      // Add topic to whitelist
+    } else if (event.name === 'addTopicToWhitelist') {
+
+      let whitelist = browser.storage.sync.get('topicWhitelist')
+      whitelist.then((setting) => {
+        // If the whitelist is empty
+        if (!setting['topicWhitelist']) {
+
+          saveSetting('topicWhitelist', event.message)
+
+          // If the blocklist is not empty
+        } else {
+
+            if (setting['topicWhitelist'].split(',').indexOf(event.message) === -1) {
+
+              setting['topicWhitelist'].push(event.message)
+              saveSetting('topicWhitelist', setting['topicWhitelist'].join(','))
+            }
+        }
+      })
+
+      // Remove topic from whitelist
+    } else if (event.name === 'removeTopicFromWhitelist') {
+
+      // Get username
+      let id = event.message
+
+      // Get the blocklist array
+      list = browser.storage.sync.get('topicWhitelist')
+      list.then((setting) => {
+
+        // Get the removed user index
+        index = setting['topicWhitelist'].split(',').indexOf(id)
+
+        // Remove user from array
+        setting['topicWhitelist'].splice(index, 1)
+
+        // Save changes in storage
+        saveSetting('topicWhitelist', setting['topicWhitelist'].join(','))
+      })
     }
   })
 })
@@ -102,7 +148,7 @@ let ports = []
 function connected(p) {
   ports[p.sender.tab.id] = p
 
-  // when connected, send the settings to the contentscript
+  // when connected, send the settings to the content script
   let allSettings = browser.storage.sync.get(null)
   allSettings.then(function (item) {
     // only send the settings to the new page
@@ -111,7 +157,7 @@ function connected(p) {
 }
 
 // send message about a setting has been changed
-function storageChange(changes, area) { // eslint-disable-line no-unused-vars
+function storageChange(changes) {
   let changedItems = Object.keys(changes)
 
   for (let item of changedItems) {
@@ -119,6 +165,12 @@ function storageChange(changes, area) { // eslint-disable-line no-unused-vars
     tmp[item] = changes[item].newValue
     sendMessage({name: 'updateSettings', message: tmp})
   }
+}
+
+function saveSetting(key, value) {
+  let temp = {}
+  temp[key] = value
+  browser.storage.sync.set(temp)
 }
 
 function sendMessage(param) {
