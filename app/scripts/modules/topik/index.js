@@ -10,6 +10,7 @@ import { autoloadNextPage } from './autoloadNextPage'
 import { overlayReplyTo } from './overlayReplyTo'
 import { quickUserInfo } from './quickUserInfo'
 import { textareaAutoResize } from './textareaAutoResize'
+import { quickInsertion } from './quickInsertion'
 
 // TODO: find a better way
 import { removeAds } from './../always/removeAds'
@@ -27,5 +28,6 @@ export {
   autoloadNextPage,
   overlayReplyTo,
   quickUserInfo,
-  textareaAutoResize
+  textareaAutoResize,
+  quickInsertion
 }

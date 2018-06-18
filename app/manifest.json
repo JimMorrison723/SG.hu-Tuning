@@ -3,7 +3,7 @@
   "author": "JimMorrison723",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
-  "version": "3.9.11",
+  "version": "3.9.12",
   "__firefox__applications": {
     "gecko": {
       "id": "jid0-lXuvrBz88C18gU77Igt8aau7ZyY@jetpack",
