@@ -163,11 +163,11 @@ function storageChange(changes) {
 
   //TODO: enable when messageCenter goes live
   // if (changedItems[0] !== 'mcMessages')
-    for (let item of changedItems) {
-      let tmp = {}
-      tmp[item] = changes[item].newValue
-      sendMessage({name: 'updateSettings', message: tmp})
-    }
+  for (let item of changedItems) {
+    let tmp = {}
+    tmp[item] = changes[item].newValue
+    sendMessage({name: 'updateSettings', message: tmp})
+  }
 }
 
 function saveSetting(key, value) {

@@ -448,7 +448,7 @@ messageCenter.buildOwnCommentsTab = () => {
       let time = messages[c]['time']
 
       // Get the today's date
-      let today = new Date()
+      // let today = new Date()
 
       // Get yesterdays date
       let yesterday = new Date()
@@ -504,8 +504,8 @@ messageCenter.buildAnswersTab = () => {
   // Empty the container first for re-init
   $('.ext_mc_pages:eq(2) div.contents').html('')
 
-  // Iterate over the messages
-  messages.forEach(function (message, c) {
+  // Iterate over the messages message, c
+  messages.forEach(function (message) {
 
     // Html to insert
     let html = ''
@@ -521,7 +521,7 @@ messageCenter.buildAnswersTab = () => {
 
     // Get the today's date
     // let today = date('Y. m. d.', Math.round(new Date().getTime() / 1000))
-    let today = new Date()
+    // let today = new Date()
 
     // Get yesterday's date
     // let yesterday = Math.round(new Date().getTime() / 1000) - 60 * 60 * 24
