@@ -44,7 +44,7 @@ browser.runtime.onConnect.addListener(function (port) {
 
           let blockList = browser.storage.sync.get('blocklisted')
           blockList.then((setting) => {
-            console.log(setting)
+
             if (setting['blocklisted'].split(',').indexOf(event.message) === -1) {
 
               setting['blocklisted'].push(event.message)
@@ -87,23 +87,24 @@ browser.runtime.onConnect.addListener(function (port) {
 
     } else if (event.name === 'setUserSetting') {
 
-      saveSetting('user', event.msg)
+      saveSetting('user', event.message)
 
       // Store selected tab in message center
     } else if (event.name === 'setMCSelectedTab') {
 
-      saveSetting('mcSelectedTab', event.msg)
+      saveSetting('mcSelectedTab', event.message)
 
       // Store own messages for message center
     } else if (event.name === 'setMCMessages') {
 
-      saveSetting('mcMessages', event.msg)
+      saveSetting('mcMessages', event.message)
 
       // Add topic to whitelist
     } else if (event.name === 'addTopicToWhitelist') {
 
       let whitelist = browser.storage.sync.get('topicWhitelist')
       whitelist.then((setting) => {
+
         // If the whitelist is empty
         if (!setting['topicWhitelist']) {
 
@@ -112,11 +113,11 @@ browser.runtime.onConnect.addListener(function (port) {
           // If the blocklist is not empty
         } else {
 
-            if (setting['topicWhitelist'].split(',').indexOf(event.message) === -1) {
-
-              setting['topicWhitelist'].push(event.message)
-              saveSetting('topicWhitelist', setting['topicWhitelist'].join(','))
-            }
+          if (setting['topicWhitelist'].split(',').indexOf(event.message) === -1) {
+            let temp = setting['topicWhitelist'].split(',')
+            temp.push(event.message)
+            saveSetting('topicWhitelist', temp.join(','))
+          }
         }
       })
 
@@ -160,11 +161,13 @@ function connected(p) {
 function storageChange(changes) {
   let changedItems = Object.keys(changes)
 
-  for (let item of changedItems) {
-    let tmp = {}
-    tmp[item] = changes[item].newValue
-    sendMessage({name: 'updateSettings', message: tmp})
-  }
+  //TODO: enable when messageCenter goes live
+  // if (changedItems[0] !== 'mcMessages')
+    for (let item of changedItems) {
+      let tmp = {}
+      tmp[item] = changes[item].newValue
+      sendMessage({name: 'updateSettings', message: tmp})
+    }
 }
 
 function saveSetting(key, value) {

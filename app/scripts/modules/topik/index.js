@@ -15,6 +15,7 @@ import { fetchNewComments } from './fetchNewComments'
 
 // TODO: find a better way
 import { removeAds } from './../always/removeAds'
+import { messageCenter } from '../always/messageCenter'
 
 export {
   removeAds,
@@ -31,5 +32,6 @@ export {
   quickUserInfo,
   textareaAutoResize,
   quickInsertion,
-  fetchNewComments
+  fetchNewComments,
+  messageCenter
 }

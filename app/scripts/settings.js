@@ -79,6 +79,11 @@ export const cp = {
           html += '<p>A fórum főoldal oldalsávjain található blokkok tetszőleges átrendezése, rejtése.</p>'
           html += '<div class="button" id="customBlocks"></div>'
         html += '</div>'
+        // html += '<div>'
+        //   html += '<h3>Üzenetközpont (BÉTA)</h3>'
+        //   html += '<p>Saját üzenetek naplózása, azokra érkező válaszok nyomkövetése.</p>'
+        //   html += '<div class="button" id="messageCenter"></div>'
+        // html += '</div>'
       html += '</div>'
 
       html += '<div class="settings_page">'

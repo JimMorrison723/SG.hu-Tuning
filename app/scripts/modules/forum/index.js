@@ -9,6 +9,7 @@ import { customBlocks } from '../forum/customBlocks'
 
 // TODO: find a better way
 import { removeAds } from './../always/removeAds'
+import { messageCenter } from '../always/messageCenter'
 
 export {
   removeAds,
@@ -19,5 +20,6 @@ export {
   jumpUnreadMessages,
   updateFavList,
   makeReadAllFavs,
-  customBlocks
+  customBlocks,
+  messageCenter
 }

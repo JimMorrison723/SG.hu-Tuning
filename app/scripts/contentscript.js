@@ -29,7 +29,7 @@ function getUserStatus() {
         let data = JSON.parse(request.responseText)
         dataStore['user'] = { isLoggedIn: true, userName: data.msg.nick }
         // sync settings
-        port.postMessage({ name: 'setUserSetting', msg: dataStore['user'] })
+        port.postMessage({ name: 'setUserSetting', message: dataStore['user'] })
         return true
       }
     }
@@ -48,7 +48,7 @@ function getUserStatus() {
   }
 
   // sync settings
-  port.postMessage({ name: 'setUserSetting', msg: dataStore['user'] })
+  port.postMessage({ name: 'setUserSetting', message: dataStore['user'] })
 }
 
 function whatPage() {
