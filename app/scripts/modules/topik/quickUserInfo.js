@@ -66,7 +66,7 @@ quickUserInfo.fillData = (modal, userID) => {
             <dt>Üzenetek száma</dt><dd>${data.uzenetek || '0'}</dd>
             <dt>Csillagjegy</dt><dd>${data._zodiac || '-'}</dd>
             <dt>Életkor</dt><dd>${data._age || '-'}</dd>
-            <dt>Neme</dt><dd>${data.nem === 'f' ? 'Férfi' : data.nem === "" ? '-' : 'Nő'}</dd>
+            <dt>Neme</dt><dd>${data.nem === 'f' ? 'Férfi' : data.nem === '' ? '-' : 'Nő'}</dd>
             <dt>Honlap</dt><dd>${data.honlap || '-'}</dd>
             <dt>Hobby</dt><dd>${data.hobby || '-'}</dd>
             <dt>Iskola</dt><dd>${data.iskola || '-'}</dd>
