@@ -11,7 +11,7 @@ export default {
   blocklist: true,
   blocklisted: '',
   autoloadNextPage: true,
-  overlayReplyTo: false,
+  overlayReplyTo: true,
   highlightCommentsForMe: true,
   showNavigationButtons: true,
   showNavigationButtonsNight: false,

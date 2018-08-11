@@ -80,7 +80,7 @@ overlayReplyTo.show = (comment, msgno) => {
   // Create textarea clone
 
   // WYSIWYG editor
-  if (dataStore['wysiwygEditor'] === 'true') {
+  if (dataStore['wysiwygEditor']) {
 
     if (document.location.href.match(/cikkek/)) {
 
@@ -209,7 +209,17 @@ overlayReplyTo.show = (comment, msgno) => {
   textarea_clone.delay(350).css({ top: top + 200, left: left, opacity: 0 }).animate({
     top: top + 10,
     opacity: 1,
-  }, 300)
+  }, 300, () => {
+    // When animation is complete
+
+    // Set the textarea focus
+    textarea_clone.find('textarea').focus()
+
+    // Set the iframe focus
+    if (dataStore['wysiwygEditor']) {
+      textarea_clone.find('iframe')[0].focus()
+    }
+  })
 
   // Change textarea name attr to avoid conflicts
   $('form[name=newmessage]:gt(0)').attr('name', 'tmp')
@@ -226,14 +236,6 @@ overlayReplyTo.show = (comment, msgno) => {
   textarea_clone.find('textarea').attr('tabindex', '1')
   textarea_clone.find('a:last').attr('tabindex', '2')
 
-  // Set the textarea focus
-  textarea_clone.find('textarea').focus()
-
-  // Set the iframe focus
-  if (dataStore['wysiwygEditor'] === 'true') {
-    textarea_clone.find('iframe')[0].focus()
-  }
-
   // Block default tab action in non-WYSIWYG editor
   body.keydown(function (event) {
     if (event.keyCode === 9) {
@@ -243,7 +245,7 @@ overlayReplyTo.show = (comment, msgno) => {
   })
 
   // Block default tab action in a WYSIWYG editor
-  if (dataStore['wysiwygEditor'] === 'true') {
+  if (dataStore['wysiwygEditor']) {
     $(textarea_clone.find('iframe')[0].contentDocument.body).keydown(function (event) {
       if (event.keyCode === '9') {
         event.preventDefault()
