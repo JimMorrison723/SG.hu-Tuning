@@ -61,12 +61,12 @@ quickUserInfo.fillData = (modal, userID) => {
 
       // Format modal body
       let html = `<dl>
-            <dt>Admin</dt><dd>${data.isMod ? 'Igen' : 'Nem'}</dd>
+            <dt>Admin</dt><dd>${data.isMod === '1' ? 'Igen' : 'Nem'}</dd>
             <dt>Büntetőpontok</dt><dd>${data.buntetopontok}</dd>
             <dt>Üzenetek száma</dt><dd>${data.uzenetek || '0'}</dd>
-            <dt>Csillagjegy</dt><dd>${data._zodiac}</dd>
-            <dt>Életkor</dt><dd>${data._age}</dd>
-            <dt>Neme</dt><dd>${data.nem === 'f' ? 'Férfi' : 'Nő'}</dd>
+            <dt>Csillagjegy</dt><dd>${data._zodiac || '-'}</dd>
+            <dt>Életkor</dt><dd>${data._age || '-'}</dd>
+            <dt>Neme</dt><dd>${data.nem === 'f' ? 'Férfi' : data.nem === "" ? '-' : 'Nő'}</dd>
             <dt>Honlap</dt><dd>${data.honlap || '-'}</dd>
             <dt>Hobby</dt><dd>${data.hobby || '-'}</dd>
             <dt>Iskola</dt><dd>${data.iskola || '-'}</dd>
