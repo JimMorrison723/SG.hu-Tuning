@@ -22,6 +22,7 @@
             "error",
             2
         ],
+        "no-console": "warn",
         "no-var": [
             "warn"
         ],

@@ -99,10 +99,11 @@ port.onMessage.addListener(function (event) {
     settings.update(event.message)
     for (const [key, value] of Object.entries(event.message)) {
       dataStore[key] = value
-      if (value === true)
+      if (value === true) {
         scripts[key].activate()
-      else if (value === false)
+      } else if (value === false) {
         scripts[key].disable()
+      }
       // else
       //   scripts[key].init()
     }

@@ -44,11 +44,11 @@ browser.runtime.onConnect.addListener(function (port) {
 
           let blockList = browser.storage.sync.get('blocklisted')
           blockList.then((setting) => {
+            let blocklistedUsers = setting['blocklisted'].split(',')
 
-            if (setting['blocklisted'].split(',').indexOf(event.message) === -1) {
-
-              setting['blocklisted'].push(event.message)
-              saveSetting('blocklisted', setting['blocklisted'].join(','))
+            if (blocklistedUsers.indexOf(event.message) === -1) {
+              blocklistedUsers.push(event.message)
+              saveSetting('blocklisted', blocklistedUsers.join(','))
             }
           })
         }
@@ -65,14 +65,16 @@ browser.runtime.onConnect.addListener(function (port) {
       list = browser.storage.sync.get('blocklisted')
       list.then((setting) => {
 
+        let blocklist = setting['blocklisted'].split(',')
+
         // Get the removed user index
-        index = setting['blocklisted'].split(',').indexOf(user)
+        index = blocklist.indexOf(user)
 
         // Remove user from array
-        setting['blocklisted'].splice(index, 1)
+        blocklist.splice(index, 1)
 
         // Update storage
-        saveSetting('blocklisted', setting['blocklisted'].join(','))
+        saveSetting('blocklisted', blocklist.join(','))
       })
 
       // Save posted settings
