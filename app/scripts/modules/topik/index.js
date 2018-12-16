@@ -16,6 +16,7 @@ import { fetchNewComments } from './fetchNewComments'
 // TODO: find a better way
 import { removeAds } from './../always/removeAds'
 import { messageCenter } from '../always/messageCenter'
+import { sgTabs } from '../always'
 
 export {
   removeAds,
@@ -33,5 +34,6 @@ export {
   textareaAutoResize,
   quickInsertion,
   fetchNewComments,
-  messageCenter
+  messageCenter,
+  sgTabs
 }

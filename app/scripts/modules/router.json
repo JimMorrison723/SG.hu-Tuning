@@ -6,6 +6,9 @@
         "scripts": "./modules/topik/index"
     },
     "3": {
-        "scripts": "./modules/news/index.js"
+        "scripts": "./modules/news/index"
+    },
+    "4": {
+        "scripts": "./modules/temak/index"
     }
 }

@@ -337,6 +337,16 @@
 	text-decoration: none;
 }
 
+/* Currently reading */
+.opened_link, .opened_link a, .opened_link span {
+	color: #FFF !important;
+	background: #005C2E;
+}
+
+.opened_link:hover span, .opened_link:hover a {
+	background: black;
+}
+
 /* Animations */
 @-webkit-keyframes animateSettingOn {
 	from {background-position-x: 0;}

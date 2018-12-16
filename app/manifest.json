@@ -42,7 +42,8 @@
   "permissions": [
     "cookies",
     "notifications",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "web_accessible_resources": [
     "images/*/*.png"

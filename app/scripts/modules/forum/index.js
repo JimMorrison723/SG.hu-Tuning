@@ -10,6 +10,7 @@ import { customBlocks } from '../forum/customBlocks'
 // TODO: find a better way
 import { removeAds } from './../always/removeAds'
 import { messageCenter } from '../always/messageCenter'
+import { sgTabs } from '../always/sgTabs'
 
 export {
   removeAds,
@@ -21,5 +22,6 @@ export {
   updateFavList,
   makeReadAllFavs,
   customBlocks,
-  messageCenter
+  messageCenter,
+  sgTabs
 }

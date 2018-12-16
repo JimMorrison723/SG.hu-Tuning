@@ -4,12 +4,12 @@ import { cp, settings } from './settings'
 export let port
 export let dataStore
 export let scripts = {}
-export let PAGE
+export let PAGE // 1 = forum, 2 = topics, 3 = news, 4 = temak
 
 let router_json = require('./modules/router.json')
 
 function router() {
-  // TODO: find a better way for conditinoal import
+  // TODO: find a better way for conditional import
   // Hack. maybe PAGE.toString() will be needed later down the line
   scripts = require(`${router_json[PAGE]['scripts']}`)
 }
@@ -57,10 +57,13 @@ function whatPage() {
   if (document.location.href.match(/forum\/$/)) return PAGE = 1
 
   // Topic page
-  else if (document.location.href.match(/forum\/tema/)) return PAGE = 2
+  else if (document.location.href.match(/forum\/tema\//)) return PAGE = 2
 
   // Article page
   else if (document.location.href.match(/cikkek/)) return PAGE = 3
+
+  // Themes page
+  else if (document.location.href.match(/forum\/temak/)) return PAGE = 4
 
   else return PAGE = 0
 }
@@ -107,6 +110,7 @@ port.onMessage.addListener(function (event) {
       // else
       //   scripts[key].init()
     }
-
+  } else if (event.name === 'SGTabs') {
+    scripts['sgTabs'].refresh(event.message)
   }
 })

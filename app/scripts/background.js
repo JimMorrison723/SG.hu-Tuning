@@ -148,6 +148,28 @@ browser.runtime.onConnect.addListener(function (port) {
 
 let ports = []
 
+function updateSGTabs() {
+  let sgTabs = []
+  let tabs = browser.tabs.query({url: 'https://sg.hu/forum/*/*'})
+
+  tabs.then((tabs) => {
+    // get the sg pages URLs
+    for (let tab of tabs) {
+      sgTabs.push({id: tab.id, url: tab.url})
+    }
+
+    // clean tab urls
+    for (let page in sgTabs) {
+      sgTabs[page].url = sgTabs[page].url.replace('https://sg.hu', '')
+    }
+
+    // send info to sg pages
+    ports.forEach(p =>
+      p.postMessage({name: 'SGTabs', message: sgTabs})
+    )
+  })
+}
+
 function connected(p) {
   ports[p.sender.tab.id] = p
 
@@ -156,6 +178,7 @@ function connected(p) {
   allSettings.then(function (item) {
     // only send the settings to the new page
     p.postMessage({name: 'setSettings', message: item})
+    updateSGTabs(p)
   })
 }
 
@@ -208,3 +231,7 @@ function migrate() {
 
 browser.runtime.onConnect.addListener(connected)
 browser.storage.onChanged.addListener(storageChange)
+browser.tabs.onRemoved.addListener(function (tabId) {
+  delete ports[tabId]
+  updateSGTabs()
+})

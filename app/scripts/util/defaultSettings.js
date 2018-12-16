@@ -42,5 +42,6 @@ export default {
   messageCenter: false,
   mcMessages: '',
   mcSelectedTab: 0,
-  installed: true
+  installed: true,
+  sgTabs: true
 }
