@@ -1,6 +1,7 @@
 import { Module } from '../module'
 import { port, dataStore } from '../../contentscript'
 import { showNavigationButtons } from '../topik'
+import { setCookie } from '../../util/cookies'
 
 export const favShowOnlyUnread = new Module('favShowOnlyUnread')
 
@@ -9,7 +10,7 @@ favShowOnlyUnread.opened = false
 favShowOnlyUnread.init = () => {
 
   if (dataStore['favShowOnlyUnreadRemember']) {
-    favShowOnlyUnread.opened = false
+    favShowOnlyUnread.opened = dataStore['favShowOnlyUnreadOpened']
   }
   if (dataStore['favShowOnlyUnreadOpened']) {
     $('#favorites-open-close-button').find('#icon').html('-')
@@ -29,18 +30,18 @@ favShowOnlyUnread.activate = () => {
   ext_faves.next().children('nav').removeAttr('style')
 
   // Disable page auto-hide function
-  // setCookie('favs', 'true', 365)
+  setCookie('favs', 'closed', 365)
 
   // Move the button away to place toggle button
-  $('#ext_refresh_faves').css('right', 18)
-  $('#ext_read_faves').css('right', 36)
+  // $('#ext_refresh_faves').css('right', 18)
+  // $('#ext_read_faves').css('right', 36)
 
-  let fav_list = $('#favorites-list')
-  let ext_wrapper = $('#ext_nav_faves_wrapper')
-  let ext_filtered_faves = $('#ext_show_filtered_faves')
-  let ext_filtered_faves_arrow = $('#ext_show_filtered_faves_arrow')
-  let ext_filtered_error = $('#ext_filtered_faves_error')
-  let AllLength = fav_list.find('a[class*="category-"]').length
+  const fav_list = $('#favorites-list')
+  const ext_wrapper = $('#ext_nav_faves_wrapper')
+  const ext_filtered_faves = $('#ext_show_filtered_faves')
+  const ext_filtered_faves_arrow = $('#ext_show_filtered_faves_arrow')
+  const ext_filtered_error = $('#ext_filtered_faves_error')
+  const AllLength = fav_list.find('a[class*="category-"]').length
   let unread_length = fav_list.find('a[class^="category-"][class*="fav-not-new-msg"]').length
 
   //Fix
@@ -107,7 +108,7 @@ favShowOnlyUnread.activate = () => {
   if (AllLength === unread_length && ext_filtered_error.length === 0) {
     ext_faves.after('<p id="ext_filtered_faves_error">Nincs olvasatlan téma</p>')
   }
-  else {
+  else if (AllLength !== unread_length) {
     $('#ext_filtered_faves_error').remove()
   }
 

@@ -69,7 +69,6 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-	background-image: -webkit-linear-gradient(top, #fbd859, #f5b85e);
 	cursor: pointer;
 }
 
@@ -79,10 +78,8 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-	/*background-image: -webkit-linear-gradient(top, #4b90f4, #8ab8f8);*/
 	cursor: pointer;
 }
-
 
 /* Make read all faves */
 

@@ -1,9 +1,10 @@
 {
-  "name": "SG.hu-Tuning",
+  "name": "sg.hu-tuning",
+  "author": "JimMorrison723",
   "version": "3.9.13",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
-    "lint": "eslint --ignore-pattern app/scripts/settings.js app/scripts/*",
+    "lint": "eslint app/scripts/*",
     "dev": "webextension-toolbox dev",
     "build": "webextension-toolbox build"
   },
@@ -11,5 +12,6 @@
     "eslint": "^5.4.0",
     "jquery": "^3.3.1",
     "webextension-toolbox": ">=3.0.0"
-  }
+  },
+  "eslintIgnore": ["app/scripts/settings.js"]
 }

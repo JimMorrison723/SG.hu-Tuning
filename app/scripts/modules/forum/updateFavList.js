@@ -10,23 +10,22 @@ export const updateFavList = new Module('updateFavList')
 
 updateFavList.activate = () => {
 
-  if (!dataStore['user']['isLoggedIn'])
+  if (!dataStore['user']['isLoggedIn']) {
     return
+  }
 
-  // Create refhref button
-  // ha lesz blokkok átrendezése, akkor #ext_left_sidebar után már nem kell inline style
-  $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<span id="ext_refresh_faves" style="display: inline-block;"></span>]</span>')
+  // Create refresh button
+  $('section#sidebar-user-favorites h4').append('<span style="cursor: pointer;">[<span id="ext_refresh_faves"></span>]</span>')
 
-  let refresh_faves = $('#ext_refresh_faves')
+  const refresh_faves = $('#ext_refresh_faves')
 
-  // Move the button away if unreaded faves is on
+  // Move the button away if unread faves is on
   if (dataStore['favShowOnlyUnread'] && dataStore['user']['isLoggedIn']) {
     refresh_faves.css('right', 18)
   }
 
   // Set refresh image
-  // TODO: Erre valamit ki kell találni
-  $('<img src="' + browser.extension.getURL('images/content/refresh.png') + '">').appendTo('#ext_refresh_faves')
+  $('<img src="' + browser.extension.getURL('images/content/refresh.png') + '" alt="Kedvencek frissítése" title="Kedvencek frissítése">').appendTo(refresh_faves)
 
   // Add click event
   refresh_faves.on('click', 'img', function () {
@@ -41,7 +40,7 @@ updateFavList.activate = () => {
 
 updateFavList.refresh = () => {
 
-  let refresh_img = $('#ext_refresh_faves').find('img')
+  const refresh_img = $('#ext_refresh_faves').find('img')
 
   // Set 'in progress' icon
   refresh_img.attr('src', browser.extension.getURL('/images/content/refresh_waiting.png'))
@@ -69,7 +68,7 @@ updateFavList.refresh = () => {
         refresh_img.attr('src', browser.extension.getURL('/images/content/refresh.png'))
       }, 1000)
 
-      // Faves: show only with unreaded messages
+      // Faves: show only with unread messages
       if (dataStore['favShowOnlyUnread'] === true && dataStore['user']['isLoggedIn']) {
         favShowOnlyUnread.activate()
       }
@@ -84,7 +83,7 @@ updateFavList.refresh = () => {
         highlightForumCategories.activate()
       }
 
-      // Jump the last unreaded message
+      // Jump the last unread message
       if (dataStore['jumpUnreadMessages'] === true && dataStore['user']['isLoggedIn']) {
         jumpUnreadMessages.activate()
       }
