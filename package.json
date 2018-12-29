@@ -1,7 +1,7 @@
 {
   "name": "sg.hu-tuning",
   "author": "JimMorrison723",
-  "version": "3.9.13",
+  "version": "3.9.14",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
     "lint": "eslint app/scripts/*",
