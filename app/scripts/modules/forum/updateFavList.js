@@ -87,6 +87,11 @@ updateFavList.refresh = () => {
       if (dataStore['jumpUnreadMessages'] === true && dataStore['user']['isLoggedIn']) {
         jumpUnreadMessages.activate()
       }
+
+      //Night mode
+      if (dataStore['nightMode'] === true) {
+        nightMode.forumSwitchOn();
+      }
     }
   })
 }

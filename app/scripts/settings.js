@@ -142,7 +142,7 @@ export const cp = {
             html += '</select>'
           html += '</p>'
           html += '<p class="sub">'
-            html += '<label><input type="checkbox" id="navigationButtonNightState"> Éjszakai / szemkímélő mód kapcsoló</label><br>'
+            html += '<label><input type="checkbox" id="showNavigationButtonsNight"> Éjszakai / szemkímélő mód kapcsoló</label><br>'
           html += '</p>'
           html += '<p>Egy topikban vagy a cikkeknél gyors elérést biztosító funkciógombok</p>'
           html += '<div class="button" id="showNavigationButtons"></div>'

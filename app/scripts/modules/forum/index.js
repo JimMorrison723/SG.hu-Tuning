@@ -11,6 +11,7 @@ import { customBlocks } from '../forum/customBlocks'
 import { removeAds } from './../always/removeAds'
 import { messageCenter } from '../always/messageCenter'
 import { sgTabs } from '../always/sgTabs'
+import { nightMode } from '../always/nightMode'
 
 export {
   removeAds,
@@ -23,5 +24,6 @@ export {
   makeReadAllFavs,
   customBlocks,
   messageCenter,
-  sgTabs
+  sgTabs,
+  nightMode,
 }

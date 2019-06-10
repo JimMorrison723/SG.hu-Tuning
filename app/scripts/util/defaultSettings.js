@@ -16,7 +16,7 @@ export default {
   showNavigationButtons: true,
   showNavigationButtonsNight: false,
   navigationButtonsPosition: 'leftcenter',
-  navigationButtonNightState: false,
+  nightMode: false,
   removeAds: false,
   wysiwygEditor: false,
   fetchNewComments: true,

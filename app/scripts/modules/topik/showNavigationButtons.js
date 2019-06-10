@@ -5,6 +5,7 @@ import { favShowOnlyUnread } from '../forum'
 import { shortCommentMarker } from '../forum'
 import { safeResponse } from '../../util/safeResponse'
 import { topicWhitelist } from './topicWhitelist'
+import { nightMode } from '../always/nightMode'
 
 export const showNavigationButtons = new Module('showNavigationButtons')
 
@@ -114,8 +115,7 @@ showNavigationButtons.activate = () => {
 
   //Night mode
   if (dataStore['showNavigationButtonsNight'] === true) {
-
-    // lights.init()
+    nightMode.init()
     ext_nightmode = $('#ext_nightmode')
   }
 
