@@ -3,6 +3,10 @@
 > Az SG tuning célja, hogy funkcióival kényelmesebbé varázsolja az sg.hu-n történő böngészést.
 
 [![Build Status](https://travis-ci.org/JimMorrison723/SG.hu-Tuning.svg?branch=master)](https://travis-ci.org/JimMorrison723/SG.hu-Tuning)
+![Chrome Web Store](https://badgen.net/chrome-web-store/v/hlppljcclmahjmaegnhcaefknenohnck)
+![Chrome users](https://badgen.net/chrome-web-store/users/hlppljcclmahjmaegnhcaefknenohnck)
+![Mozilla add-on](https://badgen.net/amo/v/sg-forum-tuning)
+![Mozilla users](https://badgen.net/amo/users/sg-forum-tuning)
 
 ## Letöltés
 

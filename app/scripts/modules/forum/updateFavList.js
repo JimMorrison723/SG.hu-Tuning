@@ -5,6 +5,7 @@ import { favShowOnlyUnread } from './favShowOnlyUnread'
 import { shortCommentMarker } from './shortCommentMarker'
 import { highlightForumCategories } from './highlightForumCategories'
 import { jumpUnreadMessages } from '../topik'
+import { nightMode } from '../always/nightMode'
 
 export const updateFavList = new Module('updateFavList')
 
@@ -90,7 +91,7 @@ updateFavList.refresh = () => {
 
       //Night mode
       if (dataStore['nightMode'] === true) {
-        nightMode.forumSwitchOn();
+        nightMode.forumSwitchOn()
       }
     }
   })

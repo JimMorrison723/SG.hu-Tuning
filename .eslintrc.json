@@ -5,10 +5,11 @@
         "sourceType": "module"
     },
     "env": {
-      "es6": true,
-      "browser": true,
-      "node": true,
-      "jquery": true
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "jquery": true,
+        "webextensions": true
     },
     "globals": {
         "browser": true
