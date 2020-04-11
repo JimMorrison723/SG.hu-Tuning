@@ -14,7 +14,7 @@ cache:
   yarn: true
 
 install:
-  - yarn install --check-cache
+  - yarn install --check-cache=false
 
 script:
   - yarn run lint
