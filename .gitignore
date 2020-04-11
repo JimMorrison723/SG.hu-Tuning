@@ -5,3 +5,9 @@
 node_modules/
 dist/
 packages/
+
+.yarn/*
+# !.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
