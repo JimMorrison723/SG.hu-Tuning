@@ -13,5 +13,8 @@ before_install:
 cache:
   yarn: true
 
+install:
+  - yarn install --check-cache
+
 script:
   - yarn run lint
