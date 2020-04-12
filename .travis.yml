@@ -9,12 +9,12 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y -qq yarn
   - yarn policies set-version berry
+  - yarn --version
 
 cache:
   yarn: true
 
 install:
-  - yarn --version
   - yarn install --check-cache=false --inline-builds
 
 script:
