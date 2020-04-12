@@ -7,7 +7,7 @@ dist/
 packages/
 
 .yarn/*
-# !.yarn/cache
+!.yarn/cache
 !.yarn/releases
 !.yarn/plugins
 .pnp.*
