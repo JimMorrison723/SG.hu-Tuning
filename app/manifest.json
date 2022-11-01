@@ -18,6 +18,7 @@
   },
   "background": {
     "scripts": [
+      "scripts/browser-polyfill.js",
       "scripts/background.js"
     ],
     "__edge|chrome|opera__persistent": false
@@ -33,6 +34,7 @@
         "styles/settings.css"
       ],
       "js": [
+        "scripts/browser-polyfill.js",
         "scripts/contentscript.js"
       ],
       "run_at": "document_idle",

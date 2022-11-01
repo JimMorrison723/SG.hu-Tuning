@@ -6,8 +6,6 @@ node_modules/
 dist/
 packages/
 
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-.pnp.*
+# Ignore npm/yarn debug log
+npm-debug.log
+yarn-error.log

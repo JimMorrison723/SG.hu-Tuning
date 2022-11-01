@@ -9,21 +9,21 @@ A kiegészítő a webextension-toolbox-ot használja.
 
 ## Install
 
-	$ yarn install
+	$ npm install
 
 ## Development
 
-    yarn run dev chrome
-    yarn run dev firefox
-    yarn run dev opera
-    yarn run dev edge
+    npm run dev chrome
+    npm run dev firefox
+    npm run dev opera
+    npm run dev edge
 
 ## Build
 
-    yarn run build chrome
-    yarn run build firefox
-    yarn run build opera
-    yarn run build edge
+    npm run build chrome
+    npm run build firefox
+    npm run build opera
+    npm run build edge
 
 ## Environment
 

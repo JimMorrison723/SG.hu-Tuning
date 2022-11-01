@@ -45,7 +45,7 @@ favShowOnlyUnread.activate = () => {
   let unread_length = fav_list.find('a[class^="category-"][class*="fav-not-new-msg"]').length
 
   //Fix
-  if (typeof unread_length === undefined) {
+  if (unread_length === undefined) {
     unread_length = 0
   }
 
