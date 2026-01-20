@@ -11,7 +11,8 @@
   "devDependencies": {
     "@webextension-toolbox/webextension-toolbox": "^5.2.2",
     "copy-webpack-plugin": "^11.0.0",
-    "eslint": "^8.26.0",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
     "jquery": "^3.6.1",
     "patch-package": "^6.5.0",
     "webextension-polyfill": "^0.10.0"
