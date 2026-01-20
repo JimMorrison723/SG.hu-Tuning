@@ -6,12 +6,7 @@
   "scripts": {
     "lint": "eslint app/scripts/*",
     "dev": "webextension-toolbox dev",
-    "build": "webextension-toolbox build",
-    "postinstall": "patch-package"
-  },
-  "engines": {
-    "node": "^16.17.0 || ^18.12.0",
-    "npm": ">=8.19.2"
+    "build": "webextension-toolbox build"
   },
   "devDependencies": {
     "@webextension-toolbox/webextension-toolbox": "^5.2.2",
@@ -20,13 +15,5 @@
     "jquery": "^3.6.1",
     "patch-package": "^6.5.0",
     "webextension-polyfill": "^0.10.0"
-  },
-  "eslintIgnore": [
-    "app/scripts/settings.js"
-  ],
-  "packageManager": "npm@8.19.2",
-  "volta": {
-    "node": "18.12.0",
-    "npm": "8.19.2"
   }
 }
