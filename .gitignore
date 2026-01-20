@@ -6,6 +6,7 @@ node_modules/
 dist/
 packages/
 
-# Ignore npm/yarn debug log
+# Ignore npm/yarn/bun debug logs
 npm-debug.log
 yarn-error.log
+bun-debug.log

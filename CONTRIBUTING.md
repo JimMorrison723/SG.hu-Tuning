@@ -7,23 +7,35 @@ Ha szeretnél segíteni, csak küldj egy pull-requestet a módosításaiddal. Le
 A kiegészítő a webextension-toolbox-ot használja. 
 * [webextension-toolbox](https://github.com/HaNdTriX/webextension-toolbox)
 
+## Követelmények
+
+- [Bun](https://bun.sh) (latest version)
+
 ## Install
 
-	$ npm install
+```bash
+bun install
+```
 
 ## Development
 
-    npm run dev chrome
-    npm run dev firefox
-    npm run dev opera
-    npm run dev edge
+```bash
+bun run dev chrome
+bun run dev firefox
+```
 
 ## Build
 
-    npm run build chrome
-    npm run build firefox
-    npm run build opera
-    npm run build edge
+```bash
+bun run build chrome
+bun run build firefox
+```
+
+## Lint
+
+```bash
+bun run lint
+```
 
 ## Environment
 

@@ -53,6 +53,25 @@ Eredeti verizó
 
 - Gera János "dzsani" - [SG.hu-Extension](https://github.com/dzsani/SG.hu-Extension)
 
+## Fejlesztés
+
+### Követelmények
+- [Bun](https://bun.sh) (latest version)
+
+### Telepítés
+```bash
+bun install
+```
+
+### Fejlesztés
+```bash
+bun run dev chrome    # Development mode for Chrome
+bun run dev firefox   # Development mode for Firefox
+bun run build chrome  # Production build for Chrome
+bun run build firefox # Production build for Firefox
+bun run lint          # Code linting
+```
+
 ### Hozzájárulás
 
 Ha szeretnél segíteni a fejlesztésben, olvasd el a [CONTRIBUTING](CONTRIBUTING.md) útmutatót.
