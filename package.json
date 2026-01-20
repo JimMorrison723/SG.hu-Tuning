@@ -1,20 +1,20 @@
 {
   "name": "sg.hu-tuning",
+  "type": "module",
   "author": "JimMorrison723",
   "version": "3.9.14",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
     "lint": "eslint app/scripts/*",
-    "dev": "webextension-toolbox dev",
-    "build": "webextension-toolbox build"
+    "dev": "webextension-toolbox dev --config webextension-toolbox.config.js",
+    "build": "webextension-toolbox build --config webextension-toolbox.config.js"
   },
   "devDependencies": {
-    "@webextension-toolbox/webextension-toolbox": "^5.2.2",
-    "copy-webpack-plugin": "^11.0.0",
+    "@webextension-toolbox/webextension-toolbox": "^7.1.1",
+    "copy-webpack-plugin": "^13.0.1",
     "eslint": "^9.39.2",
     "globals": "^17.0.0",
-    "jquery": "^3.6.1",
-    "patch-package": "^6.5.0",
-    "webextension-polyfill": "^0.10.0"
+    "jquery": "3.7.1",
+    "webextension-polyfill": "^0.12.0"
   }
 }
