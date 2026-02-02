@@ -25,19 +25,19 @@ jobs:
         run: bun run lint
 
       - name: Build Chrome
-        run: bun run build chrome
+        run: bun run build
 
       - name: Build Firefox
-        run: bun run build firefox
+        run: bun run build:firefox
 
       - name: Upload Chrome artifact
         uses: actions/upload-artifact@v4
         with:
           name: chrome-extension
-          path: dist/chrome
+          path: dist/chrome-mv2
 
       - name: Upload Firefox artifact
         uses: actions/upload-artifact@v4
         with:
           name: firefox-extension
-          path: dist/firefox
+          path: dist/firefox-mv2

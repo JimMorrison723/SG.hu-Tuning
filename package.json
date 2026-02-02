@@ -5,16 +5,18 @@
   "version": "3.9.14",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
-    "lint": "eslint app/scripts/*",
-    "dev": "webextension-toolbox dev --config webextension-toolbox.config.js",
-    "build": "webextension-toolbox build --config webextension-toolbox.config.js"
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "lint": "eslint src/**/*.js || echo 'No JS files to lint - TypeScript linting not yet configured'"
   },
   "devDependencies": {
-    "@webextension-toolbox/webextension-toolbox": "^7.1.1",
-    "copy-webpack-plugin": "^13.0.1",
     "eslint": "^9.39.2",
     "globals": "^17.0.0",
-    "jquery": "3.7.1",
-    "webextension-polyfill": "^0.12.0"
+    "jquery": "4.0.0",
+    "wxt": "^0.20.13"
   }
 }

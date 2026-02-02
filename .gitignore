@@ -10,3 +10,6 @@ packages/
 npm-debug.log
 yarn-error.log
 bun-debug.log
+
+# Claude Code personal memory (not shared)
+CLAUDE.local.md
