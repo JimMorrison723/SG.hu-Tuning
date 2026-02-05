@@ -2,7 +2,7 @@
   "name": "sg.hu-tuning",
   "type": "module",
   "author": "JimMorrison723",
-  "version": "3.9.14",
+  "version": "4.0.0",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
     "dev": "wxt",
@@ -11,12 +11,15 @@
     "build:firefox": "wxt build -b firefox",
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
-    "lint": "eslint src/**/*.js || echo 'No JS files to lint - TypeScript linting not yet configured'"
+    "lint": "eslint src/"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/jquery": "^3.5.33",
     "eslint": "^9.39.2",
     "globals": "^17.0.0",
     "jquery": "4.0.0",
+    "typescript-eslint": "^8.54.0",
     "wxt": "^0.20.13"
   }
 }

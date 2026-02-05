@@ -1,59 +1,47 @@
-import {Module} from '../Module'
+import { Module } from '../Module'
 
 export const quickInsertion = new Module('quickInsertion')
 
 quickInsertion.activate = () => {
 
-  let ta
-  //TODO: enable when built-in wysiwyg editor works
-  // let ta2
+  const ta = $('form[name="newmessage"] textarea')
 
-  ta = $('form[name="newmessage"] textarea')
+  // Note: WYSIWYG editor integration disabled - requires built-in editor support
 
-  // if (context.dataStore['wysiwyg_editor']) {
-  //   ta = $('.cleditorMain:first iframe').contents().find('body')
-  //   ta2 = $('.cleditorMain:first textarea[name="message"]')
-  // }
-
-  // Paste event on WYSIWYG view and source view
-  //   .add(ta2)
+  // Paste event handler
   $(ta).on('paste', function (e) {
 
-    let data = e.originalEvent.clipboardData.getData('Text')
+    const data = (e.originalEvent as ClipboardEvent).clipboardData?.getData('Text') || ''
 
     if (data.length > 10) {
 
-      //TODO: facebook images pattern
-      let urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?/
-      let imgPattern = /^https?:\/\/(?:[a-z-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpe?g|gif|png)$/
+      // URL and image patterns
+      // Note: Facebook image URLs may need special handling
+      const urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?/
+      const imgPattern = /^https?:\/\/(?:[a-z-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+\.(?:jpe?g|gif|png)$/
 
-      let bhtml
-      //let ihtml;
+      let bhtml = ''
 
       if (imgPattern.test(data)) {
         e.preventDefault()
         bhtml = '[img]' + data + '[/img]'
-        //ihtml = '<img src="' + data + '">';
       }
       else if (urlPattern.test(data)) {
         e.preventDefault()
 
-        // Create a dummy <a> element
-        let a = document.createElement('a')
-        // Assign link, let the browser parse it
+        // Create a dummy <a> element to parse the URL
+        const a = document.createElement('a')
         a.href = data
         let url_pathname = a.pathname.substring(1, data.length)
         if (url_pathname.length === 0) {
           url_pathname = data
         }
         bhtml = '[url=' + data + ']' + url_pathname + '[/url]'
-        //ihtml = '<a href="' + data + '">' + url_pathname + '</a>';
       }
 
       if (bhtml) {
         ta.val(ta.val() + bhtml)
       }
-
     }
   })
 }

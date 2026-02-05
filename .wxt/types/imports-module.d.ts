@@ -17,8 +17,10 @@ declare module '#imports' {
   export { injectScript, ScriptPublicPath, InjectScriptOptions } from 'wxt/utils/inject-script';
   export { InvalidMatchPattern, MatchPattern } from 'wxt/utils/match-patterns';
   export { fakeBrowser } from 'wxt/testing';
-  export { getAnswers, getMessage } from '../src/utils/api';
+  export { getAnswers, getMessage, getUserInfo, getUserByIdentId, isUserLoggedIn } from '../src/utils/api';
+  export { API_KEY, API_BASE_URL } from '../src/utils/config';
   export { setCookie, getCookie, removeCookie } from '../src/utils/cookies';
   export { default as defaultSettings } from '../src/utils/defaultSettings';
   export { safeResponse } from '../src/utils/safeResponse';
+  export { formatDateTime, formatUnixTimestamp } from '../src/utils/time';
 }

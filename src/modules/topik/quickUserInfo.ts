@@ -1,9 +1,8 @@
 import { Module } from '../Module'
+import { getUserInfo } from '@/utils/api'
+import { formatDateTime } from '@/utils/time'
 
 export const quickUserInfo = new Module('quickUserInfo')
-
-// Convert milliseconds to date
-const getColonTimeFromDate = (date: Date) => date.toLocaleString()
 
 //Place info image
 quickUserInfo.activate = () => {
@@ -22,12 +21,12 @@ quickUserInfo.activate = () => {
 
 quickUserInfo.addEventListener = () => {
 
-  let modal = $('#ext-modal')
+  const modal = $('#ext-modal')
 
   $(document).on('click', '.ext_quick_user_info_btn', (event) => {
 
     // Get user id
-    let userId = $(event.currentTarget).siblings('a[href*="felhasznalo"]').attr('href').replace('/felhasznalo/', '')
+    const userId = $(event.currentTarget).siblings('a[href*="felhasznalo"]').attr('href')?.replace('/felhasznalo/', '') || ''
 
     quickUserInfo.fillData(modal, userId)
 
@@ -47,45 +46,42 @@ quickUserInfo.addEventListener = () => {
   }
 }
 
-quickUserInfo.fillData = (modal: JQuery, userID: string) => {
+interface OpenedTopic {
+  _listingUrl: string
+  created: string
+  title: string
+}
 
-  let request = new XMLHttpRequest()
-  request.open('GET', 'https://sg.hu/api/forum/user?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z&user_id=' + userID, true)
+quickUserInfo.fillData = async (modal: JQuery, userID: string) => {
+  try {
+    const data = await getUserInfo(userID)
 
-  request.onload = function () {
+    // Format modal body
+    const html = `<dl>
+          <dt>Admin</dt><dd>${data.isMod === '1' ? 'Igen' : 'Nem'}</dd>
+          <dt>Büntetőpontok</dt><dd>${data.buntetopontok}</dd>
+          <dt>Üzenetek száma</dt><dd>${data.uzenetek || '0'}</dd>
+          <dt>Csillagjegy</dt><dd>${data._zodiac || '-'}</dd>
+          <dt>Életkor</dt><dd>${data._age || '-'}</dd>
+          <dt>Neme</dt><dd>${data.nem === 'f' ? 'Férfi' : data.nem === '' ? '-' : 'Nő'}</dd>
+          <dt>Honlap</dt><dd>${data.honlap || '-'}</dd>
+          <dt>Hobby</dt><dd>${data.hobby || '-'}</dd>
+          <dt>Iskola</dt><dd>${data.iskola || '-'}</dd>
+          <dt>Foglalkozás</dt><dd>${data.foglalkozas || '-'}</dd>
+          <dt>Regisztráció időpontja</dt><dd>${data.created_at}</dd>
+          <dt>Utolsó üzenet időpontja</dt><dd>${formatDateTime(new Date(parseInt(data.forum_last_post) * 1000))}</dd>
+          <dt>Utolsó látogatás időpontja</dt><dd>${data.updated_at}</dd>
+          <dt>Megnyitott témák</dt>
+              ${data.openedTopics.map((item: OpenedTopic) => `
+                <dd><a href="${item._listingUrl}" target="_blank">${formatDateTime(new Date(parseInt(item.created) * 1000))} - ${item.title}</a></dd>
+              `.trim()).join('') || '<dd>-</dd>'}
+          </dl>`
 
-    if (request.status >= 200 && request.status < 400) {
-
-      // We only need the msg object
-      let data = JSON.parse(request.responseText).msg
-
-      // Format modal body
-      let html = `<dl>
-            <dt>Admin</dt><dd>${data.isMod === '1' ? 'Igen' : 'Nem'}</dd>
-            <dt>Büntetőpontok</dt><dd>${data.buntetopontok}</dd>
-            <dt>Üzenetek száma</dt><dd>${data.uzenetek || '0'}</dd>
-            <dt>Csillagjegy</dt><dd>${data._zodiac || '-'}</dd>
-            <dt>Életkor</dt><dd>${data._age || '-'}</dd>
-            <dt>Neme</dt><dd>${data.nem === 'f' ? 'Férfi' : data.nem === '' ? '-' : 'Nő'}</dd>
-            <dt>Honlap</dt><dd>${data.honlap || '-'}</dd>
-            <dt>Hobby</dt><dd>${data.hobby || '-'}</dd>
-            <dt>Iskola</dt><dd>${data.iskola || '-'}</dd>
-            <dt>Foglalkozás</dt><dd>${data.foglalkozas || '-'}</dd>
-            <dt>Regisztráció időpontja</dt><dd>${data.created_at}</dd>
-            <dt>Utolsó üzenet időpontja</dt><dd>${getColonTimeFromDate(new Date(parseInt(data.forum_last_post) * 1000))}</dd>
-            <dt>Utolsó látogatás időpontja</dt><dd>${data.updated_at}</dd>
-            <dt>Megnyitott témák</dt>
-                ${data.openedTopics.map((item: any) => `
-                  <dd><a href="${item._listingUrl}" target="_blank">${getColonTimeFromDate(new Date(parseInt(item.created) * 1000))} - ${item.title}</a></dd>
-                `.trim()).join('') || '<dd>-</dd>'}
-            </dl>`
-
-      // Set modal texts
-      modal.find('h2').text(data.nick)
-      modal.find('p').html(html)
-    }
+    // Set modal texts
+    modal.find('h2').text(data.nick)
+    modal.find('p').html(html)
+  } catch (error) {
+    console.error('Failed to load user info:', error)
+    modal.find('p').html('<p>Hiba történt a felhasználói adatok betöltésekor.</p>')
   }
-
-  // Send our request
-  request.send()
 }

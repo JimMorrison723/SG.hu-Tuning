@@ -12,7 +12,7 @@ export default defineConfig({
     short_name: '__MSG_appShortName__',
     description: '__MSG_appDescription__',
     default_locale: 'hu',
-    permissions: ['cookies', 'notifications', 'storage', 'tabs'],
+    permissions: ['cookies', 'storage', 'tabs'],
     web_accessible_resources: [
       {
         resources: ['images/*/*.png'],

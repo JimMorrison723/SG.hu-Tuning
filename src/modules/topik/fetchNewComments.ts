@@ -16,11 +16,10 @@ fetchNewComments.activate = () => {
   fetchNewComments.locked = false
 
   // Set new messages number to zero
-  // newMessage.html('0 új hozzászólás érkezett!');
   // Monitor new comments notification
   setInterval(function () {
 
-    let newMessage = $('span#newMessage')
+    const newMessage = $('span#newMessage')
 
     if (newMessage.length === 0) {
       return false
@@ -37,7 +36,7 @@ fetchNewComments.activate = () => {
     })
 
     // Get new comments counter
-    let newmsg = parseInt(newMessage.text().match(/\d+/g))
+    const newmsg = parseInt((newMessage.text().match(/\d+/g) || ['0'])[0])
 
     if (newmsg > fetchNewComments.last_new_msg && !fetchNewComments.locked) {
 
@@ -56,98 +55,85 @@ fetchNewComments.activate = () => {
 
 fetchNewComments.rewrite = () => {
 
-  let newMessage = $('span#newMessage')
+  const newMessage = $('span#newMessage')
 
-  /*let topic_url = $('a#forum-new-messages').attr('href').substring(0, 12);*/
-  let topic_url = newMessage.attr('href')
-  let comment_c = newMessage.text().match(/\d+/g)
+  const topic_url = newMessage.attr('href')
+  const comment_c = newMessage.text().match(/\d+/g)
 
   newMessage.attr('href', topic_url + '&newmsg=' + comment_c)
 }
 
-fetchNewComments.fetch = () => {
-
-  //TODO: use API
+fetchNewComments.fetch = async () => {
 
   // Check the page number
-  let page = parseInt($('nav.pagination a:first').text())
+  const page = parseInt($('nav.pagination a:first').text())
 
   // Do nothing if we not in the first page
   if (page !== 1) {
     return false
   }
 
-  // Get new comments counter
-  //let newmsg = parseInt($('span#newMessage').text().match(/\d+/g));
+  // Update the last new msg number
+  fetchNewComments.last_new_msg = parseInt((($('span#newMessage').text().match(/\d+/g)) || ['0'])[0])
 
-  // Update the newmsg
-  //let new_comments = newmsg - fetch_new_comments_in_topic.last_new_msg;
+  // Get the topic ID and URL
+  const id = $('#topicdata').data('tid')
 
-  // Update the last new msg number = newmsg
-  fetchNewComments.last_new_msg = parseInt($('span#newMessage').text().match(/\d+/g))
+  const postInfo = $('.post:first').data('post-info')
+  const hsz = postInfo?.msg_unique ? postInfo.msg_unique + 1 : 1
+  const url = 'https://sg.hu/forum/uzenet/' + id + '/' + hsz
 
-  // Get the topik ID and URL
-  let id = $('#topicdata').data('tid')
+  try {
+    const response = await fetch(url)
+    const html = await response.text()
 
-  let hsz = $('.post:first').data('post-info').msg_unique + 1
-  // let url = 'https://sg.hu/api/forum/message?topicId=' + id + '&unique=' + hsz;
-  let url = 'https://sg.hu/forum/uzenet/' + id + '/' + hsz
+    // Increase the counter
+    fetchNewComments.counter++
 
-  // Get topic contents
-  $.ajax({
-    url: url,
-    contentType: 'text/html; charset=utf-8',
-    dataType: 'html',
+    // Append horizontal line
+    if (fetchNewComments.counter === 1) {
+      $('<hr>').insertBefore($('.post:first')).attr('id', 'ext_unread_hr')
+    }
 
-    success: function (data) {
+    // Parse the content
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
 
-      // Increase the counter
-      fetchNewComments.counter++
+    // Fetch new comments
+    const commentsEl = doc.querySelector('.post')
 
-      // Append horizontal line
-      if (fetchNewComments.counter === 1) {
-        $('<hr>').insertBefore($('.post:first')).attr('id', 'ext_unread_hr')
-      }
-
-      // Parse the content
-      let tmp = $(data)
-
-      // Fetch new comments
-      let comments = $(tmp).find('.post')
-
+    if (commentsEl) {
       // Filter the response - for security reasons
-      comments = safeResponse.cleanDomHtml(comments[0])
+      const comments = safeResponse.cleanDomHtml(commentsEl)
 
       // Append new comments
       $('#forum-posts-list').find('ul').prepend(comments)
-
-      // Remove locked status
-      fetchNewComments.locked = false
-
-      // Reinitialize settings
-
-      // Set-up block buttons
-      addToList.activate()
-
-      // highlight_comments_for_me
-      if (context.dataStore['highlightCommentsForMe']) {
-        highlightCommentsForMe.activate()
-      }
-
-      // User profiles
-      if (context.dataStore['profiles']) {
-        profiles.activated()
-      }
-
-      //Quick user info button
-      if (context.dataStore['quickUserInfo']) {
-        quickUserInfo.activated()
-      }
-
-      // Night mode
-      // if (context.dataStore['show_navigation_buttons_night']) {
-      //   lights.topic_switchOn()
-      // }
     }
-  })
+
+    // Remove locked status
+    fetchNewComments.locked = false
+
+    // Reinitialize settings
+
+    // Set-up block buttons
+    addToList.activate()
+
+    // highlight_comments_for_me
+    if (context.dataStore['highlightCommentsForMe']) {
+      highlightCommentsForMe.activate()
+    }
+
+    // User profiles
+    if (context.dataStore['profiles']) {
+      profiles.activate()
+    }
+
+    // Quick user info button
+    if (context.dataStore['quickUserInfo']) {
+      quickUserInfo.activate()
+    }
+  } catch (error) {
+    console.error('Failed to fetch new comments:', error)
+    fetchNewComments.locked = false
+  }
 }

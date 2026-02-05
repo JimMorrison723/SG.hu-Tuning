@@ -67,12 +67,12 @@ makeReadAllFavs.makeread = () => {
 
         // Faves: show only with unreaded messages
         if (context.dataStore['favShowOnlyUnread'] && context.dataStore['user']['isLoggedIn']) {
-          favShowOnlyUnread.activated()
+          favShowOnlyUnread.activate()
         }
 
         // Reset faves newmsg vars
         if (context.dataStore['jumpUnreadMessages'] && context.dataStore['user']['isLoggedIn']) {
-          jumpUnreadMessages.activated()
+          jumpUnreadMessages.activate()
         }
 
         clearInterval(interval)

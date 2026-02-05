@@ -20,16 +20,16 @@ addToList.activate = () => {
   $('#forum-posts-list').find('ul li header:not(.ext_add_to_list_topichead) a:contains("#")').each(function () {
 
     // Insert separator
-    let separator = $('<span class="separator pull-right"></span>').insertBefore(this)
+    const separator = $('<span class="separator pull-right"></span>').insertBefore(this)
 
     // Insert dropdow placeholder
-    let dropdown = $('<div class="ext_dropdown pull-right"><span>&#9660;</span></div>').insertBefore(separator)
+    const dropdown = $('<div class="ext_dropdown pull-right"><span>&#9660;</span></div>').insertBefore(separator)
 
     // Insert dropdown list
-    let list = $('<ul></ul>').appendTo(dropdown).addClass('ext_addtolist_list')
+    const list = $('<ul></ul>').appendTo(dropdown).addClass('ext_addtolist_list')
 
     // Set dropdown background color
-    let color_id = $(this).closest('#forum-posts-list ul li').css('background-image').match(/\d+/g)
+    const color_id = $(this).closest('#forum-posts-list ul li').css('background-image').match(/\d+/g)
 
     if (color_id) {
       list.css('background-color', '#' + addToList.colors[color_id])
@@ -83,23 +83,23 @@ addToList.buildList = () => {
   }
 
   // Get the profile groups
-  let profiles = JSON.parse(context.dataStore['profilesList'])
+  const profilesData = JSON.parse(context.dataStore['profilesList'])
 
   // Iterate over the groups, add each one to the list
-  for (let c = 0; c < profiles.length; c++) {
+  for (let c = 0; c < profilesData.length; c++) {
     $('<li><hr></li>').appendTo('.ext_addtolist_list')
-    $('<li class="ident ext_addtolist profile_' + c + '" style="color: #' + profiles[c]['color'][0] + '">' + profiles[c]['title'] + '</li>').appendTo('.ext_addtolist_list')
+    $('<li class="ident ext_addtolist profile_' + c + '" style="color: #' + profilesData[c]['color'][0] + '">' + profilesData[c]['title'] + '</li>').appendTo('.ext_addtolist_list')
   }
 }
 
 addToList.addToList = (group: RegExpMatchArray | null, ele: Element) => {
 
   // Get profiles
-  let list = JSON.parse(context.dataStore['profilesList'])
+  const list = JSON.parse(context.dataStore['profilesList'])
   let nick: string
 
   // Get user's nick
-  let anchor = $(ele).closest('#forum-posts-list ul li header').find('a[href*="felhasznalo"]')
+  const anchor = $(ele).closest('#forum-posts-list ul li header').find('a[href*="felhasznalo"]')
 
   if (anchor.children('img').length > 0) {
     nick = anchor.children('img').attr('title').replace(' - VIP', '')
@@ -116,7 +116,7 @@ addToList.addToList = (group: RegExpMatchArray | null, ele: Element) => {
   }
 
   // Stringify the new profiles list
-  let data = JSON.stringify(list)
+  const data = JSON.stringify(list)
 
   // Save in dataStore
   context.dataStore['profilesList'] = data

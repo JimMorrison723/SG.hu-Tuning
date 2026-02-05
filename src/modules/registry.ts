@@ -1,6 +1,5 @@
 import type { PageType } from './context'
 
-// Import all modules - these will be created in Phase 8
 import * as alwaysModules from './always'
 import * as forumModules from './forum'
 import * as topikModules from './topik'

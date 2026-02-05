@@ -1,6 +1,7 @@
 import { context, type PageType } from '@/modules/context'
 import { getModulesForPage } from '@/modules/registry'
 import { getCookie } from '@/utils/cookies'
+import { getUserByIdentId, isUserLoggedIn } from '@/utils/api'
 import { cp, settings } from './settings'
 import '@/assets/styles/content.css'
 import '@/assets/styles/settings.css'
@@ -14,15 +15,15 @@ export default defineContentScript({
     // Import jQuery dynamically to avoid build-time errors
     const jQuery = (await import('jquery')).default
     // Make jQuery globally available for modules
-    ;(window as any).$ = jQuery
-    ;(window as any).jQuery = jQuery
+    ;(window as Window & { $: typeof jQuery; jQuery: typeof jQuery }).$ = jQuery
+    ;(window as Window & { $: typeof jQuery; jQuery: typeof jQuery }).jQuery = jQuery
 
     // Filter out iframes
     if (window.top !== window) return
 
     context.port = browser.runtime.connect()
 
-    context.port.onMessage.addListener((event: any) => {
+    context.port.onMessage.addListener((event: { name: string; message: Record<string, unknown> }) => {
       if (event.name === 'setSettings') {
         // Save dataStore
         context.dataStore = event.message
@@ -48,33 +49,32 @@ export default defineContentScript({
       }
     })
 
-    function getUserStatus() {
+    async function getUserStatus() {
       // If there is an identid cookie, the user is logged in, get username
       const ident_id = getCookie('identid')
 
       if (ident_id && !context.dataStore['user']['userName']) {
-        const request = new XMLHttpRequest()
-        request.open('GET', 'https://sg.hu/api/forum/user?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z&ident_id=' + ident_id, true)
-
-        request.onload = function() {
-          if (request.status >= 200 && request.status < 400) {
-            const data = JSON.parse(request.responseText)
-            context.dataStore['user'] = { isLoggedIn: true, userName: data.msg.nick }
-            // Sync settings
-            context.port!.postMessage({ name: 'setUserSetting', message: context.dataStore['user'] })
-            return true
-          }
+        try {
+          const data = await getUserByIdentId(ident_id)
+          context.dataStore['user'] = { isLoggedIn: true, userName: data.nick }
+          // Sync settings
+          context.port!.postMessage({ name: 'setUserSetting', message: context.dataStore['user'] })
+        } catch (error) {
+          console.warn('Failed to get user info:', error)
         }
-
-        request.send()
 
         // User is not logged in
       } else if (!ident_id) {
         context.dataStore['user'] = { isLoggedIn: false, userName: '' }
       } else if (context.dataStore['user']['userName'] && context.dataStore['user']['isLoggedIn'] === undefined) {
-        jQuery.getJSON('https://sg.hu/api/forum/user/islogged?apikey=se3kMt7HkaeSjdv4cNuK3jAjyab9Nz7Z', function() {
-          context.dataStore['user'] = { isLoggedIn: true, userName: context.dataStore['user']['userName'] }
-        })
+        try {
+          const loggedIn = await isUserLoggedIn()
+          if (loggedIn) {
+            context.dataStore['user'] = { isLoggedIn: true, userName: context.dataStore['user']['userName'] }
+          }
+        } catch (error) {
+          console.warn('Failed to check login status:', error)
+        }
       }
 
       // Sync settings

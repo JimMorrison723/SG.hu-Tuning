@@ -43,8 +43,8 @@ export const cp = {
 
       html += '<div class="settings_page">'
         html += '<h3>SG Fórum tuning</h3>'
-        html += '<p>Verzió: 3.9.14</p>'
-        html += '<p>Kiadás dátuma: 2018. 12. 29.</p>'
+        html += '<p>Verzió: 4.0.0</p>'
+        html += '<p>Kiadás dátuma: 2025. 01. 20.</p>'
         html += '<p>Fejlesztő: JimMorrison723 <a href="https://jimmorrison723.hu" target="_blank">https://jimmorrison723.hu</a>, Gera János "dzsani" <a href="https://github.com/dzsani" target="_blank">https://github.com/dzsani</a></p>'
         html += '<p>Közreműködők: Viszt Péter "passatgt" <a href="http://visztpeter.me" target="_blank">http://visztpeter.me</a>, Krupa György "pyro"</p>'
       html += '</div>'
@@ -456,8 +456,8 @@ export const settings = {
 
       // Check for interactive action
       const moduleId = $(ele).attr('id')
-      if (typeof (window as any)[moduleId]?.activated !== 'undefined') {
-        (window as any)[moduleId].activated()
+      if (typeof (window as unknown as Record<string, { activate?: () => void }>)[moduleId]?.activate !== 'undefined') {
+        (window as unknown as Record<string, { activate: () => void }>)[moduleId].activate()
       }
     } else {
       // Save new settings ...
@@ -468,8 +468,8 @@ export const settings = {
 
       // Check for interactive action
       const moduleId = $(ele).attr('id')
-      if (typeof (window as any)[moduleId]?.disabled !== 'undefined') {
-        (window as any)[moduleId].disabled()
+      if (typeof (window as unknown as Record<string, { disable?: () => void }>)[moduleId]?.disable !== 'undefined') {
+        (window as unknown as Record<string, { disable: () => void }>)[moduleId].disable()
       }
     }
   },

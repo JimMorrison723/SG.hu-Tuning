@@ -1,4 +1,5 @@
 import defaultSettings from '@/utils/defaultSettings'
+import type { ContentToBackgroundMessage, BackgroundToContentMessage, SGTab } from '@/types/messages'
 
 export default defineBackground(() => {
   const ports: Record<number, browser.Runtime.Port> = {}
@@ -12,8 +13,8 @@ export default defineBackground(() => {
   })
 
   browser.runtime.onConnect.addListener((port) => {
-    port.onMessage.addListener((event: any) => {
-      let list, index
+    port.onMessage.addListener((event: ContentToBackgroundMessage) => {
+      let index
 
       // Send back the settings object
       if (event.name === 'getSettings') {
@@ -101,7 +102,7 @@ export default defineBackground(() => {
   })
 
   function updateSGTabs() {
-    const sgTabs: Array<{ id: number; url: string }> = []
+    const sgTabs: SGTab[] = []
 
     browser.tabs.query({ url: 'https://sg.hu/forum/*/*' }).then((tabs) => {
       for (const tab of tabs) {
@@ -139,19 +140,19 @@ export default defineBackground(() => {
     const changedItems = Object.keys(changes)
 
     for (const item of changedItems) {
-      const tmp: Record<string, any> = {}
+      const tmp: Record<string, unknown> = {}
       tmp[item] = changes[item].newValue
       sendMessage({ name: 'updateSettings', message: tmp })
     }
   }
 
-  function saveSetting(key: string, value: any) {
-    const temp: Record<string, any> = {}
+  function saveSetting(key: string, value: unknown) {
+    const temp: Record<string, unknown> = {}
     temp[key] = value
     browser.storage.sync.set(temp)
   }
 
-  function sendMessage(param: any) {
+  function sendMessage(param: BackgroundToContentMessage) {
     Object.values(ports).forEach((port) => {
       port.postMessage(param)
     })

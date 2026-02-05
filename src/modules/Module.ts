@@ -1,25 +1,32 @@
+/**
+ * Base Module class for all feature modules
+ *
+ * Modules are dynamically extended with additional properties
+ * at runtime, so we use index signature to allow that.
+ */
 export class Module {
   moduleName: string
   active: boolean
+
+  // Allow dynamic properties for module-specific methods and data
+  [key: string]: unknown
 
   constructor(name: string, active = false) {
     this.moduleName = name
     this.active = active
   }
 
-  get getStatus() {
-    return this.active
+  /**
+   * Called when the module should be activated
+   * Override in module instances
+   */
+  activate(): void {
+    // Override in module instances
   }
 
-  get getName() {
-    return this.moduleName
-  }
-
-  get toggleStatus() {
-    return this.active ? this.active = false : this.active = true
-  }
-
-  activated() {
-    // Override in subclasses
-  }
+  /**
+   * Called when the module should be disabled
+   * Override in module instances for cleanup
+   */
+  disable?(): void
 }

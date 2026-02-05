@@ -65,10 +65,10 @@ bun install
 
 ### Fejlesztés
 ```bash
-bun run dev chrome    # Development mode for Chrome
-bun run dev firefox   # Development mode for Firefox
-bun run build chrome  # Production build for Chrome
-bun run build firefox # Production build for Firefox
+bun run dev           # Development mode for Chrome
+bun run dev:firefox   # Development mode for Firefox
+bun run build         # Production build for Chrome
+bun run build:firefox # Production build for Firefox
 bun run lint          # Code linting
 ```
 

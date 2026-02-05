@@ -8,7 +8,7 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-	background-image: -webkit-linear-gradient(top, #fbd859, #f5b85e);
+	background-image: linear-gradient(to bottom, #fbd859, #f5b85e);
 	border-top-right-radius: 2px;
 	cursor: pointer;
 }
@@ -18,7 +18,7 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-	background-image: -webkit-linear-gradient(top, #4b90f4, #8ab8f8);
+	background-image: linear-gradient(to bottom, #4b90f4, #8ab8f8);
 	border-top-right-radius: 2px;
 	cursor: pointer;
 }
@@ -28,29 +28,15 @@
 	/*   height: 0px;*/
 	display: block;
 }
-/*#ext_left_sidebar*/
-#ext_show_filtered_faves_arrow.show {
-	margin: 5px 6px 5px 7px;
-	border: 4px solid transparent;
-	border-left-color: #fff;
-}
-/*#ext_left_sidebar*/
-#ext_show_filtered_faves_arrow.hide {
-	margin:6px 8px 3px 5px;
-	border: 4px solid transparent;
-	border-top-color: #fff;
-}
-
-/*#ext_right_sidebar*/
+/* Arrow states for filtered faves toggle */
 #ext_show_filtered_faves_arrow.show {
 	margin: 5px 6px 5px 7px;
 	border: 4px solid transparent;
 	border-left-color: #fff;
 }
 
-/*#ext_right_sidebar*/
 #ext_show_filtered_faves_arrow.hide {
-   margin:6px 8px 3px 5px;
+	margin: 6px 8px 3px 5px;
 	border: 4px solid transparent;
 	border-top-color: #fff;
 }

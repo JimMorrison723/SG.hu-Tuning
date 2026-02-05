@@ -2,8 +2,7 @@ import { Module } from '../Module'
 import { context } from '../context'
 import { getCookie, setCookie, removeCookie } from '@/utils/cookies'
 import { getAnswers, getMessage } from '@/utils/api'
-
-const getColonTimeFromDate = (date: any) => date.toLocaleString()
+import { formatDateTime } from '@/utils/time'
 
 export const messageCenter = new Module('messageCenter')
 
@@ -64,8 +63,7 @@ messageCenter.init = () => {
     messageCenter.buildOwnCommentsTab()
   }, 360000)
 
-  // buildAnswersTab
-  // TODO: This is a hack, little problem handling async functions
+  // Build answers tab after a delay to ensure messages are loaded
   setTimeout(function () {
     messageCenter.buildAnswersTab()
   }, 1000)
@@ -317,9 +315,7 @@ messageCenter.log = () => {
     $(this).submit()
   } else {
     $('form[name="newmessage"]').submit(function () {
-      //TODO: get szerkesztés id from url
-      // Get comment ID
-      //let comment_id = parseInt($('.std1:first').find('b').html().match(/\d+/g))
+      // Note: Edit mode comment ID extraction not yet implemented
 
       // Set marker to be update this comment
       //setCookie('updateComment', comment_id, 1)
@@ -341,8 +337,7 @@ messageCenter.search = () => {
     // Get current timestamp
     const time = new Date().getTime()
 
-    //TODO: comment this section in dev
-    // Check last searched state
+    // Check last searched state - skip if checked less than 60 seconds ago
     if (time < messages[key].checked + 60 * 1000) {
       continue
     }
@@ -519,7 +514,7 @@ messageCenter.buildAnswersTab = () => {
     // Own comment
     html += '<div class="ext_mc_messages">'
     html += '<p><a href="https://sg.hu/forum/tema/' + message['topic_id'] + '">' + message['topic_name'] + '</a></p>'
-    html += '<span>' + getColonTimeFromDate(time) + '</span>'
+    html += '<span>' + formatDateTime(new Date(time)) + '</span>'
     html += '<div>' + msg + '</div>'
     html += '</div>'
 

@@ -10,7 +10,7 @@ blocklist.activate = () => {
     return false
   }
 
-  let deletelist = context.dataStore['blocklisted'].split(',')
+  const deletelist = context.dataStore['blocklisted'].split(',')
 
   $('.forum-post').find('header').each(function () {
     let nick
