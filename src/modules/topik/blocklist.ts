@@ -26,11 +26,11 @@ blocklist.activate = () => {
         nick = $(this).find('a#name').text()
       }
 
-      nick = nick.replace(/ - VIP/, '')
+      nick = nick?.replace(/ - VIP/, '') ?? ''
     }
 
     for (let i = 0; i < deletelist.length; i++) {
-      if (nick.toLowerCase() === deletelist[i].toLowerCase()) {
+      if (nick?.toLowerCase() === deletelist[i].toLowerCase()) {
         $(this).closest('li.forum-post').hide()
       }
     }
@@ -53,10 +53,10 @@ export function unblock(user: string) {
         nick = $(this).find('a#name').text()
       }
 
-      nick = nick.replace(/ - VIP/, '')
+      nick = nick?.replace(/ - VIP/, '') ?? ''
     }
 
-    if (nick.toLowerCase() === user.toLowerCase()) {
+    if (nick?.toLowerCase() === user.toLowerCase()) {
 
       // Show temporary the comment height
       $(this).closest('li.forum-post').css({ display: 'block', height: 'auto' })
@@ -77,7 +77,7 @@ export function block(el: Element) {
   const tmpUrl = anchor.attr('href')
 
   if (anchor.children('img').length > 0) {
-    nick = anchor.children('img').attr('title').replace(' - VIP', '')
+    nick = (anchor.children('img').attr('title') ?? '').replace(' - VIP', '')
 
   } else {
     nick = anchor.html().replace(' - VIP', '')
@@ -94,7 +94,7 @@ export function block(el: Element) {
     })
 
     // Store new settings in localStorage
-    context.port.postMessage({ name: 'addToBlocklist', message: nick })
+    context.port!.postMessage({ name: 'addToBlocklist', message: nick })
 
     // Add name to blocklist
     $('<li><span>' + nick + '</span> <a href="#">töröl</a></li>').appendTo('#ext_block-list')

@@ -4,7 +4,7 @@ export default {
   jumpUnreadMessages: true,
   favShowOnlyUnread: true,
   favShowOnlyUnreadRemember: false,
-  favShowOnlyUnreadRememberOpened: false,
+  favShowOnlyUnreadRememberOpened: true,
   shortCommentMarker: true,
   highlightForumCategories: false,
   threadedComments: false,
@@ -42,6 +42,6 @@ export default {
   messageCenter: false,
   mcMessages: '',
   mcSelectedTab: 0,
-  installed: true,
+  installed: '',
   sgTabs: true
 }

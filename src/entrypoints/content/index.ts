@@ -1,5 +1,5 @@
-import { context, type PageType } from '@/modules/context'
-import { getModulesForPage } from '@/modules/registry'
+import { context, type PageType, type DataStore } from '@/modules/context'
+import { getModulesForPage, getAlwaysModules } from '@/modules/registry'
 import { getCookie } from '@/utils/cookies'
 import { getUserByIdentId, isUserLoggedIn } from '@/utils/api'
 import { cp, settings } from './settings'
@@ -15,21 +15,22 @@ export default defineContentScript({
     // Import jQuery dynamically to avoid build-time errors
     const jQuery = (await import('jquery')).default
     // Make jQuery globally available for modules
-    ;(window as Window & { $: typeof jQuery; jQuery: typeof jQuery }).$ = jQuery
-    ;(window as Window & { $: typeof jQuery; jQuery: typeof jQuery }).jQuery = jQuery
+    ;(window as unknown as Window & { $: typeof jQuery; jQuery: typeof jQuery }).$ = jQuery
+    ;(window as unknown as Window & { $: typeof jQuery; jQuery: typeof jQuery }).jQuery = jQuery
 
     // Filter out iframes
     if (window.top !== window) return
 
     context.port = browser.runtime.connect()
 
-    context.port.onMessage.addListener((event: { name: string; message: Record<string, unknown> }) => {
+    context.port!.onMessage.addListener((_event) => {
+      const event = _event as { name: string; message: Record<string, unknown> }
       if (event.name === 'setSettings') {
         // Save dataStore
-        context.dataStore = event.message
+        context.dataStore = event.message as DataStore
         getUserStatus()
         context.PAGE = whatPage()
-        context.scripts = getModulesForPage(context.PAGE)
+        context.scripts = { ...getAlwaysModules(), ...getModulesForPage(context.PAGE) }
         startup()
         cp.init(context.PAGE)
 
@@ -45,7 +46,7 @@ export default defineContentScript({
           }
         }
       } else if (event.name === 'SGTabs') {
-        context.scripts['sgTabs']?.refresh(event.message)
+        context.scripts['sgTabs']?.refresh?.(event.message)
       }
     })
 

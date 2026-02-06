@@ -5,6 +5,8 @@ export const removeAds = new Module('removeAds')
 removeAds.activate = () => {
   // Ad spaces
   $('div[id^="sg_forumnyito_"]').remove()
+  $('div[id^="sg_cikk_"]').remove()
+  $('div[id^="sg_nyito_"]').remove()
   // Home facebook widget
   $('#forum-fb-likebox').remove()
   // Forum page blue separator
@@ -19,6 +21,8 @@ removeAds.activate = () => {
   const style = document.createElement('style')
   style.textContent = `
       div[id^="sg_forumnyito_"],
+      div[id^="sg_cikk_"],
+      div[id^="sg_nyito_"],
       #forum-fb-likebox,
       #forum-wrap .blue-border-top,
       div:has(+ nav#menu-family),

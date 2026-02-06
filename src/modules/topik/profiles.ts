@@ -12,7 +12,7 @@ profiles.activate = () => {
     return false
   }
 
-  const profiles = JSON.parse(context.dataStore['profilesList'])
+  const profiles = JSON.parse(context.dataStore['profilesList'] as string)
 
   // Iterate over the comments
   $('#forum-posts-list').find('ul li header:not(.checked)').each(function () {
@@ -37,7 +37,7 @@ profiles.activate = () => {
     } else {
 
       nick = ($(this).find('a img').length === 1) ? $(this).find('a img').attr('alt') : $(this).find('a#name').text()
-      nick = nick.replace(/ - VIP/, '')
+      nick = nick?.replace(/ - VIP/, '') ?? ''
     }
 
     // Remove old outlines and titles

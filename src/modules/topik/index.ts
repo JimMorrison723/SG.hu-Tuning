@@ -16,6 +16,3 @@ export { topicWhitelist } from './topicWhitelist'
 
 // Re-export from other modules used on topic page
 export { disablePointSystem } from '../news/disablePointSystem'
-export { removeAds } from '../always/removeAds'
-export { messageCenter } from '../always/messageCenter'
-export { sgTabs } from '../always/sgTabs'

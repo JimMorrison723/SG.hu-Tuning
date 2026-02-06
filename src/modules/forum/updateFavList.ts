@@ -29,12 +29,12 @@ updateFavList.activate = () => {
 
   // Add click event
   refresh_faves.on('click', 'img', function () {
-    updateFavList.refresh()
+    updateFavList.refresh?.()
   })
 
   // Set up auto-update
   setInterval(function () {
-    updateFavList.refresh()
+    updateFavList.refresh?.()
   }, 30000)
 }
 

@@ -1,6 +1,13 @@
 import { Module } from '../Module'
 import { context } from '../context'
 
+// jQuery plugin augmentation for cleditor
+declare global {
+  interface JQuery {
+    cleditor(options?: Record<string, unknown>): JQuery
+  }
+}
+
 export const overlayReplyTo = new Module('overlayReplyTo')
 
 overlayReplyTo.opened = false
@@ -113,7 +120,7 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
     textarea_clone.find('form div:eq(0)').append('<textarea cols="50" rows="10" name="message"></textarea>')
 
     // Copy textarea original comment to the tmp element
-    textarea_clone.find('textarea').val($('form[name=newmessage]:gt(0) textarea').val())
+    textarea_clone.find('textarea').val($('form[name=newmessage]:gt(0) textarea').val() as string ?? '')
 
     // Apply some styles
     textarea_clone.css({ 'background': 'none', 'border': 'none' })
@@ -185,7 +192,7 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
     }
 
     // Copy textarea original comment to the tmp element
-    textarea_clone.find('textarea').val($('form[name=newmessage]:gt(0) textarea').val())
+    textarea_clone.find('textarea').val($('form[name=newmessage]:gt(0) textarea').val() as string ?? '')
 
     // Fix buttons
     textarea_clone.find('button:eq(1)').css({ position: 'absolute', left: 0 })   // -85
@@ -198,12 +205,12 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
   }
 
   // Textarea position
-  const top = $(comment_clone).offset().top + $(comment_clone).height()
+  const top = ($(comment_clone).offset()?.top ?? 0) + ($(comment_clone).height() ?? 0)
   let left
   if (document.location.href.match(/cikkek/)) {
-    left = $(document).width() / 2 - 350
+    left = ($(document).width() ?? 0) / 2 - 350
   } else {
-    left = $(document).width() / 2 - 475
+    left = ($(document).width() ?? 0) / 2 - 475
   }
 
   textarea_clone.delay(350).css({ top: top + 200, left: left, opacity: 0 }).animate({
@@ -225,11 +232,11 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
   $('form[name=newmessage]:gt(0)').attr('name', 'tmp')
 
   // Set msg no input
-  textarea_clone.find('input[name=no_ref]').attr('value', msgno)
+  textarea_clone.find('input[name=no_ref]').attr('value', msgno?.[0] ?? '')
 
   // Autoscroll
   $('html, body').animate({
-    scrollTop: comment.offset().top - $(window).height() / 3
+    scrollTop: (comment.offset()?.top ?? 0) - ($(window).height() ?? 0) / 3
   }, 500)
 
   // Set the right tabindex
@@ -246,8 +253,9 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
 
   // Block default tab action in a WYSIWYG editor
   if (context.dataStore['wysiwygEditor']) {
-    $(textarea_clone.find('iframe')[0].contentDocument.body).keydown(function (event) {
-      if (event.keyCode === '9') {
+    const iframeBody = textarea_clone.find('iframe')[0]?.contentDocument?.body
+    if (iframeBody) $(iframeBody).keydown(function (event: JQuery.KeyDownEvent) {
+      if (event.keyCode === 9) {
         event.preventDefault()
         textarea_clone.find('a:last').focus()
       }

@@ -9,7 +9,8 @@ export class Module {
   active: boolean
 
   // Allow dynamic properties for module-specific methods and data
-  [key: string]: unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any
 
   constructor(name: string, active = false) {
     this.moduleName = name
@@ -29,4 +30,11 @@ export class Module {
    * Override in module instances for cleanup
    */
   disable?(): void
+
+  /**
+   * Called when the module needs to refresh its state
+   * Override in module instances that need dynamic refresh (e.g. sgTabs)
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  refresh?(...args: any[]): void
 }

@@ -2,7 +2,7 @@
   "name": "sg.hu-tuning",
   "type": "module",
   "author": "JimMorrison723",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
     "dev": "wxt",

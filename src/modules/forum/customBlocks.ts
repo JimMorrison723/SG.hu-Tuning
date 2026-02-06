@@ -75,7 +75,7 @@ customBlocks.buildConfig = () => {
 }
 
 customBlocks.setConfigByKey = (id: string, key: string, value: any) => {
-  const config = JSON.parse(context.dataStore['blocksConfig'])
+  const config = JSON.parse(context.dataStore['blocksConfig'] as string)
 
   for (let c = 0; c < config.length; c++) {
     if (config[c]['id'] === id) {
@@ -93,7 +93,7 @@ customBlocks.setConfigByKey = (id: string, key: string, value: any) => {
 }
 
 customBlocks.getConfigValByKey = (id: string, key: string) => {
-  const config = JSON.parse(context.dataStore['blocksConfig'])
+  const config = JSON.parse(context.dataStore['blocksConfig'] as string)
 
   for (let c = 0; c < config.length; c++) {
     if (config[c]['id'] === id) {
@@ -104,7 +104,7 @@ customBlocks.getConfigValByKey = (id: string, key: string) => {
 
 customBlocks.reindexOrderConfig = () => {
   // let for config
-  //let config = JSON.parse(context.dataStore['blocksConfig']);
+  //let config = JSON.parse(context.dataStore['blocksConfig'] as string);
   const _config: any[] = []
 
   $('.ext_block').each(function (index) {
@@ -129,7 +129,7 @@ customBlocks.reindexOrderConfig = () => {
 }
 
 customBlocks.executeConfig = () => {
-  let config = JSON.parse(context.dataStore['blocksConfig'])
+  let config = JSON.parse(context.dataStore['blocksConfig'] as string)
   config = config.reverse()
   for (let c = 0; c < config.length; c++) {
     // Visibility

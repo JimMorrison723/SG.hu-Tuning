@@ -15,7 +15,7 @@ topicWhitelist.execute = (element: Element, id: string | number) => {
     $(element).attr('title', 'Téma eltávolítása a fehérlistából')
 
     // Add to config
-    context.port.postMessage({name: 'addTopicToWhitelist', message: id})
+    context.port!.postMessage({name: 'addTopicToWhitelist', message: id})
 
     // Remove topic from whitelist
   } else {
@@ -27,6 +27,6 @@ topicWhitelist.execute = (element: Element, id: string | number) => {
     $(element).attr('title', 'Téma hozzáadása a fehérlistához')
 
     // Remove from config
-    context.port.postMessage({name: 'removeTopicFromWhitelist', message: id})
+    context.port!.postMessage({name: 'removeTopicFromWhitelist', message: id})
   }
 }

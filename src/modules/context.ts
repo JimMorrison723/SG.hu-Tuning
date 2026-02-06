@@ -6,6 +6,9 @@ import type { ExtensionSettings, UserInfo } from '@/types/messages'
 
 export type PageType = 0 | 1 | 2 | 3 | 4
 
+// Use the actual runtime Port type from WXT's browser global
+type RuntimePort = ReturnType<typeof browser.runtime.connect>
+
 // DataStore is extension settings with some runtime additions
 export type DataStore = Partial<ExtensionSettings> & {
   user: UserInfo
@@ -13,7 +16,7 @@ export type DataStore = Partial<ExtensionSettings> & {
 }
 
 interface Context {
-  port: browser.Runtime.Port | null
+  port: RuntimePort | null
   dataStore: DataStore
   PAGE: PageType
   scripts: Record<string, Module>
@@ -29,7 +32,7 @@ export const context: Context = {
 }
 
 // Getter functions for cleaner access
-export function getPort(): browser.Runtime.Port {
+export function getPort(): RuntimePort {
   if (!context.port) {
     throw new Error('Port not initialized')
   }

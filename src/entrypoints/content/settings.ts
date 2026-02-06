@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { context } from '@/modules/context'
+import { context, type DataStore } from '@/modules/context'
 
 // Will be imported after blocklist module is migrated
 let unblockFn: ((user: string) => void) | null = null
@@ -43,8 +43,8 @@ export const cp = {
 
       html += '<div class="settings_page">'
         html += '<h3>SG Fórum tuning</h3>'
-        html += '<p>Verzió: 4.0.0</p>'
-        html += '<p>Kiadás dátuma: 2025. 01. 20.</p>'
+        html += '<p>Verzió: 4.0.1</p>'
+        html += '<p>Kiadás dátuma: 2025. 02. 06.</p>'
         html += '<p>Fejlesztő: JimMorrison723 <a href="https://jimmorrison723.hu" target="_blank">https://jimmorrison723.hu</a>, Gera János "dzsani" <a href="https://github.com/dzsani" target="_blank">https://github.com/dzsani</a></p>'
         html += '<p>Közreműködők: Viszt Péter "passatgt" <a href="http://visztpeter.me" target="_blank">http://visztpeter.me</a>, Krupa György "pyro"</p>'
       html += '</div>'
@@ -215,7 +215,7 @@ export const cp = {
     ext_header.find('li').css({ 'background-image': 'url(' + browser.runtime.getURL('/images/settings/icons.png') + ')' })
 
     // Create tabs event
-    ext_header.find('li').click(function () {
+    ext_header.find('li').click(function (this: HTMLElement) {
       cp.tab($(this).index())
     })
 
@@ -240,17 +240,17 @@ export const cp = {
     settings.restore()
 
     // Settings change event, saving
-    settings_button.click(function () {
+    settings_button.click(function (this: HTMLElement) {
       cp.button(this)
     })
 
     // Set checkboxes
-    $('.settings_page input:checkbox').click(function () {
+    $('.settings_page input:checkbox').click(function (this: HTMLElement) {
       settings.save(this)
     })
 
     // Set select boxes
-    $('.settings_page select').change(function () {
+    $('.settings_page select').change(function (this: HTMLElement) {
       settings.select(this)
     })
 
@@ -298,12 +298,12 @@ export const cp = {
     const paneHeight = ext_s_wrapper.height()
 
     // Hide the pane
-    ext_s_wrapper.animate({ top: '-' + (paneHeight + 10) + 'px' }, 200, function () {
+    ext_s_wrapper.animate({ top: '-' + (paneHeight + 10) + 'px' }, 200, function (this: HTMLElement) {
       // Hide the settings pane
       $(this).css('top', -9000)
 
       // Restore the overlay
-      $('#ext_settings_hide_overlay').animate({ opacity: 0 }, 100, function () {
+      $('#ext_settings_hide_overlay').animate({ opacity: 0 }, 100, function (this: HTMLElement) {
         $(this).css('display', 'none')
       })
 
@@ -365,7 +365,7 @@ export const blocklist_cp = {
     blocklist_cp.list()
 
     // Create remove events
-    $('#ext_block-list').on('click', 'a', function (e: Event) {
+    $('#ext_block-list').on('click', 'a', function (this: HTMLElement, e: Event) {
       e.preventDefault()
       blocklist_cp.remove(this)
     })
@@ -421,8 +421,8 @@ export const settings = {
     const $ = (window as any).jQuery
 
     // Restore settings for buttons
-    $('.settings_page .button').each(function () {
-      if (context.dataStore[$(this).attr('id')] === true) {
+    $('.settings_page .button').each(function (this: HTMLElement) {
+      if (context.dataStore[$(this).attr('id')!] === true) {
         $(this).attr('class', 'button on')
       } else {
         $(this).attr('class', 'button off')
@@ -430,8 +430,8 @@ export const settings = {
     })
 
     // Restore settings for checkboxes
-    $('input:checkbox').each(function () {
-      if (context.dataStore[$(this).attr('id')] === true) {
+    $('input:checkbox').each(function (this: HTMLElement) {
+      if (context.dataStore[$(this).attr('id')!] === true) {
         $(this).attr('checked', true)
       } else {
         $(this).attr('checked', false)
@@ -439,8 +439,8 @@ export const settings = {
     })
 
     // Restore settings for select boxes
-    $('.settings_page select').each(function () {
-      $(this).find('option[value="' + context.dataStore[$(this).attr('id')] + '"]').attr('selected', true)
+    $('.settings_page select').each(function (this: HTMLElement) {
+      $(this).find('option[value="' + context.dataStore[$(this).attr('id')!] + '"]').attr('selected', true)
     })
   },
 
@@ -488,7 +488,7 @@ export const settings = {
   },
 
   create: function (newSettings: Record<string, any>) {
-    context.dataStore = newSettings
+    context.dataStore = newSettings as DataStore
   },
 
   update: function (message: Record<string, any>) {
@@ -510,12 +510,12 @@ const profiles_cp = {
     })
 
     // Color select
-    $('.settings_page .profiles').on('click', 'li ul li', function () {
+    $('.settings_page .profiles').on('click', 'li ul li', function (this: HTMLElement) {
       profiles_cp.changeColor(this)
     })
 
     // Remove a group
-    $('.settings_page ul.profiles').on('click', 'p.remove', function () {
+    $('.settings_page ul.profiles').on('click', 'p.remove', function (this: HTMLElement) {
       profiles_cp.removeGroup(this)
     })
 
@@ -542,7 +542,7 @@ const profiles_cp = {
     // Empty the list
     $('.settings_page .profiles > li:not(.sample)').remove()
 
-    const profiles = JSON.parse(context.dataStore['profilesList'])
+    const profiles = JSON.parse(context.dataStore['profilesList'] as string)
 
     for (let c = 0; c < profiles.length; c++) {
       // Get the clone elementent
@@ -609,14 +609,14 @@ const profiles_cp = {
     const data: any[] = []
 
     // Iterate over the groups
-    $('.settings_page .profiles > li:not(.sample)').each(function (index: number) {
+    $('.settings_page .profiles > li:not(.sample)').each(function (this: HTMLElement, index: number) {
       // Create an new empty object for the group settings
       data[index] = {}
 
       // Prefs
-      data[index]['color'] = $(this).find('.color').val().split(',')
+      data[index]['color'] = ($(this).find('.color').val() as string).split(',')
       data[index]['title'] = $(this).find('.title').val()
-      data[index]['users'] = $(this).find('.users').val().split(',')
+      data[index]['users'] = ($(this).find('.users').val() as string).split(',')
 
       // Options
       data[index]['background'] = $(this).find('.background').prop('checked')

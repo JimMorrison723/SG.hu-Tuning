@@ -772,6 +772,10 @@ textarea[name="message"] {
 	background-color: rgb(20, 20, 20) !important;
 	background-image: none;
 	color: rgb(119, 119, 119) !important;
+
+	span, h4, a {
+		color: rgb(119, 119, 119) !important;
+	}
 }
 
 .night_topichead {

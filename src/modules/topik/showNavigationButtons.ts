@@ -18,10 +18,10 @@ showNavigationButtons.activate = () => {
 
   const ext_scrolltop = $('#ext_scrolltop')
   const ext_back = $('#ext_back')
-  let ext_nav_faves = ''
-  let ext_nightmode = ''
-  let ext_search = ''
-  let ext_whitelist = ''
+  let ext_nav_faves: JQuery<HTMLElement> | null = null
+  let ext_nightmode: JQuery<HTMLElement> | null = null
+  let ext_search: JQuery<HTMLElement> | null = null
+  let ext_whitelist: JQuery<HTMLElement> | null = null
 
   // Add click event to scrolltop button
   ext_scrolltop.on('click', function () {
@@ -60,11 +60,11 @@ showNavigationButtons.activate = () => {
     })
 
     // Get topic ID
-    const id = $('input[name="fid"]').val()
+    const id = String($('input[name="fid"]').val() ?? '')
 
     // Determining current status
     let status, title = ''
-    const whitelist = context.dataStore['topicWhitelist'].split(',')
+    const whitelist = (context.dataStore['topicWhitelist'] as string ?? '').split(',')
 
     if (whitelist.indexOf(id) === -1) {
       status = '+'
@@ -80,7 +80,7 @@ showNavigationButtons.activate = () => {
     ext_whitelist = $('#ext_whitelist')
 
     // Create whitelist event
-    ext_whitelist.click(function () {
+    ext_whitelist.click(function (this: HTMLElement) {
 
       topicWhitelist.execute(this, id)
     })
@@ -132,24 +132,26 @@ showNavigationButtons.activate = () => {
     buttons.push('ext_back')
   }
 
-  if (ext_search.length) {
+  if (ext_search?.length) {
     buttons.push('ext_search')
   }
 
-  if (ext_whitelist.length) {
+  if (ext_whitelist?.length) {
     buttons.push('ext_whitelist')
   }
 
-  if (ext_nightmode.length) {
+  if (ext_nightmode?.length) {
     buttons.push('ext_nightmode')
   }
 
-  if (ext_nav_faves.length) {
+  if (ext_nav_faves?.length) {
     buttons.push('ext_nav_faves')
   }
 
+  const navPos = (context.dataStore['navigationButtonsPosition'] as string) ?? 'leftcenter'
+
   // Reverse the array order for bottom positioning
-  if (context.dataStore['navigationButtonsPosition'].match('bottom')) {
+  if (navPos.match('bottom')) {
     buttons = buttons.reverse()
   }
 
@@ -157,37 +159,37 @@ showNavigationButtons.activate = () => {
   const height = buttons.length * 36
 
   // Calculate the top position
-  const top = ($(window).height() / 2) - (height / 2)
+  const top = (($(window).height() ?? 0) / 2) - (height / 2)
 
   // Iterate over the buttons
   for (let c = 0; c < buttons.length; c++) {
 
-    if (context.dataStore['navigationButtonsPosition'] === 'lefttop') {
+    if (navPos === 'lefttop') {
 
       $('#' + buttons[c]).css({ left: 10, right: 'auto', top: 30 + (36 * c), bottom: 'auto' })
     }
 
-    if (context.dataStore['navigationButtonsPosition'] === 'leftcenter') {
+    if (navPos === 'leftcenter') {
 
       $('#' + buttons[c]).css({ left: 10, right: 'auto', top: top + (36 * c), bottom: 'auto' })
     }
 
-    if (context.dataStore['navigationButtonsPosition'] === 'leftbottom') {
+    if (navPos === 'leftbottom') {
 
       $('#' + buttons[c]).css({ left: 10, right: 'auto', bottom: 30 + (36 * c), top: 'auto' })
     }
 
-    if (context.dataStore['navigationButtonsPosition'] === 'righttop') {
+    if (navPos === 'righttop') {
 
       $('#' + buttons[c]).css({ right: 10, left: 'auto', top: 50 + (36 * c), bottom: 'auto' })
     }
 
-    if (context.dataStore['navigationButtonsPosition'] === 'rightcenter') {
+    if (navPos === 'rightcenter') {
 
       $('#' + buttons[c]).css({ right: 10, left: 'auto', top: top + (36 * c), bottom: 'auto' })
     }
 
-    if (context.dataStore['navigationButtonsPosition'] === 'rightbottom') {
+    if (navPos === 'rightbottom') {
 
       $('#' + buttons[c]).css({ right: 10, left: 'auto', bottom: 30 + (36 * c), top: 'auto' })
     }
@@ -245,15 +247,15 @@ showNavigationButtons.showFaves = () => {
     dataType: 'html',
     success: function (tmp) {
 
-      let data = $('nav#favorites-list', tmp)
+      const data = $('nav#favorites-list', tmp)
 
       // Security reasons
-      data = safeResponse.cleanDomHtml(data[0])
+      const cleanedHtml = safeResponse.cleanDomHtml(data[0])
 
       // Write data into wrapper
-      $('#ext_nav_faves_wrapper').find('.ext_nav_fave_list').html(data)
+      $('#ext_nav_faves_wrapper').find('.ext_nav_fave_list').html(cleanedHtml)
 
-      if (context.dataStore['jumpUnreadMessages'] === 'true') {
+      if (context.dataStore['jumpUnreadMessages']) {
         jumpUnreadMessages.activate()
       }
 
@@ -261,7 +263,7 @@ showNavigationButtons.showFaves = () => {
       favShowOnlyUnread.activate()
 
       // Faves: short comment marker
-      if (context.dataStore['shortCommentMarker'] === 'true') {
+      if (context.dataStore['shortCommentMarker']) {
         shortCommentMarker.activate()
       }
 
@@ -282,20 +284,21 @@ showNavigationButtons.showFaves = () => {
   })
 }
 
-showNavigationButtons.findArrowPosition = (ele: JQuery | string, target: JQuery | string) => {
+showNavigationButtons.findArrowPosition = (ele: JQuery<HTMLElement>, target: JQuery<HTMLElement>) => {
+  const navPos = (context.dataStore['navigationButtonsPosition'] as string) ?? 'leftcenter'
 
   let vPos
   // Top
-  if (context.dataStore['navigationButtonsPosition'].match('bottom')) {
-    vPos = parseInt($(target).css('bottom').replace('px', '')) + $(target).height() / 2 - $(ele).outerHeight() / 2
+  if (navPos.match('bottom')) {
+    vPos = parseInt($(target).css('bottom').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
   } else {
-    vPos = parseInt($(target).css('top').replace('px', '')) + $(target).height() / 2 - $(ele).outerHeight() / 2
+    vPos = parseInt($(target).css('top').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
   }
 
   // Left
-  if (context.dataStore['navigationButtonsPosition'].match('left')) {
+  if (navPos.match('left')) {
 
-    if (context.dataStore['navigationButtonsPosition'].match('bottom')) {
+    if (navPos.match('bottom')) {
       $(ele).css({
         'border-color': 'transparent #c0c0c0 transparent transparent',
         top: 'auto',
@@ -314,7 +317,7 @@ showNavigationButtons.findArrowPosition = (ele: JQuery | string, target: JQuery 
     }
     // Right
   } else {
-    if (context.dataStore['navigationButtonsPosition'].match('bottom')) {
+    if (navPos.match('bottom')) {
       $(ele).css({
         'border-color': 'transparent transparent transparent #c0c0c0',
         top: 'auto',
@@ -334,45 +337,46 @@ showNavigationButtons.findArrowPosition = (ele: JQuery | string, target: JQuery 
   }
 }
 
-showNavigationButtons.findPosition = (ele: JQuery | string, target: JQuery | string) => {
+showNavigationButtons.findPosition = (ele: JQuery<HTMLElement>, target: JQuery<HTMLElement>) => {
+  const navPos = (context.dataStore['navigationButtonsPosition'] as string) ?? 'leftcenter'
 
   let top, bottom
-  if (context.dataStore['navigationButtonsPosition'] === 'lefttop') {
+  if (navPos === 'lefttop') {
 
     top = parseInt($(target).css('top').replace('px', '')) - 15
 
     $(ele).css({ left: 50, right: 'auto', top: top, bottom: 'auto' })
   }
 
-  if (context.dataStore['navigationButtonsPosition'] === 'leftcenter') {
+  if (navPos === 'leftcenter') {
 
-    top = parseInt($(target).css('top').replace('px', '')) + $(target).height() / 2 - $(ele).outerHeight() / 2
+    top = parseInt($(target).css('top').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
 
     $(ele).css({ left: 50, right: 'auto', top: top, bottom: 'auto' })
   }
 
-  if (context.dataStore['navigationButtonsPosition'] === 'leftbottom') {
+  if (navPos === 'leftbottom') {
 
     bottom = parseInt($(target).css('bottom').replace('px', '')) - 15
 
     $(ele).css({ left: 50, right: 'auto', top: 'auto', bottom: bottom })
   }
 
-  if (context.dataStore['navigationButtonsPosition'] === 'righttop') {
+  if (navPos === 'righttop') {
 
     top = parseInt($(target).css('top').replace('px', '')) - 15
 
     $(ele).css({ left: 'auto', right: 50, top: top, bottom: 'auto' })
   }
 
-  if (context.dataStore['navigationButtonsPosition'] === 'rightcenter') {
+  if (navPos === 'rightcenter') {
 
-    top = parseInt($(target).css('top').replace('px', '')) + $(target).height() / 2 - $(ele).outerHeight() / 2
+    top = parseInt($(target).css('top').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
 
     $(ele).css({ left: 'auto', right: 50, top: top, bottom: 'auto' })
   }
 
-  if (context.dataStore['navigationButtonsPosition'] === 'rightbottom') {
+  if (navPos === 'rightbottom') {
 
     bottom = parseInt($(target).css('bottom').replace('px', '')) - 15
 

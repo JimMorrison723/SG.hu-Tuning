@@ -1,8 +1,9 @@
 import defaultSettings from '@/utils/defaultSettings'
 import type { ContentToBackgroundMessage, BackgroundToContentMessage, SGTab } from '@/types/messages'
+type RuntimePort = ReturnType<typeof browser.runtime.connect>
 
 export default defineBackground(() => {
-  const ports: Record<number, browser.Runtime.Port> = {}
+  const ports: Record<number, RuntimePort> = {}
 
   browser.runtime.onInstalled.addListener((details) => {
     if (details.reason === 'install') {
@@ -13,7 +14,8 @@ export default defineBackground(() => {
   })
 
   browser.runtime.onConnect.addListener((port) => {
-    port.onMessage.addListener((event: ContentToBackgroundMessage) => {
+    port.onMessage.addListener((_event) => {
+      const event = _event as ContentToBackgroundMessage
       let index
 
       // Send back the settings object
@@ -123,7 +125,7 @@ export default defineBackground(() => {
     })
   }
 
-  function connected(p: browser.Runtime.Port) {
+  function connected(p: RuntimePort) {
     if (p.sender?.tab?.id) {
       ports[p.sender.tab.id] = p
 
@@ -136,7 +138,7 @@ export default defineBackground(() => {
   }
 
   // Send message about a setting has been changed
-  function storageChange(changes: Record<string, browser.Storage.StorageChange>) {
+  function storageChange(changes: Record<string, { newValue?: unknown; oldValue?: unknown }>) {
     const changedItems = Object.keys(changes)
 
     for (const item of changedItems) {

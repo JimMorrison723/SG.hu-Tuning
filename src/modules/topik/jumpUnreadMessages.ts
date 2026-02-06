@@ -8,7 +8,7 @@ jumpUnreadMessages.activate = () => {
   if (context.PAGE === 2)
     jumpUnreadMessages.topic()
 
-  const msgPerPage = context.dataStore['msgPerPage']
+  const msgPerPage = Number(context.dataStore['msgPerPage']) || 80
 
   $('#favorites-list').find('span').find('a').each(function () { //.ext_faves'
 
@@ -16,21 +16,20 @@ jumpUnreadMessages.activate = () => {
     if ($(this).find('span[class="new"]').length > 0) {
 
       // Get the new messages count
-      const newMsg = parseInt($(this).find('span[class="new"]').html().match(/\d+/g))
+      const newMsg = parseInt($(this).find('span[class="new"]').html().match(/\d+/g)?.[0] ?? '0')
 
       // Get last msn's page number
       const page = Math.ceil(newMsg / msgPerPage)
 
       // Rewrite the url
-      $(this).attr('href', $(this).attr('href') + '?order=desc&page=' + page + '&newmsg=' + newMsg)
-      //$(this).attr('href', $(this).attr('href') + '#last-read')
+      $(this).attr('href', ($(this).attr('href') ?? '') + '?order=desc&page=' + page + '&newmsg=' + newMsg)
 
       // Remove newmsg var from link
-    } else if ($(this).attr('href').indexOf('&order') !== -1) {
+    } else if (($(this).attr('href') ?? '').indexOf('&order') !== -1) {
 
-      const start = $(this).attr('href').indexOf('&order')
+      const start = ($(this).attr('href') ?? '').indexOf('&order')
 
-      $(this).attr('href', $(this).attr('href').substring(0, start))
+      $(this).attr('href', ($(this).attr('href') ?? '').substring(0, start))
     }
   })
 }
@@ -39,26 +38,28 @@ jumpUnreadMessages.disable = () => {
 
   $('#favorites-list').find('a').each(function () {
 
-    if ($(this).attr('href').indexOf('&order') !== -1) {
+    if (($(this).attr('href') ?? '').indexOf('&order') !== -1) {
 
-      const start = $(this).attr('href').indexOf('&order')
+      const start = ($(this).attr('href') ?? '').indexOf('&order')
 
-      $(this).attr('href', $(this).attr('href').substring(0, start))
+      $(this).attr('href', ($(this).attr('href') ?? '').substring(0, start))
     }
   })
 }
 
 jumpUnreadMessages.topic = () => {
 
-  const msgPerPage = context.dataStore['msgPerPage']
+  const msgPerPage = Number(context.dataStore['msgPerPage']) || 80
 
   // Get new messages counter
-  const newMsg = document.location.href.split('&newmsg=')[1]
+  const newMsgStr = document.location.href.split('&newmsg=')[1]
 
   // Return if there is not comment counter set
-  if (typeof newMsg === 'undefined' || newMsg === '' || newMsg === 0) {
+  if (typeof newMsgStr === 'undefined' || newMsgStr === '' || newMsgStr === '0') {
     return false
   }
+
+  const newMsg = parseInt(newMsgStr)
 
   // Get the last msg
   const lastMsg = newMsg % msgPerPage
@@ -122,9 +123,9 @@ jumpUnreadMessages.jump = () => {
   }
 
   // Target offsets
-  const windowHalf = $(window).height() / 2
-  const targetHalf = $(target).outerHeight() / 2
-  const targetTop = $(target).offset().top
+  const windowHalf = ($(window).height() ?? 0) / 2
+  const targetHalf = ($(target).outerHeight() ?? 0) / 2
+  const targetTop = $(target).offset()?.top ?? 0
   const targetOffset = targetTop - (windowHalf - targetHalf)
 
   // Scroll to target element

@@ -32,7 +32,7 @@ addToList.activate = () => {
     const color_id = $(this).closest('#forum-posts-list ul li').css('background-image').match(/\d+/g)
 
     if (color_id) {
-      list.css('background-color', '#' + addToList.colors[color_id])
+      list.css('background-color', '#' + addToList.colors[color_id[0]])
     } else {
       list.css('background-color', '#ccc')
     }
@@ -46,7 +46,7 @@ addToList.activate = () => {
   $('.ext_dropdown').off().on('click', function () {
 
     if ($(this).find('ul').css('display') === 'none') {
-      $(this).find('ul').css('top', $(this).closest('#forum-posts-list ul li header').height()).slideDown()
+      $(this).find('ul').css('top', $(this).closest('#forum-posts-list ul li header').height() ?? 0).slideDown()
     } else {
       $(this).find('ul').slideUp()
     }
@@ -64,7 +64,7 @@ addToList.activate = () => {
 
   // Create events for lists
   $('.ext_addtolist').off().on('click', function () {
-    addToList.addToList($(this).attr('class').match(/\d+/g), this)
+    addToList.addToList($(this).attr('class')?.match(/\d+/g), this)
   })
 }
 
@@ -83,7 +83,7 @@ addToList.buildList = () => {
   }
 
   // Get the profile groups
-  const profilesData = JSON.parse(context.dataStore['profilesList'])
+  const profilesData = JSON.parse(context.dataStore['profilesList'] as string)
 
   // Iterate over the groups, add each one to the list
   for (let c = 0; c < profilesData.length; c++) {
@@ -93,26 +93,28 @@ addToList.buildList = () => {
 }
 
 addToList.addToList = (group: RegExpMatchArray | null, ele: Element) => {
+  if (!group) return
 
   // Get profiles
-  const list = JSON.parse(context.dataStore['profilesList'])
+  const list = JSON.parse(context.dataStore['profilesList'] as string)
+  const groupIdx = group[0]
   let nick: string
 
   // Get user's nick
   const anchor = $(ele).closest('#forum-posts-list ul li header').find('a[href*="felhasznalo"]')
 
   if (anchor.children('img').length > 0) {
-    nick = anchor.children('img').attr('title').replace(' - VIP', '')
+    nick = (anchor.children('img').attr('title') ?? '').replace(' - VIP', '')
 
   } else {
     nick = anchor.html().replace(' - VIP', '')
   }
 
   // Check user
-  if (list[group]['users'].indexOf(nick) === -1) {
-    list[group]['users'].push(nick)
+  if (list[groupIdx]['users'].indexOf(nick) === -1) {
+    list[groupIdx]['users'].push(nick)
   } else {
-    list[group]['users'].splice(list[group]['users'].indexOf(nick), 1)
+    list[groupIdx]['users'].splice(list[groupIdx]['users'].indexOf(nick), 1)
   }
 
   // Stringify the new profiles list
@@ -122,7 +124,7 @@ addToList.addToList = (group: RegExpMatchArray | null, ele: Element) => {
   context.dataStore['profilesList'] = data
 
   // Save in localStorage
-  context.port.postMessage({ name: 'setSetting', key: 'profilesList', val: data })
+  context.port!.postMessage({ name: 'setSetting', key: 'profilesList', val: data })
 
   // Remove checked class for update
   $('#forum-posts-list').find('.forum-post').each(function () {
@@ -135,7 +137,7 @@ addToList.addToList = (group: RegExpMatchArray | null, ele: Element) => {
     } else {
       /* BUG avatar nélküli felhasználóknál nem működik.     $(this).find("header a")[0]  undefined */
       nick_2 = ($(this).find('.name img').length === 1) ? $(this).find('.name img').attr('alt') : $(this).find('.name').text()
-      nick_2 = nick_2.replace(/ - VIP/, '')
+      nick_2 = nick_2?.replace(/ - VIP/, '') ?? ''
     }
 
     if (nick === nick_2) {

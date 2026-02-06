@@ -13,7 +13,7 @@ threadedComments.activate = () => {
   }
 
   // Set prev and next button if any new messages
-  if (newMsg > 0) {
+  if (Number(newMsg) > 0) {
 
     $('<span class="thread_prev">&laquo;</span>').insertBefore('.ext_new_comment')
     $('<span class="thread_next">&raquo;</span>').insertAfter('.ext_new_comment')
@@ -45,9 +45,9 @@ threadedComments.prev = (ele: HTMLElement) => {
   const target = $('.ext_new_comment').eq((index - 1)).closest('.post').children('header')
 
   // Target offsets
-  const windowHalf = $(window).height() / 2
-  const targetHalf = $(target).outerHeight() / 2
-  const targetTop = $(target).offset().top
+  const windowHalf = ($(window).height() ?? 0) / 2
+  const targetHalf = ($(target).outerHeight() ?? 0) / 2
+  const targetTop = $(target).offset()?.top ?? 0
   const targetOffset = targetTop - (windowHalf - targetHalf)
 
   // Scroll to target element
@@ -69,9 +69,9 @@ threadedComments.next = (next: HTMLElement) => {
   const target = ext_new_comment.eq((index + 1)).closest('.post').children('header')
 
   // Target offsets
-  const windowHalf = $(window).height() / 2
-  const targetHalf = $(target).outerHeight() / 2
-  const targetTop = $(target).offset().top
+  const windowHalf = ($(window).height() ?? 0) / 2
+  const targetHalf = ($(target).outerHeight() ?? 0) / 2
+  const targetTop = $(target).offset()?.top ?? 0
   const targetOffset = targetTop - (windowHalf - targetHalf)
 
   // Scroll to target element
@@ -89,12 +89,13 @@ threadedComments.sort = () => {
       // Add checked class
       $(this).addClass('checked')
 
-      // Return 'true'
-      return true
+      // Continue to next element
+      return
     }
 
     // Get answered comment numer
-    const commentNum = $(this).find('.reply').text().split('#')[1].match(/\d+/g)
+    const commentNum = $(this).find('.reply').text().split('#')[1]?.match(/\d+/g)
+    if (!commentNum) return
 
     // Seach for parent node via comment number
     $(this).appendTo($('.header a:contains("#' + commentNum[0] + '"):last').closest('.post'))

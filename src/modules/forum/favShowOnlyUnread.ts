@@ -5,14 +5,12 @@ import { setCookie } from '@/utils/cookies'
 
 export const favShowOnlyUnread = new Module('favShowOnlyUnread')
 
-favShowOnlyUnread.opened = false
+favShowOnlyUnread.opened = true
 
 favShowOnlyUnread.init = () => {
   if (context.dataStore['favShowOnlyUnreadRemember']) {
-    favShowOnlyUnread.opened = context.dataStore['favShowOnlyUnreadOpened']
-  }
-  if (context.dataStore['favShowOnlyUnreadOpened']) {
-    $('#favorites-open-close-button').find('#icon').html('-')
+    favShowOnlyUnread.opened = context.dataStore['favShowOnlyUnreadRememberOpened']
+    $('#favorites-open-close-button').find('#icon').html(favShowOnlyUnread.opened ? '+' : '-')
   }
 }
 
@@ -65,7 +63,7 @@ favShowOnlyUnread.activate = () => {
   ext_filtered_faves_arrow.attr('class', 'show')
 
   // Set event handling
-  $('#favorites-open-close-button').on('click', function (e) {
+  $('#favorites-open-close-button').off('click').on('click', function (e) {
     e.preventDefault()
     if (favShowOnlyUnread.opened === false) {
       // nyitva
@@ -78,7 +76,7 @@ favShowOnlyUnread.activate = () => {
 
       // Update last state in LocalStorage
       if (context.port) {
-        context.port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: true })
+        context.port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadRememberOpened', val: true })
       }
 
       // Reposition the popup if any
@@ -95,7 +93,7 @@ favShowOnlyUnread.activate = () => {
 
       // Update last state in LocalStorage
       if (context.port) {
-        context.port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadOpened', val: false })
+        context.port.postMessage({ name: 'setSetting', key: 'favShowOnlyUnreadRememberOpened', val: false })
       }
 
       // Reposition the popup if any
@@ -116,11 +114,11 @@ favShowOnlyUnread.activate = () => {
   if (favShowOnlyUnread.opened === true) {
     ext_filtered_error.hide()
     ext_filtered_faves_arrow.attr('class', 'hide')
-    $('.fav-not-new-msg').show()
+    fav_list.find('.fav-not-new-msg').hide()
   } else {
     ext_filtered_error.show()
     ext_filtered_faves_arrow.attr('class', 'show')
-    fav_list.find('.fav-not-new-msg').hide()
+    fav_list.find('.fav-not-new-msg').show()
   }
 }
 

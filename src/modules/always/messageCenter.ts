@@ -166,7 +166,7 @@ messageCenter.log = () => {
   // Check the latest comment for getting the comment ID
   if (getCookie('updateComment')) {
     // Get messages for MC
-    messages = JSON.parse(context.dataStore['mcMessages'])
+    messages = JSON.parse(context.dataStore['mcMessages'] as string)
 
     // Get the comment ID
     id = getCookie('updateComment')
@@ -312,7 +312,7 @@ messageCenter.log = () => {
       })
     })
 
-    $(this).submit()
+    $('form[name="newmessage"]').trigger('submit')
   } else {
     $('form[name="newmessage"]').submit(function () {
       // Note: Edit mode comment ID extraction not yet implemented
@@ -330,7 +330,7 @@ messageCenter.search = () => {
   }
 
   // Get the latest post
-  const messages = context.dataStore['mcMessages']
+  const messages = context.dataStore['mcMessages'] as any
 
   // Iterate over the posts
   for (let key = 0; key < messages.length; key++) {
