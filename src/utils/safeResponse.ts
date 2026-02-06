@@ -46,7 +46,7 @@ export const safeResponse = {
   },
 
   clean(tmpDom: HTMLElement): string {
-    let list = tmpDom.querySelectorAll('script')
+    const list = tmpDom.querySelectorAll('script')
 
     for (let i = list.length - 1; i >= 0; i--) {
       const current = list[i]

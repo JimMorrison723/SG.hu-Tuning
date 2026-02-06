@@ -17,7 +17,7 @@ removeAds.activate = () => {
   $('div.forum-topics-block').next('div').remove()
 
   const style = document.createElement('style')
-    style.textContent = `
+  style.textContent = `
       div[id^="sg_forumnyito_"],
       #forum-fb-likebox,
       #forum-wrap .blue-border-top,

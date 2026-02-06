@@ -133,6 +133,7 @@ fetchNewComments.fetch = async () => {
       quickUserInfo.activate()
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Failed to fetch new comments:', error)
     fetchNewComments.locked = false
   }

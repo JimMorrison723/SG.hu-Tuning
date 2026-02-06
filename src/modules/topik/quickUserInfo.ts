@@ -81,6 +81,7 @@ quickUserInfo.fillData = async (modal: JQuery, userID: string) => {
     modal.find('h2').text(data.nick)
     modal.find('p').html(html)
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Failed to load user info:', error)
     modal.find('p').html('<p>Hiba történt a felhasználói adatok betöltésekor.</p>')
   }

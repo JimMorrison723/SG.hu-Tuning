@@ -6,7 +6,7 @@ textareaAutoResize.height = 72
 
 textareaAutoResize.activate = () => {
 
-  let textarea = $('textarea[name=message]')
+  const textarea = $('textarea[name=message]')
 
   // Create the text holder element
   $('<div id="ext_textheight"></div>').prependTo('body')
@@ -33,7 +33,7 @@ textareaAutoResize.setHeight = (ele: HTMLElement) => {
 
   // Get element value
   let val = $(ele).val() as string
-  let ext_height = $('#ext_textheight')
+  const ext_height = $('#ext_textheight')
 
   // Escape the value
   val = val.replace(/</gi, '&lt;')
@@ -48,7 +48,7 @@ textareaAutoResize.setHeight = (ele: HTMLElement) => {
   ext_height.html(val)
 
   // Get the text holder element's height
-  let height = ext_height.height() + 12
+  const height = ext_height.height() + 12
 
   // Check for expand
   if (height > $(ele).height()) {
@@ -58,7 +58,7 @@ textareaAutoResize.setHeight = (ele: HTMLElement) => {
   // Check for shrink
   if ($(ele).height() > textareaAutoResize.height && height < $(ele).height()) {
 
-    let newHeight = height < textareaAutoResize.height ? textareaAutoResize.height : height
+    const newHeight = height < textareaAutoResize.height ? textareaAutoResize.height : height
 
     $(ele).height(newHeight)
   }

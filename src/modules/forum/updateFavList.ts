@@ -94,6 +94,7 @@ updateFavList.refresh = async () => {
       nightMode.forumSwitchOn()
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Failed to refresh favorites:', error)
     // Reset icon on error
     refresh_img.attr('src', browser.runtime.getURL('/images/content/refresh.png'))

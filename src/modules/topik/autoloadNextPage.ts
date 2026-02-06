@@ -38,6 +38,7 @@ autoloadNextPage.activate = async () => {
         }
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.warn('Failed to fetch topic page:', error)
     }
 
@@ -138,6 +139,7 @@ autoloadNextPage.load = async () => {
     autoloadNextPage.currPage++
     autoloadNextPage.counter++
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Failed to load next page:', error)
     autoloadNextPage.progress = false
   }

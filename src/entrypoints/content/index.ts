@@ -60,6 +60,7 @@ export default defineContentScript({
           // Sync settings
           context.port!.postMessage({ name: 'setUserSetting', message: context.dataStore['user'] })
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.warn('Failed to get user info:', error)
         }
 
@@ -73,6 +74,7 @@ export default defineContentScript({
             context.dataStore['user'] = { isLoggedIn: true, userName: context.dataStore['user']['userName'] }
           }
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.warn('Failed to check login status:', error)
         }
       }

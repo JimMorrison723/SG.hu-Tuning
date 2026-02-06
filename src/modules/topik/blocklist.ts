@@ -62,7 +62,7 @@ export function unblock(user: string) {
       $(this).closest('li.forum-post').css({ display: 'block', height: 'auto' })
 
       // Get height
-      let height = $(this).closest('li.forum-post').height()
+      const height = $(this).closest('li.forum-post').height()
 
       // Set back to invisible, then animate
       $(this).closest('li.forum-post').css({ height: 0 }).animate({ opacity: 1, height: height }, 500)
@@ -73,8 +73,8 @@ export function unblock(user: string) {
 export function block(el: Element) {
   let nick = ''
 
-  let anchor = $(el).closest('#forum-posts-list ul li header').find('a[href*="/felhasznalo"]')
-  let tmpUrl = anchor.attr('href')
+  const anchor = $(el).closest('#forum-posts-list ul li header').find('a[href*="/felhasznalo"]')
+  const tmpUrl = anchor.attr('href')
 
   if (anchor.children('img').length > 0) {
     nick = anchor.children('img').attr('title').replace(' - VIP', '')

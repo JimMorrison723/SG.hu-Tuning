@@ -12,7 +12,7 @@ profiles.activate = () => {
     return false
   }
 
-  let profiles = JSON.parse(context.dataStore['profilesList'])
+  const profiles = JSON.parse(context.dataStore['profilesList'])
 
   // Iterate over the comments
   $('#forum-posts-list').find('ul li header:not(.checked)').each(function () {
@@ -22,7 +22,7 @@ profiles.activate = () => {
     if (!$(this).next().is('.wrapper')) {
 
       // Create the wrapper
-      let wrapper = $('<div class="wrapper"></div>').insertAfter(this).css('position', 'relative')
+      const wrapper = $('<div class="wrapper"></div>').insertAfter(this).css('position', 'relative')
 
       // Place in other elements
       //noinspection JSCheckFunctionSignatures
@@ -58,15 +58,15 @@ profiles.activate = () => {
 
           // Title
           //noinspection JSCheckFunctionSignatures
-          let placeholder = $('<span class="titles">' + profiles[c]['title'] + '</span>').appendTo($(this).find('span.icons'))
+          const placeholder = $('<span class="titles">' + profiles[c]['title'] + '</span>').appendTo($(this).find('span.icons'))
           placeholder.css('padding-left', 10)
 
           // Calc outline width
-          let width = (1 + $(this).parent().find('.wrapper:first .outline').length) * 8 - 8
+          const width = (1 + $(this).parent().find('.wrapper:first .outline').length) * 8 - 8
 
           // Border
           //noinspection JSCheckFunctionSignatures
-          let outline = $('<div class="outline"></div>').insertBefore($(this).parent().find('section.body, footer'))
+          const outline = $('<div class="outline"></div>').insertBefore($(this).parent().find('section.body, footer'))
           outline.css({
             width: 6,
             height: '100%',

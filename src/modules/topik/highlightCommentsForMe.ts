@@ -5,7 +5,7 @@ export const highlightCommentsForMe = new Module('highlightCommentsForMe')
 
 highlightCommentsForMe.activate = () => {
 
-  let userName = context.dataStore['user']['userName']
+  const userName = context.dataStore['user']['userName']
 
   // Return false when no username set
   if (!userName) {
@@ -13,12 +13,12 @@ highlightCommentsForMe.activate = () => {
   }
 
   // Get the proper domnodes
-  let comment = $('li[id*="post"] footer a:contains("' + userName + '")')
+  const comment = $('li[id*="post"] footer a:contains("' + userName + '")')
 
   //We need exact match with the userName
-  let start_pos = comment.text().indexOf('\'') + 1
-  let end_pos = comment.text().indexOf('\'', start_pos)
-  let TesTcomment = comment.text().substring(start_pos, end_pos)
+  const start_pos = comment.text().indexOf('\'') + 1
+  const end_pos = comment.text().indexOf('\'', start_pos)
+  const TesTcomment = comment.text().substring(start_pos, end_pos)
   let comments
 
   if (TesTcomment === userName) {

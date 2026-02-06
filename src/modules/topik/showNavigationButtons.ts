@@ -16,8 +16,8 @@ showNavigationButtons.activate = () => {
   // Created the back button
   $('<div id="ext_back" title="Főoldal">&#9664;</div>').prependTo('body')
 
-  let ext_scrolltop = $('#ext_scrolltop')
-  let ext_back = $('#ext_back')
+  const ext_scrolltop = $('#ext_scrolltop')
+  const ext_back = $('#ext_back')
   let ext_nav_faves = ''
   let ext_nightmode = ''
   let ext_search = ''
@@ -60,11 +60,11 @@ showNavigationButtons.activate = () => {
     })
 
     // Get topic ID
-    let id = $('input[name="fid"]').val()
+    const id = $('input[name="fid"]').val()
 
     // Determining current status
     let status, title = ''
-    let whitelist = context.dataStore['topicWhitelist'].split(',')
+    const whitelist = context.dataStore['topicWhitelist'].split(',')
 
     if (whitelist.indexOf(id) === -1) {
       status = '+'
@@ -154,10 +154,10 @@ showNavigationButtons.activate = () => {
   }
 
   // Calculate buttons height
-  let height = buttons.length * 36
+  const height = buttons.length * 36
 
   // Calculate the top position
-  let top = ($(window).height() / 2) - (height / 2)
+  const top = ($(window).height() / 2) - (height / 2)
 
   // Iterate over the buttons
   for (let c = 0; c < buttons.length; c++) {
@@ -206,19 +206,19 @@ showNavigationButtons.disable = () => {
 
 showNavigationButtons.showSearch = () => {
 
-  let ext_search = $('#ext_search')
-  let ext_overlay_search_arrow = $('#ext_overlay_search_arrow')
+  const ext_search = $('#ext_search')
+  const ext_overlay_search_arrow = $('#ext_overlay_search_arrow')
 
   // Hide opened overlays
   showNavigationButtons.removeOverlay()
 
   // Clone and append the original search form to body
-  let clone = $('form#search-top').clone().appendTo('body')
+  const clone = $('form#search-top').clone().appendTo('body')
 
   // Add class
   clone.attr('id', 'ext_overlay_search')
 
-  let ext_overlay_search = $('#ext_overlay_search')
+  const ext_overlay_search = $('#ext_overlay_search')
 
   // Set position
   showNavigationButtons.findArrowPosition(ext_overlay_search_arrow, ext_search)
@@ -234,10 +234,10 @@ showNavigationButtons.showSearch = () => {
 
 showNavigationButtons.showFaves = () => {
 
-  let url = 'https://sg.hu/forum/'
-  let ext_nav_faves_wrapper = $('#ext_nav_faves_wrapper')
-  let ext_nav_faves = $('#ext_nav_faves')
-  let ext_nav_faves_arrow = $('#ext_nav_faves_arrow')
+  const url = 'https://sg.hu/forum/'
+  const ext_nav_faves_wrapper = $('#ext_nav_faves_wrapper')
+  const ext_nav_faves = $('#ext_nav_faves')
+  const ext_nav_faves_arrow = $('#ext_nav_faves_arrow')
 
   $.ajax({
     url: url,

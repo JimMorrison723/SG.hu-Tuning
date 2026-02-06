@@ -8,7 +8,7 @@ overlayReplyTo.opened = false
 overlayReplyTo.activate = () => {
 
   // Change tabindexes for suit the overlay textarea
-  let ta = $('textarea:first')
+  const ta = $('textarea:first')
   ta.attr('tabindex', '3')
   ta.closest('div').find('a:last').attr('tabindex', '4')
 
@@ -19,8 +19,8 @@ overlayReplyTo.activate = () => {
     e.preventDefault()
 
     // Get ref msg ID and comment element
-    let msgno = $(this).closest('header').find('a.post-no').text().match(/\d+/g)
-    let entry = $(this).closest('.post')
+    const msgno = $(this).closest('header').find('a.post-no').text().match(/\d+/g)
+    const entry = $(this).closest('.post')
 
     // Call show method
     overlayReplyTo.show(entry, msgno)
@@ -50,13 +50,13 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
   }
 
   let textarea_clone
-  let body = $('body')
+  const body = $('body')
 
   // Create the hidden layer
   $('<div class="ext_hidden_layer"></div>').prependTo('body').hide().fadeTo(300, 0.9)
 
   // Highlight the reply comment
-  let comment_clone = $(comment).clone().prependTo('#forum-posts-list ul').addClass('ext_highlighted_comment')
+  const comment_clone = $(comment).clone().prependTo('#forum-posts-list ul').addClass('ext_highlighted_comment')
 
   // Maintain comment clone positions
   comment_clone.css({ 'top': comment.position().top })
@@ -198,7 +198,7 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
   }
 
   // Textarea position
-  let top = $(comment_clone).offset().top + $(comment_clone).height()
+  const top = $(comment_clone).offset().top + $(comment_clone).height()
   let left
   if (document.location.href.match(/cikkek/)) {
     left = $(document).width() / 2 - 350
@@ -258,9 +258,9 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
   textarea_clone.find('a.thickbox').each(function () {
 
     // Get the title and other stuff
-    let t = $(this).attr('title') || $(this).attr('name') || null
-    let g = $(this).attr('rel') || false
-    let h = $(this).attr('href')
+    const t = $(this).attr('title') || $(this).attr('name') || null
+    const g = $(this).attr('rel') || false
+    const h = $(this).attr('href')
 
     $(this).attr('href', 'javascript:TB_show(\'' + t + '\',\'' + h + '\',' + g + ');')
 
@@ -268,7 +268,7 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
   })
 
   // Add close button
-  let close_btm = $('<img src="' + browser.runtime.getURL('images/content/overlay_close.png') + '" id="ext_close_overlay" title="Overlay bezárása">').prependTo(textarea_clone).addClass('ext_overlay_close')
+  const close_btm = $('<img src="' + browser.runtime.getURL('images/content/overlay_close.png') + '" id="ext_close_overlay" title="Overlay bezárása">').prependTo(textarea_clone).addClass('ext_overlay_close')
 
   // When we cancel reply, cancel it in the clone form too
   if ($('.ext_clone_textarea').find('#form-reply-message').length) {
@@ -306,7 +306,7 @@ overlayReplyTo.show = (comment: JQuery, msgno: RegExpMatchArray | null) => {
 
 overlayReplyTo.cancelReply = () => {
 
-  let form = $('.ext_clone_textarea')
+  const form = $('.ext_clone_textarea')
   form.find('input[name="no_ref"]').val('')
   form.find('textarea[name="message"]').focus()
   form.find('#form-reply-message').addClass('hidden').find('var').text('')
