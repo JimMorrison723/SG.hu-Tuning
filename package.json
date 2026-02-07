@@ -1,32 +1,26 @@
 {
   "name": "sg.hu-tuning",
+  "type": "module",
   "author": "JimMorrison723",
-  "version": "3.9.14",
+  "version": "4.0.1",
   "description": "A Chrome extension for the popular sg.hu site",
   "scripts": {
-    "lint": "eslint app/scripts/*",
-    "dev": "webextension-toolbox dev",
-    "build": "webextension-toolbox build",
-    "postinstall": "patch-package"
-  },
-  "engines": {
-    "node": "^16.17.0 || ^18.12.0",
-    "npm": ">=8.19.2"
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
   },
   "devDependencies": {
-    "@webextension-toolbox/webextension-toolbox": "^5.2.2",
-    "copy-webpack-plugin": "^11.0.0",
-    "eslint": "^8.26.0",
-    "jquery": "^3.6.1",
-    "patch-package": "^6.5.0",
-    "webextension-polyfill": "^0.10.0"
-  },
-  "eslintIgnore": [
-    "app/scripts/settings.js"
-  ],
-  "packageManager": "npm@8.19.2",
-  "volta": {
-    "node": "18.12.0",
-    "npm": "8.19.2"
+    "@eslint/js": "^9.39.2",
+    "@types/jquery": "^3.5.33",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
+    "jquery": "4.0.0",
+    "typescript-eslint": "^8.54.0",
+    "wxt": "^0.20.13"
   }
 }

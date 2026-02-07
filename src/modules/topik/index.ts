@@ -1,0 +1,18 @@
+// Topic page modules
+export { blocklist } from './blocklist'
+export { addToList } from './addToList'
+export { showNavigationButtons } from './showNavigationButtons'
+export { highlightCommentsForMe } from './highlightCommentsForMe'
+export { threadedComments } from './threadedComments'
+export { profiles } from './profiles'
+export { jumpUnreadMessages } from './jumpUnreadMessages'
+export { autoloadNextPage } from './autoloadNextPage'
+export { overlayReplyTo } from './overlayReplyTo'
+export { quickUserInfo } from './quickUserInfo'
+export { textareaAutoResize } from './textareaAutoResize'
+export { quickInsertion } from './quickInsertion'
+export { fetchNewComments } from './fetchNewComments'
+export { topicWhitelist } from './topicWhitelist'
+
+// Re-export from other modules used on topic page
+export { disablePointSystem } from '../news/disablePointSystem'

@@ -1,0 +1,133 @@
+import { Module } from '../Module'
+import { context } from '../context'
+
+export const jumpUnreadMessages = new Module('jumpUnreadMessages')
+
+jumpUnreadMessages.activate = () => {
+
+  if (context.PAGE === 2)
+    jumpUnreadMessages.topic()
+
+  const msgPerPage = Number(context.dataStore['msgPerPage']) || 80
+
+  $('#favorites-list').find('span').find('a').each(function () { //.ext_faves'
+
+    // If theres a new message
+    if ($(this).find('span[class="new"]').length > 0) {
+
+      // Get the new messages count
+      const newMsg = parseInt($(this).find('span[class="new"]').html().match(/\d+/g)?.[0] ?? '0')
+
+      // Get last msn's page number
+      const page = Math.ceil(newMsg / msgPerPage)
+
+      // Rewrite the url
+      $(this).attr('href', ($(this).attr('href') ?? '') + '?order=desc&page=' + page + '&newmsg=' + newMsg)
+
+      // Remove newmsg var from link
+    } else if (($(this).attr('href') ?? '').indexOf('&order') !== -1) {
+
+      const start = ($(this).attr('href') ?? '').indexOf('&order')
+
+      $(this).attr('href', ($(this).attr('href') ?? '').substring(0, start))
+    }
+  })
+}
+
+jumpUnreadMessages.disable = () => {
+
+  $('#favorites-list').find('a').each(function () {
+
+    if (($(this).attr('href') ?? '').indexOf('&order') !== -1) {
+
+      const start = ($(this).attr('href') ?? '').indexOf('&order')
+
+      $(this).attr('href', ($(this).attr('href') ?? '').substring(0, start))
+    }
+  })
+}
+
+jumpUnreadMessages.topic = () => {
+
+  const msgPerPage = Number(context.dataStore['msgPerPage']) || 80
+
+  // Get new messages counter
+  const newMsgStr = document.location.href.split('&newmsg=')[1]
+
+  // Return if there is not comment counter set
+  if (typeof newMsgStr === 'undefined' || newMsgStr === '' || newMsgStr === '0') {
+    return false
+  }
+
+  const newMsg = parseInt(newMsgStr)
+
+  // Get the last msg
+  const lastMsg = newMsg % msgPerPage
+  let target
+  const last_read = $('a#last-read')
+
+  // Target comment element
+  if ($('.ext_new_comment').length > 0) {
+    target = $('.ext_new_comment:first').closest('li.forum-post')
+
+  } else if (last_read.length > 0) {
+    target = last_read.prev()
+
+    // Insert the horizontal rule
+    $('<hr>').insertAfter(target).attr('id', 'ext_unread_hr')
+
+  } else {
+    target = $('.topichead').closest('center').eq(lastMsg - 1)
+
+    // Insert the horizontal rule
+    $('<hr>').insertAfter(target).attr('id', 'ext_unread_hr')
+  }
+
+  // Append hr tag content if any
+  //var content = $('a#last-read').find('li.forum-post').insertBefore('a#last-read')
+
+  // Remove original hr tag
+  last_read.remove()
+
+  // Url to rewrite
+  const url = document.location.href.replace(/&newmsg=\d+/gi, '')
+
+  // Update the url to avoid re-jump
+  history.replaceState({ page: url }, '', url)
+
+  // Call the jump window onload
+  window.onload = function () {
+    jumpUnreadMessages.jump()
+  }
+
+  // Add click event the manual 'jump to last msg' button
+  $('a[href*="#last-read"]').click(function (e) {
+    e.preventDefault()
+    jumpUnreadMessages.jump()
+  })
+}
+
+jumpUnreadMessages.jump = () => {
+
+  let target
+
+  // Get the target element
+  if ($('.ext_new_comment').length > 0) {
+    target = $('.ext_new_comment:first').closest('header')
+
+  } else if ($('#ext_unread_hr').length > 0) {
+    target = $('#ext_unread_hr')
+
+  } else {
+    return false
+  }
+
+  // Target offsets
+  const windowHalf = ($(window).height() ?? 0) / 2
+  const targetHalf = ($(target).outerHeight() ?? 0) / 2
+  const targetTop = $(target).offset()?.top ?? 0
+  const targetOffset = targetTop - (windowHalf - targetHalf)
+
+  // Scroll to target element
+  $('html, body').animate({ scrollTop: targetOffset }, 400)
+}

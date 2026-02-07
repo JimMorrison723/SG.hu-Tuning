@@ -1,31 +1,42 @@
 # SG.hu Tuning
 
-Ha szeretnél segíteni, csak küldj egy pull-requestet a módosításaiddal. Legyen szó bugfix-ról, apróbb módosításról, esetleg teljesen új funkció bevezetéséről. 
+Ha szeretnél segíteni, csak küldj egy pull-requestet a módosításaiddal. Legyen szó bugfix-ról, apróbb módosításról, esetleg teljesen új funkció bevezetéséről.
 
 ## Dokumentumok
 
-A kiegészítő a webextension-toolbox-ot használja. 
-* [webextension-toolbox](https://github.com/HaNdTriX/webextension-toolbox)
+A kiegészítő a WXT (Web Extension Tools) keretrendszert használja.
+* [WXT Framework](https://wxt.dev)
+
+## Követelmények
+
+- [Bun](https://bun.sh) (latest version)
 
 ## Install
 
-	$ npm install
+```bash
+bun install
+```
 
 ## Development
 
-    npm run dev chrome
-    npm run dev firefox
-    npm run dev opera
-    npm run dev edge
+```bash
+bun run dev           # Chrome (default)
+bun run dev:firefox   # Firefox
+```
 
 ## Build
 
-    npm run build chrome
-    npm run build firefox
-    npm run build opera
-    npm run build edge
+```bash
+bun run build           # Chrome (default)
+bun run build:firefox   # Firefox
+```
+
+## Lint
+
+```bash
+bun run lint
+```
 
 ## Environment
 
-The build tool also defines a variable named `process.env.NODE_ENV` in your scripts. 
-
+WXT provides environment variables and build configuration through `wxt.config.ts`.

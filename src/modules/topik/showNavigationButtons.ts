@@ -1,0 +1,411 @@
+import { Module } from '../Module'
+import { context } from '../context'
+import { jumpUnreadMessages } from './jumpUnreadMessages'
+import { favShowOnlyUnread } from '../forum'
+import { shortCommentMarker } from '../forum'
+import { safeResponse } from '@/utils/safeResponse'
+import { topicWhitelist } from './topicWhitelist'
+import { nightMode } from '../always/nightMode'
+
+export const showNavigationButtons = new Module('showNavigationButtons')
+
+showNavigationButtons.activate = () => {
+
+  // Create the scrolltop button
+  $('<div id="ext_scrolltop" title="Ugrás az oldal tetejére">&#9650;</div>').prependTo('body')
+  // Created the back button
+  $('<div id="ext_back" title="Főoldal">&#9664;</div>').prependTo('body')
+
+  const ext_scrolltop = $('#ext_scrolltop')
+  const ext_back = $('#ext_back')
+  let ext_nav_faves: JQuery<HTMLElement> | null = null
+  let ext_nightmode: JQuery<HTMLElement> | null = null
+  let ext_search: JQuery<HTMLElement> | null = null
+  let ext_whitelist: JQuery<HTMLElement> | null = null
+
+  // Add click event to scrolltop button
+  ext_scrolltop.on('click', function () {
+    $('html, body').animate({ scrollTop: 0 }, 400)
+  })
+
+  // Add event to back button
+  ext_back.on('click', function () {
+    if (document.location.href.match(/cikkek/)) {
+      document.location.href = 'https://sg.hu/'
+    } else {
+      document.location.href = 'https://sg.hu/forum/'
+    }
+  })
+
+  if (!document.location.href.match(/cikkek/) && !document.location.href.match(/uzenetek/)) {
+
+    // Create search button
+    $('<div id="ext_search" title="Keresés"></div>').prependTo('body')
+
+    // Place search overlay arrow
+    $('<div id="ext_overlay_search_arrow"></div>').appendTo('body')
+
+    ext_search = $('#ext_search')
+
+    // Place search icon background
+    ext_search.css('background-image', 'url(' + browser.runtime.getURL('/images/content/search.png') + ')')
+
+    // Create the search event
+    ext_search.on('click', function () {
+      if ($('#ext_overlay_search').length) {
+        showNavigationButtons.removeOverlay()
+      } else {
+        showNavigationButtons.showSearch()
+      }
+    })
+
+    // Get topic ID
+    const id = String($('input[name="fid"]').val() ?? '')
+
+    // Determining current status
+    let status, title = ''
+    const whitelist = (context.dataStore['topicWhitelist'] as string ?? '').split(',')
+
+    if (whitelist.indexOf(id) === -1) {
+      status = '+'
+      title = 'Téma hozzáadása a fehérlistához'
+    } else {
+      status = '-'
+      title = 'Téma eltávolítása a fehérlistából'
+    }
+
+    // Create the whitelist button
+    $('<div id="ext_whitelist" title="' + title + '">' + status + '</div>').prependTo('body')
+
+    ext_whitelist = $('#ext_whitelist')
+
+    // Create whitelist event
+    ext_whitelist.click(function (this: HTMLElement) {
+
+      topicWhitelist.execute(this, id)
+    })
+  }
+
+  // Execute when the user is logged in
+  if (context.dataStore['user']['userName'] || document.location.href.match(/uzenetek/)) {
+
+    // Create faves button
+    $('<div id="ext_nav_faves" title="Kedvencek"></div>').prependTo('body')
+
+    ext_nav_faves = $('#ext_nav_faves')
+
+    // Place the faves icon
+    ext_nav_faves.css('background-image', 'url(' + browser.runtime.getURL('/images/content/star.png') + ')')
+
+    // Place faves opened cotainer
+    $('<p id="ext_nav_faves_arrow"></p>').prependTo('body')
+    $('<div id="ext_nav_faves_wrapper"></div>').prependTo('body')
+    $('<div class="ext_faves"><h5>Kedvencek</h5></div>').appendTo('#ext_nav_faves_wrapper')
+    $('<div class="ext_nav_fave_list"></div>').appendTo('#ext_nav_faves_wrapper')
+
+    // Create faves button event
+    ext_nav_faves.click(function () {
+      if ($('#ext_nav_faves_wrapper').css('display') === 'none') {
+        showNavigationButtons.showFaves()
+      } else {
+        showNavigationButtons.removeOverlay()
+      }
+    })
+  }
+
+  //Night mode
+  if (context.dataStore['showNavigationButtonsNight'] === true) {
+    nightMode.init()
+    ext_nightmode = $('#ext_nightmode')
+  }
+
+  // Set the button positions
+
+  // Gather visible buttons
+  let buttons: string[] = []
+
+  if (ext_scrolltop.length) {
+    buttons.push('ext_scrolltop')
+  }
+
+  if (ext_back.length) {
+    buttons.push('ext_back')
+  }
+
+  if (ext_search?.length) {
+    buttons.push('ext_search')
+  }
+
+  if (ext_whitelist?.length) {
+    buttons.push('ext_whitelist')
+  }
+
+  if (ext_nightmode?.length) {
+    buttons.push('ext_nightmode')
+  }
+
+  if (ext_nav_faves?.length) {
+    buttons.push('ext_nav_faves')
+  }
+
+  const navPos = (context.dataStore['navigationButtonsPosition'] as string) ?? 'leftcenter'
+
+  // Reverse the array order for bottom positioning
+  if (navPos.match('bottom')) {
+    buttons = buttons.reverse()
+  }
+
+  // Calculate buttons height
+  const height = buttons.length * 36
+
+  // Calculate the top position
+  const top = (($(window).height() ?? 0) / 2) - (height / 2)
+
+  // Iterate over the buttons
+  for (let c = 0; c < buttons.length; c++) {
+
+    if (navPos === 'lefttop') {
+
+      $('#' + buttons[c]).css({ left: 10, right: 'auto', top: 30 + (36 * c), bottom: 'auto' })
+    }
+
+    if (navPos === 'leftcenter') {
+
+      $('#' + buttons[c]).css({ left: 10, right: 'auto', top: top + (36 * c), bottom: 'auto' })
+    }
+
+    if (navPos === 'leftbottom') {
+
+      $('#' + buttons[c]).css({ left: 10, right: 'auto', bottom: 30 + (36 * c), top: 'auto' })
+    }
+
+    if (navPos === 'righttop') {
+
+      $('#' + buttons[c]).css({ right: 10, left: 'auto', top: 50 + (36 * c), bottom: 'auto' })
+    }
+
+    if (navPos === 'rightcenter') {
+
+      $('#' + buttons[c]).css({ right: 10, left: 'auto', top: top + (36 * c), bottom: 'auto' })
+    }
+
+    if (navPos === 'rightbottom') {
+
+      $('#' + buttons[c]).css({ right: 10, left: 'auto', bottom: 30 + (36 * c), top: 'auto' })
+    }
+  }
+}
+
+showNavigationButtons.disable = () => {
+
+  $('#ext_scrolltop').remove()
+  $('#ext_back').remove()
+  $('#ext_search').remove()
+  $('#ext_whitelist').remove()
+  $('#ext_nav_faves').remove()
+  $('#ext_nightmode').remove()
+}
+
+showNavigationButtons.showSearch = () => {
+
+  const ext_search = $('#ext_search')
+  const ext_overlay_search_arrow = $('#ext_overlay_search_arrow')
+
+  // Hide opened overlays
+  showNavigationButtons.removeOverlay()
+
+  // Clone and append the original search form to body
+  const clone = $('form#search-top').clone().appendTo('body')
+
+  // Add class
+  clone.attr('id', 'ext_overlay_search')
+
+  const ext_overlay_search = $('#ext_overlay_search')
+
+  // Set position
+  showNavigationButtons.findArrowPosition(ext_overlay_search_arrow, ext_search)
+  showNavigationButtons.findPosition(ext_overlay_search, ext_search)
+
+  // Show the elements
+  ext_overlay_search_arrow.show()
+  ext_overlay_search.show()
+
+  // Create the hiding overlay
+  showNavigationButtons.createOverlay()
+}
+
+showNavigationButtons.showFaves = () => {
+
+  const url = 'https://sg.hu/forum/'
+  const ext_nav_faves_wrapper = $('#ext_nav_faves_wrapper')
+  const ext_nav_faves = $('#ext_nav_faves')
+  const ext_nav_faves_arrow = $('#ext_nav_faves_arrow')
+
+  $.ajax({
+    url: url,
+    mimeType: 'text/html;charset=utf-8',
+    dataType: 'html',
+    success: function (tmp) {
+
+      const data = $('nav#favorites-list', tmp)
+
+      // Security reasons
+      const cleanedHtml = safeResponse.cleanDomHtml(data[0])
+
+      // Write data into wrapper
+      $('#ext_nav_faves_wrapper').find('.ext_nav_fave_list').html(cleanedHtml)
+
+      if (context.dataStore['jumpUnreadMessages']) {
+        jumpUnreadMessages.activate()
+      }
+
+      // Hide topics that doesnt have unreaded messages
+      favShowOnlyUnread.activate()
+
+      // Faves: short comment marker
+      if (context.dataStore['shortCommentMarker']) {
+        shortCommentMarker.activate()
+      }
+
+      // Set position
+      showNavigationButtons.findArrowPosition(ext_nav_faves_arrow, ext_nav_faves)
+      showNavigationButtons.findPosition(ext_nav_faves_wrapper, ext_nav_faves)
+
+      // Hide opened overlays
+      showNavigationButtons.removeOverlay()
+
+      // Show the container
+      ext_nav_faves_wrapper.show()
+      ext_nav_faves_arrow.show()
+
+      // Create the hiding overlay
+      showNavigationButtons.createOverlay()
+    }
+  })
+}
+
+showNavigationButtons.findArrowPosition = (ele: JQuery<HTMLElement>, target: JQuery<HTMLElement>) => {
+  const navPos = (context.dataStore['navigationButtonsPosition'] as string) ?? 'leftcenter'
+
+  let vPos
+  // Top
+  if (navPos.match('bottom')) {
+    vPos = parseInt($(target).css('bottom').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
+  } else {
+    vPos = parseInt($(target).css('top').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
+  }
+
+  // Left
+  if (navPos.match('left')) {
+
+    if (navPos.match('bottom')) {
+      $(ele).css({
+        'border-color': 'transparent #c0c0c0 transparent transparent',
+        top: 'auto',
+        bottom: vPos,
+        left: 30,
+        right: 'auto'
+      })
+    } else {
+      $(ele).css({
+        'border-color': 'transparent #c0c0c0 transparent transparent',
+        top: vPos,
+        bottom: 'auto',
+        left: 30,
+        right: 'auto'
+      })
+    }
+    // Right
+  } else {
+    if (navPos.match('bottom')) {
+      $(ele).css({
+        'border-color': 'transparent transparent transparent #c0c0c0',
+        top: 'auto',
+        bottom: vPos,
+        left: 'auto',
+        right: 30
+      })
+    } else {
+      $(ele).css({
+        'border-color': 'transparent transparent transparent #c0c0c0',
+        top: vPos,
+        bottom: 'auto',
+        left: 'auto',
+        right: 30
+      })
+    }
+  }
+}
+
+showNavigationButtons.findPosition = (ele: JQuery<HTMLElement>, target: JQuery<HTMLElement>) => {
+  const navPos = (context.dataStore['navigationButtonsPosition'] as string) ?? 'leftcenter'
+
+  let top, bottom
+  if (navPos === 'lefttop') {
+
+    top = parseInt($(target).css('top').replace('px', '')) - 15
+
+    $(ele).css({ left: 50, right: 'auto', top: top, bottom: 'auto' })
+  }
+
+  if (navPos === 'leftcenter') {
+
+    top = parseInt($(target).css('top').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
+
+    $(ele).css({ left: 50, right: 'auto', top: top, bottom: 'auto' })
+  }
+
+  if (navPos === 'leftbottom') {
+
+    bottom = parseInt($(target).css('bottom').replace('px', '')) - 15
+
+    $(ele).css({ left: 50, right: 'auto', top: 'auto', bottom: bottom })
+  }
+
+  if (navPos === 'righttop') {
+
+    top = parseInt($(target).css('top').replace('px', '')) - 15
+
+    $(ele).css({ left: 'auto', right: 50, top: top, bottom: 'auto' })
+  }
+
+  if (navPos === 'rightcenter') {
+
+    top = parseInt($(target).css('top').replace('px', '')) + ($(target).height() ?? 0) / 2 - ($(ele).outerHeight() ?? 0) / 2
+
+    $(ele).css({ left: 'auto', right: 50, top: top, bottom: 'auto' })
+  }
+
+  if (navPos === 'rightbottom') {
+
+    bottom = parseInt($(target).css('bottom').replace('px', '')) - 15
+
+    $(ele).css({ left: 'auto', right: 50, top: 'auto', bottom: bottom })
+  }
+}
+
+showNavigationButtons.createOverlay = () => {
+
+  $('<div id="ext_nav_overlay"></div>').prependTo('body').css({
+    position: 'fixed',
+    height: '100%',
+    width: '100%',
+    zIndex: 80
+  })
+  $('#ext_nav_overlay').click(function () {
+    showNavigationButtons.removeOverlay()
+  })
+}
+
+showNavigationButtons.removeOverlay = () => {
+
+  // Hide buttons overlays
+  $('#ext_nav_faves_wrapper').hide()
+  $('#ext_nav_faves_arrow').hide()
+
+  $('#ext_overlay_search').remove()
+  $('#ext_overlay_search_arrow').hide()
+
+  // Remove the overlay
+  $('#ext_nav_overlay').remove()
+}

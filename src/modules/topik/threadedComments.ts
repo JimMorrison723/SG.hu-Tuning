@@ -1,0 +1,118 @@
+import { Module } from '../Module'
+
+export const threadedComments = new Module('threadedComments')
+
+threadedComments.activate = () => {
+
+  // New message counter
+  const newMsg = document.location.href.split('&newmsg=')[1]
+
+  // Mark new messages if any
+  if (typeof newMsg !== 'undefined' && newMsg !== '') {
+    $('.header:lt(' + newMsg + ')').find('a:last').after($('<span class="thread_sep"> | </span> <span class="ext_new_comment" style="color: red;">ÚJ</span>'))
+  }
+
+  // Set prev and next button if any new messages
+  if (Number(newMsg) > 0) {
+
+    $('<span class="thread_prev">&laquo;</span>').insertBefore('.ext_new_comment')
+    $('<span class="thread_next">&raquo;</span>').insertAfter('.ext_new_comment')
+
+    // Bind events
+    $('.thread_prev').on('click', function () {
+      threadedComments.prev(this)
+    })
+
+    $('.thread_next').on('click', function () {
+      threadedComments.next(this)
+    })
+  }
+
+  // Sort comments to thread
+  threadedComments.sort()
+}
+
+threadedComments.prev = (ele: HTMLElement) => {
+
+  // Get the index value of the current element
+  const index = $(ele).index('.thread_prev')
+
+  // Check if is it the first element
+  if (index === 0) {
+    return false
+  }
+
+  const target = $('.ext_new_comment').eq((index - 1)).closest('.post').children('header')
+
+  // Target offsets
+  const windowHalf = ($(window).height() ?? 0) / 2
+  const targetHalf = ($(target).outerHeight() ?? 0) / 2
+  const targetTop = $(target).offset()?.top ?? 0
+  const targetOffset = targetTop - (windowHalf - targetHalf)
+
+  // Scroll to target element
+  $('html, body').animate({ scrollTop: targetOffset }, 500)
+}
+
+threadedComments.next = (next: HTMLElement) => {
+
+  const ext_new_comment = $('.ext_new_comment')
+
+  // Get the index value of the current element
+  const index = $(next).index('.thread_next')
+
+  // Check if is it the last element
+  if (index + 1 >= ext_new_comment.length) {
+    return false
+  }
+
+  const target = ext_new_comment.eq((index + 1)).closest('.post').children('header')
+
+  // Target offsets
+  const windowHalf = ($(window).height() ?? 0) / 2
+  const targetHalf = ($(target).outerHeight() ?? 0) / 2
+  const targetTop = $(target).offset()?.top ?? 0
+  const targetOffset = targetTop - (windowHalf - targetHalf)
+
+  // Scroll to target element
+  $('html, body').animate({ scrollTop: targetOffset }, 500)
+}
+
+threadedComments.sort = () => {
+
+  // Sort to thread
+  $($('.post:not(.checked)').get().reverse()).each(function () {
+
+    // Check if theres an answered message
+    if ($(this).find('.reply').length === 0) {
+
+      // Add checked class
+      $(this).addClass('checked')
+
+      // Continue to next element
+      return
+    }
+
+    // Get answered comment numer
+    const commentNum = $(this).find('.reply').text().split('#')[1]?.match(/\d+/g)
+    if (!commentNum) return
+
+    // Seach for parent node via comment number
+    $(this).appendTo($('.header a:contains("#' + commentNum[0] + '"):last').closest('.post'))
+
+    // Set style settings
+    if (document.location.href.match(/cikkek/)) {
+      $(this).css({ 'margin-left': 0, 'padding-left': 15, 'border-left': '1px solid #ddd' })
+      $(this).css('width', 604 - $(this).parents('.post').length * 16)
+      $(this).find('.reply').hide()
+    } else {
+      $(this).css({ 'margin-left': 0, 'padding-left': 20, 'border-left': '1px solid #ddd' })
+      $(this).css('width', 930 - ($(this).parents('.post').length) * 21)
+      $(this).find('.reply').hide()
+    }
+
+    // Add checked class
+    $(this).find('.topichead:first').addClass('checked')
+
+  })
+}
